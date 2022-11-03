@@ -10,6 +10,8 @@ const postRouter = require("./router/post");
 dotenv.config({ path: "./config.env" });
 
 const app = express();
+app.use(cors())
+
 app.use(express.json());
 
 //advertising router

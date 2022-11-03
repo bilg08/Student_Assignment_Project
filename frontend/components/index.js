@@ -10,4 +10,9 @@ export * from './postModel/Postmodel';
 export * from './ui/menuList';
 export * from "./ui/menuList2";
 export * from './Shadow';
+<<<<<<< HEAD
 export * from './avatar'
+=======
+export * from './ui/postReceived';
+export * from './ui/postButton.tsx';
+>>>>>>> parent of fe34519 (Revert ".")
