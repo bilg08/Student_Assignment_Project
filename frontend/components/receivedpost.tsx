@@ -9,11 +9,6 @@ export const ReceivedPosts = () => {
 					return (
 						<Card key={ind}>
 							<div>
-								{/* <img
-				                    className='w-full'
-				                    src='/img/card-top.jpg'
-				                    alt='Sunset in the mountains'
-			                    /> */}
 								<div>
 									<div className='font-bold text-xl mb-2'>
 										{el.advertisingHeader}
