@@ -13,12 +13,13 @@ export const MenuList2: React.FC<MenuListProps> = ({ name, svg, isActive }) => {
     const getMore = () => {
 		alert("hiinee");
 	};
+
   return (
     <li>
       <div
         className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
         // onClick={(e) => getMore()}
-        onClick={() => isActive ? setCactive(!cActive) : null}
+        onClick={() => isActive ? setCactive(true) : setCactive(false)}
       >
         {svg}
         <span className="ml-4">{name}</span>
