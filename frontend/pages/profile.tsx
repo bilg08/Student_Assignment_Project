@@ -4,10 +4,10 @@ const UserProfile = () => {
 	const { cActive } = useCollectionContext();
 	
 	return (
-		<div style={{ display: "flex", flexDirection: "row" }} >
+		<div style={{ display: "flex", flexDirection: "row" }}>
 			<UserSideBar />
 			<ReceivedPosts/>
-			{cActive? <PostModal/> : false}
+			{cActive? <PostModal/> : ""}
 		</div>
 	);
 };

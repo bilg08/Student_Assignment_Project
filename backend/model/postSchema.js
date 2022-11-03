@@ -7,12 +7,7 @@ const PostSchema = new mongoose.Schema({
   //     required: [true, "Нэрийг оруулна уу"],
   //     maxLength: [50, "НЭРНЫ УРТ ИХ БАЙНА"],
   //   },
-  // isNew: {
-  //   type: String,
-  //   required: [true, "Шинэ эсэхийг оруулна уу"],
-  //   default: "Үнэ тохирно",
-  // },
-  subject: {
+  isNew: {
     type: String,
     required: [true, "Шинэ эсэхийг оруулна уу"],
     default: "Үнэ тохирно",
@@ -27,7 +22,7 @@ const PostSchema = new mongoose.Schema({
     default: "no-photo.jpeg",
   },
   price: {
-    type: String,
+    type: Number,
     required: [true, "Үнийг оруулна уу"],
   },
   detail: {

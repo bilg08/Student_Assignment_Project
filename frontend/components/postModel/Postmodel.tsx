@@ -1,62 +1,34 @@
+import { useEffect } from "react";
 import { useCollectionContext } from "../../context/isActive";
-import axios from "axios"
-import { useState } from "react";
 
 export const PostModal = () => {
-
-  const { cActive, setCactive } = useCollectionContext();
-
-  const [data, setData] = useState([])
+  const { setCactive } = useCollectionContext();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log(event.target)
     const data = {
-      advertisingHeader: event.currentTarget.first.value,
-      detail: event.currentTarget.second.value,
-      price: event.currentTarget.third.value,
-      subject: event.currentTarget.fourth.value,
+      isNew: event.currentTarget.value,
+      advertisingHeader: event.currentTarget.value,
     };
-    console.log(data);
-    const JSONdata = JSON.stringify(data);
+    // console.log(data)
+    // const JSONdata = JSON.stringify(data);
 
-    const endpoint = "http://localhost:8000/post";
+    // const endpoint = "/api/form";
 
-    const options = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    // const response =  fetch(endpoint, options)
-    // const result =  response
-    // console.log(result)
-    axios
-      .post(
-        `http://localhost:8000/post`,
-        {
-          data
-        },options
-      )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // const options = {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSONdata,
+    // };
   };
 
-
-
-  if (cActive) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "visible";
-  }
-
   return (
-    <div className="absolute w-full h-[100vh] bg-grey/3 backdrop-blur-xl overflow-none">
+    <div className="absolute w-full h-[100vh] bg-grey/3 backdrop-blur-xl"  >
       <form
-        className="w-full sm:w-3/4 md:w-2/4 lg:w-auto h-auto absolute top-1/3 left-2/4 transform -translate-x-1/2 -translate-y-1/2 p-10 rounded-3xl backdrop-blur-md bg-black "
+        className="w-full sm:w-3/4 md:w-2/4 lg:w-auto h-auto absolute top-2/4 left-2/4 transform -translate-x-1/2 -translate-y-1/2 p-10 rounded-3xl backdrop-blur-md bg-black "
         onSubmit={handleSubmit}
       >
         <div className="flex justify-between ">
@@ -131,7 +103,6 @@ export const PostModal = () => {
               <select
                 className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-state"
-                name="fourth"
               >
                 <option>hicheel1</option>
                 <option>hicheel2</option>
@@ -149,10 +120,39 @@ export const PostModal = () => {
             </div>
           </div>
         </div>
-
-        <button type="submit" className="w-auto h-[20px] text-gray-500 ">
-          Submit
-        </button>
+        <div className="flex justify-center items-center w-full mt-10">
+          <label
+            htmlFor="dropzone-file"
+            className="flex flex-col justify-center items-center w-full h-64 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+          >
+            <div className="flex flex-col justify-center items-center pt-5 pb-6">
+              <svg
+                aria-hidden="true"
+                className="mb-3 w-10 h-10 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                ></path>
+              </svg>
+              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                <span className="font-semibold">Click to upload</span> or drag
+                and drop
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                SVG, PNG, JPG or GIF (MAX. 800x400px)
+              </p>
+            </div>
+            <input id="dropzone-file" type="file" className="hidden" />
+          </label>
+        </div>
+        <button type="submit" className="w-auto h-[20px] text-gray-500 ">Submit</button>
       </form>
     </div>
   );
