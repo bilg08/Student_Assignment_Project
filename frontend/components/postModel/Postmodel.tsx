@@ -2,9 +2,13 @@ import { useCollectionContext } from "../../context/isActive";
 import axios from "axios"
 import { useState } from "react";
 
-export const PostModal = () => {
+export interface PostModalProps {
+  cActive: any;
+  setCactive: any;
+}
 
-  const { cActive, setCactive } = useCollectionContext();
+export const PostModal: React.FC<PostModalProps> = ({ cActive , setCactive}) => {
+
 
   const [data, setData] = useState([])
 
@@ -45,13 +49,6 @@ export const PostModal = () => {
       });
   };
 
-
-
-  if (cActive) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "visible";
-  }
 
   return (
     <div className="absolute w-full h-[100vh] bg-grey/3 backdrop-blur-xl overflow-none">

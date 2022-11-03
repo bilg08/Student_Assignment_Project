@@ -13,7 +13,7 @@ export const MenuList2: React.FC<MenuListProps> = ({ name, svg, isActive }) => {
     const getMore = () => {
 		alert("hiinee");
 	};
-
+  
   return (
     <li>
       <div

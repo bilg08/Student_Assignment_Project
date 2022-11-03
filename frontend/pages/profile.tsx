@@ -1,13 +1,13 @@
 import { PostModal, UserSideBar, ReceivedPosts } from "../components/index";
 import { useCollectionContext } from "../context/isActive";
 const UserProfile = () => {
-	const { cActive } = useCollectionContext();
+	const { cActive , setCactive} = useCollectionContext();
 	
 	return (
 		<div style={{ display: "flex", flexDirection: "row" }} >
 			<UserSideBar />
 			<ReceivedPosts/>
-			{cActive? <PostModal/> : false}
+			{cActive? <PostModal cActive={cActive} setCactive={setCactive}/> : false}
 		</div>
 	);
 };
