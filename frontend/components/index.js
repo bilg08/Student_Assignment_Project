@@ -9,4 +9,6 @@ export * from './receivedpost';
 export * from './postModel/Postmodel';
 export * from './ui/menuList';
 export * from "./ui/menuList2";
-export * from './Shadow'
+export * from './Shadow';
+export * from './ui/postReceived';
+export * from './ui/postButton.tsx';

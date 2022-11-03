@@ -22,7 +22,7 @@ export const MenuList2: React.FC<MenuListProps> = ({ name, svg, isActive }) => {
         onClick={() => isActive ? setCactive(true) : setCactive(false)}
       >
         {svg}
-        <span className="ml-4">{name}</span>
+        <span className="ml-4 cursor-pointer">{name}</span>
       </div>
     </li>
   );
