@@ -1,6 +1,7 @@
 import { useCollectionContext } from "../../context/isActive";
 import axios from "axios"
 import { useState } from "react";
+import { Shadow } from "../Shadow";
 
 export interface PostModalProps {
   cActive: any;
@@ -51,8 +52,8 @@ export const PostModal: React.FC<PostModalProps> = ({ cActive , setCactive}) => 
 
 
   return (
-    <div className="absolute w-full h-[100vh] bg-grey/3 backdrop-blur-xl overflow-none">
-      <form
+<Shadow>
+    <form
         className="w-full sm:w-3/4 md:w-2/4 lg:w-auto h-auto absolute top-1/3 left-2/4 transform -translate-x-1/2 -translate-y-1/2 p-10 rounded-3xl backdrop-blur-md bg-black "
         onSubmit={handleSubmit}
       >
@@ -151,6 +152,6 @@ export const PostModal: React.FC<PostModalProps> = ({ cActive , setCactive}) => 
           Submit
         </button>
       </form>
-    </div>
+    </Shadow>
   );
 };
