@@ -13,4 +13,6 @@ export * from './Shadow';
 export * from './Avatar'
 export * from './ui/postReceived';
 export * from './ui/postButton.tsx';
+export * from './ui/siderBarBox';
+export * from './ui/sideBarBox2'
 
