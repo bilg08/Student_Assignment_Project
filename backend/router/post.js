@@ -7,6 +7,7 @@ const {
   deletePost,
   updatePost,
   createPost,
+  uploadPhoto,
 } = require("../controller/post");
 
 router.get("/", getPosts).post("/", createPost);

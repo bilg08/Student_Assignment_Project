@@ -8,7 +8,7 @@ export const UserSideBar = () => {
 	return (
 		<>
 			<aside
-				className='w-96 ml-24 h-fit'
+				className='w-96 ml-24 h-[100vh]'
 				aria-label='Sidebar'>
 				<div className='h-4/6 overflow-y-auto py-4 px-3 bg-light-purple rounded-lg dark:bg-gray-800 flex-col align-center items-center h-full '>
 					<ul className='space-y-2 '>
