@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Input, Button, Card, Shadow, Avatar } from "../components/index";
 import { AiOutlineSearch } from "react-icons/ai";
 import { MdLocationOn } from "react-icons/md";
@@ -8,6 +8,7 @@ import { useWindowWidth } from "../hooks/index";
 import axios from "axios";
 
 type adsType = {
+  _id: string | number | readonly string[] | undefined;
   advertisingHeader: String;
   detail: String;
   owner: {
@@ -43,6 +44,21 @@ export default function Home() {
   const handleSearch = () => {
     console.log(userInput);
   };
+
+  const memoizedCard = useMemo(() => {
+    
+}, []);
+
+  const onclick  = (el: React.MouseEvent<HTMLButtonElement>) => {
+    const button: HTMLButtonElement = el.currentTarget;
+    const id = button.value
+    axios.delete(`http://localhost:8000/post/${id}`)
+    .then(function (response) {
+      console.log(response);
+    })
+}
+
+
   return (
     <div className="w-full border-#57534e border-1">
       <div className="flex h-40  justify-center flex-col items-center md:flex-row m-auto max-w-screen-xl gap-5">
@@ -72,6 +88,7 @@ export default function Home() {
                 <Card index={index} key={index}>
                   <div className="w-full max-w-sm   rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
                     <div className="flex justify-end px-4 pt-4">
+                   
                       <button
                         id="dropdownButton"
                         data-dropdown-toggle="dropdown"
@@ -107,6 +124,7 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
+                  <button onClick={onclick} value={ad._id} className='border-[#000] border-[2px] mt-2'> Hasah(tur zuur hiigeed orhichii) </button>
                 </Card>
               );
             })}

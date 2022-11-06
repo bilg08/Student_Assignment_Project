@@ -15,9 +15,9 @@ const app = express();
 app.use(cors())
 
 app.use(express.json());
-app.use(fileupload())
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+// app.use(fileupload())
+// app.use(bodyParser.urlencoded({ extended: false }))
+// app.use(bodyParser.json())
 
 //advertising router
 app.use("/advertisings", advertisingRouter);
@@ -27,16 +27,16 @@ app.use("/post", postRouter);
 app.use("/users", userRouter);
 app.use(errorHandler);
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-      cb(null, 'uploads')
-  },
-  filename: (req, file, cb) => {
-      cb(null, file.fieldname + '-' + Date.now())
-  }
-});
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//       cb(null, 'uploads')
+//   },
+//   filename: (req, file, cb) => {
+//       cb(null, file.fieldname + '-' + Date.now())
+//   }
+// });
 
-const upload = multer({ storage: storage });
+// const upload = multer({ storage: storage });
 
 
 connectDB();
