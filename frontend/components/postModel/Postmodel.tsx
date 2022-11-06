@@ -1,25 +1,31 @@
 import { useCollectionContext } from "../../context/isActive";
-import axios from "axios"
+import axios from "axios";
 import { useState } from "react";
 import { Shadow } from "../Shadow";
-
+import React from "react";
+import { MyImage } from '../index'
 export interface PostModalProps {
   cActive: any;
   setCactive: any;
 }
 
-export const PostModal: React.FC<PostModalProps> = ({ cActive , setCactive}) => {
-
-
-  const [data, setData] = useState([])
+export const PostModal: React.FC<PostModalProps> = ({
+  cActive,
+  setCactive,
+}) => {
+  const [fileSelected, setFileSelected]  =useState<any | null>(null);
+  const [createObjectURL, setCreateObjectURL] = useState<any | null>(null);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const body = new FormData();
+    body.append("file", fileSelected);
     event.preventDefault();
     const data = {
       advertisingHeader: event.currentTarget.first.value,
       detail: event.currentTarget.second.value,
       price: event.currentTarget.third.value,
       subject: event.currentTarget.fourth.value,
+      photo: createObjectURL,
     };
     console.log(data);
     const JSONdata = JSON.stringify(data);
@@ -32,15 +38,16 @@ export const PostModal: React.FC<PostModalProps> = ({ cActive , setCactive}) => 
       },
     };
 
-    // const response =  fetch(endpoint, options)
-    // const result =  response
-    // console.log(result)
     axios
       .post(
         `http://localhost:8000/post`,
         {
-          data
-        },options
+          advertisingHeader: event.currentTarget.first.value,
+      detail: event.currentTarget.second.value,
+      price: event.currentTarget.third.value,
+      subject: event.currentTarget.fourth.value,
+      photo: fileSelected,
+        },
       )
       .then((response) => {
         console.log(response);
@@ -50,11 +57,23 @@ export const PostModal: React.FC<PostModalProps> = ({ cActive , setCactive}) => 
       });
   };
 
+  const uploadFile = function (e:any) {
+    console.log(fileSelected)
+    if (e.target.files && e.target.files[0]) {
+      const i = e.target.files[0];
+      setFileSelected(i)
+      setCreateObjectURL(URL.createObjectURL(i))
+    }
+};
 
+
+
+
+  
   return (
-<Shadow>
-    <form
-        className="w-full sm:w-3/4 md:w-2/4 lg:w-auto h-auto absolute top-1/3 left-2/4 transform -translate-x-1/2 -translate-y-1/2 p-10 rounded-3xl backdrop-blur-md bg-black "
+    <Shadow>
+      <form
+        className="w-full sm:w-3/4 md:w-2/4 lg:w-auto h-auto absolute top-2/4 left-2/4 transform -translate-x-1/2 -translate-y-1/2 p-10 rounded-3xl backdrop-blur-md bg-black "
         onSubmit={handleSubmit}
       >
         <div className="flex justify-between ">
@@ -146,6 +165,13 @@ export const PostModal: React.FC<PostModalProps> = ({ cActive , setCactive}) => 
               </div>
             </div>
           </div>
+        </div>
+        <MyImage src={createObjectURL}/>
+        {/* <img src={createObjectURL} /> */}
+
+        <div className="flex justify-center items-center w-full">
+             {/* <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" htmlFor="small_size">Small file input</label> */}
+            <input className="block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="small_size" type="file" onChange={uploadFile}></input>
         </div>
 
         <button type="submit" className="w-auto h-[20px] text-gray-500 ">

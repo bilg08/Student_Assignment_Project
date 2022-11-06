@@ -61,3 +61,13 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
     data: posts,
   });
 });
+
+exports.uploadPhoto = asyncHandler(async (req,res,next) => {
+  const files = req.files.file
+
+  res.status(200).json({
+    success: true,
+    data: files.name,
+  });
+
+})

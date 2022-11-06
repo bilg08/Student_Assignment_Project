@@ -32,7 +32,9 @@ export default function Home() {
   useEffect(() => {
     async function getData() {
       try {
-        const datas = await axios.get("http://localhost:8000/post");
+     
+          const datas = await axios.get("http://localhost:8000/post");
+       
         setAds(datas.data.data);
       } catch (error) {}
     }
