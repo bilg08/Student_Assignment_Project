@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input, Button, Card, Shadow, Avatar } from "../components/index";
 import { AiOutlineSearch } from "react-icons/ai";
 import { MdLocationOn } from "react-icons/md";
@@ -6,6 +6,25 @@ import advertisings from "../data/advertisings.json" assert { type: "json" };
 import { useSelectedContext } from "../context/index";
 import { useWindowWidth } from "../hooks/index";
 import axios from "axios";
+import { useIsAgainGetDatas } from "../context/againGetAllDatas";
+
+
+
+export async function getServerSideProps() {
+
+      const res = await fetch(`http://localhost:8000/post`);
+      const data = await res.json();
+  
+  return { props: { data } }
+}
+
+
+
+
+
+
+
+
 
 type adsType = {
   advertisingHeader: String;
@@ -23,12 +42,13 @@ type userInputType = {
   school: String | "school";
 };
 
-export default function Home() {
+export default function Home(props:{data:{data:[]}}) {
   const { selectedAd, setSelectedAd } = useSelectedContext();
   const [userInput, setUserInput] = useState<userInputType | object>();
   const [ads, setAds] = useState<adsType[]>([]);
   const windowWidth = useWindowWidth();
   const [showModal, setShowModal] = useState(false);
+  const {isAgainGetDatas} = useIsAgainGetDatas()
   useEffect(() => {
     async function getData() {
       try {
@@ -37,7 +57,7 @@ export default function Home() {
       } catch (error) {}
     }
     getData();
-  }, [ads]);
+  }, [isAgainGetDatas]);
   const handleSearch = () => {
     console.log(userInput);
   };
