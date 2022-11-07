@@ -1,4 +1,4 @@
-import { Card } from "../Card";
+import { Button } from "../index";
 
 export interface PostReceivedProps {
   name: any;
