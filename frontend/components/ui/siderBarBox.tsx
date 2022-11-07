@@ -4,7 +4,7 @@ export const SidebarBox = (props: CardDataType) => {
 	return (
 		<div
 			style={{ marginTop: "25px" }}
-			className='bg-white-100 rounded-lg border-mid-purple border shadow-sidebarbox mt-0 '>
+			className='bg-white rounded-lg border-mid-purple border shadow-sidebarbox mt-0 '>
 			{children}
 		</div>
 	);
