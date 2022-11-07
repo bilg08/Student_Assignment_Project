@@ -5,7 +5,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
 	return (
 		<button
 			onClick={props.onClick}
-			className='inline-flex items-center justify-center py-2 px-3 text-sm font-medium text-center text-dark-purple bg-white border border-dark-purple h-12 w-1/12 rounded-full hover:bg-mid-purple hover:text-white  dark:bg-white dark:hover:bg-light-purple '>
+			className='inline-flex items-center justify-center py-2 px-3 text-sm font-medium text-center text-dark-purple bg-white border border-dark-purple h-12 w-өшэ rounded-full hover:bg-mid-purple hover:text-white  dark:bg-white dark:hover:bg-light-purple '>
 			{props.children}
 			<svg
 				aria-hidden='true'
