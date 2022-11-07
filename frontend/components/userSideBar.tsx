@@ -3,6 +3,7 @@ import {
 	MenuList2,
 	SidebarBox,
 	SidebarBox2,
+	ColasipbleSidebarBox,
 } from "../components/index";
 export const UserSideBar = () => {
 	return (
@@ -12,7 +13,7 @@ export const UserSideBar = () => {
 				aria-label='Sidebar'>
 				<div className=' overflow-y-auto py-4 px-3 bg-light-purple rounded-lg dark:bg-gray-800 flex-col align-center items-center h-full border border-light-purple'>
 					<ul className='space-y-2 '>
-						<li>
+						<li className='flex justify-center'>
 							<div className='h-64 w-64 rounded-full border-white border-2 shadow-sidebarbox mb-16 bg-white'></div>
 						</li>
 
@@ -44,7 +45,7 @@ export const UserSideBar = () => {
 						</SidebarBox>
 					</ul>
 					<ul className='pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700'>
-						<SidebarBox>
+						<ColasipbleSidebarBox>
 							<MenuList2
 								name={"Хийсэн бие даалтын тоо"}
 								svg={
@@ -63,8 +64,8 @@ export const UserSideBar = () => {
 									</svg>
 								}
 							/>
-						</SidebarBox>
-						<SidebarBox>
+						</ColasipbleSidebarBox>
+						<ColasipbleSidebarBox>
 							<MenuList2
 								name={"Бие даалтын дундаж үнэлгээ"}
 								svg={
@@ -83,7 +84,7 @@ export const UserSideBar = () => {
 									</svg>
 								}
 							/>
-						</SidebarBox>
+						</ColasipbleSidebarBox>
 						<div style={{ height: "0.8vw" }}></div>
 						<SidebarBox2>
 							<MenuList2
