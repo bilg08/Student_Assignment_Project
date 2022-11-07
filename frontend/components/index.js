@@ -14,7 +14,6 @@ export * from './Avatar'
 export * from './ui/postReceived';
 export * from './ui/postButton';
 export * from './ui/siderBarBox';
-export * from './ui/sideBarBox2';
 export * from './ui/myImage';
 export * from './profileCard';
 
