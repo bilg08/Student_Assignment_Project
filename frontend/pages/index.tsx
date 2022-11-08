@@ -27,7 +27,6 @@ export default function Home() {
   const { selectedAd, setSelectedAd } = useSelectedContext();
   const [userInput, setUserInput] = useState<userInputType | object>();
   const [ads, setAds] = useState<adsType[]>([]);
-  const [openPostDropDown, setOpenPostDropDown] = useState(false);
   const windowWidth = useWindowWidth();
   const [showModal, setShowModal] = useState(false);
   useEffect(() => {
@@ -35,13 +34,12 @@ export default function Home() {
       try {
         const datas = await axios.get("http://localhost:8000/post");
         setAds(datas.data.data);
-      } catch (error) {}
+      } catch (error) { }
     }
     getData();
   }, [ads]);
 
-    console.log(ads, 'ads')
-  const handleSearch = () => {};
+  const handleSearch = () => { };
   return (
     <div className="w-full border-#57534e border-1">
       <div className="flex h-40  justify-center flex-col items-center md:flex-row m-auto max-w-screen-xl gap-5">
@@ -115,10 +113,11 @@ export default function Home() {
           </div>
 
           {selectedAd && showModal && windowWidth < 935 && (
-            <div className="w-full absolute flex justify-center">
+            <div className="absolute w-full h-[100%] bg-grey/3 backdrop-blur-xl overflow-none">
+            <div className="w-full absolute flex justify-center items-center">
               <Card>
                 <Card>
-                  <div className="relative">
+                  <div className="relative ">
                     <h1 className="text-4xl  font-bold">
                       {selectedAd.ad.advertisingHeader}
                     </h1>
@@ -141,6 +140,7 @@ export default function Home() {
                   <p>{selectedAd.ad.detail}</p>
                 </Card>
               </Card>
+            </div>
             </div>
           )}
 
