@@ -24,7 +24,8 @@ const PostSchema = new mongoose.Schema({
   },
   photo: {
       type:String
-  },
+  }
+,
   price: {
     type: String,
     required: [true, "Үнийг оруулна уу"],

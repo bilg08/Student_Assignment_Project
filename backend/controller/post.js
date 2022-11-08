@@ -3,6 +3,7 @@ const MyError = require("../utils/myError");
 const asyncHandler = require("../middleware/asyncHandler");
 const path = require('path');
 const fs = require('fs')
+
 exports.getPosts = asyncHandler(async (req, res, next) => {
   const posts = await PostSchema.find();
 
@@ -36,11 +37,20 @@ exports.getPost = asyncHandler(async (req, res, next) => {
   });
 });
 
+exports.getPostPhoto = asyncHandler(async (req, res, next) => {
+  const { photoname } = req.params;
+  console.log(photoname)
+  fs.readFile(`./images/post/${photoname}.PNG`, (err, data) => {
+    res.setHeader('content-type',"image/png")
+    res.end(data);
+  });
+});
+
+
+
 exports.createPost = asyncHandler(async (req, res, next) => {
   const newPost = await PostSchema.create(req.body);
   const files = req.file.fileName
-
-  console.log(req.body)
 
   res.status(200).json({
     success: true,
@@ -83,6 +93,7 @@ exports.uploadPhoto = asyncHandler(async (req, res, next) => {
   const file = req.files.file;
   file.name = `photo_${id}${path.parse(file.name).ext}`;
 
+  
   file.mv(`./images/post/${file.name}`, (err) => {
     if (err){
       console.log(err, "err");
@@ -95,5 +106,7 @@ exports.uploadPhoto = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: post,
-  })
+  });
+
 })
+
