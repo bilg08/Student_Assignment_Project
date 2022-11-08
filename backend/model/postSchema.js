@@ -23,8 +23,7 @@ const PostSchema = new mongoose.Schema({
     maxLength: [50, "НЭРНЫ УРТ ИХ БАЙНА"],
   },
   photo: {
-      data: Buffer,
-      contentType: String
+      type:String
   },
   price: {
     type: String,

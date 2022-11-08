@@ -4,6 +4,8 @@ import {
 	Button,
 	Card,
 	Shadow,
+	Avatar,
+	SeizedSideBar,
 } from "../components/index";
 import { AiOutlineSearch } from "react-icons/ai";
 import { MdLocationOn } from "react-icons/md";
@@ -39,7 +41,10 @@ type userInputType = {
 
 export default function Home(props: { data: { data: [] } }) {
 	const { selectedAd, setSelectedAd } = useSelectedContext();
-	const [userInput, setUserInput] = useState<userInputType | object>();
+  const [userInput, setUserInput] = useState<userInputType | object>({
+    school: "",
+    subject:""
+  });
 	const [ads, setAds] = useState<adsType[]>([]);
 	const windowWidth = useWindowWidth();
 	const [showModal, setShowModal] = useState(false);
@@ -48,13 +53,18 @@ export default function Home(props: { data: { data: [] } }) {
 		async function getData() {
 			try {
 				const datas = await axios.get("http://localhost:8000/post");
-
 				setAds(datas.data.data);
 			} catch (error) {}
 		}
 		getData();
 	}, [isAgainGetDatas]);
-	//TO-D
+	//TO-DO
+	const handleSearch = () => {
+		console.log(userInput);
+	};
+
+	const memoizedCard = useMemo(() => {}, []);
+
 	const onclick = (el: React.MouseEvent<HTMLButtonElement>) => {
 		const button: HTMLButtonElement = el.currentTarget;
 		const id = button.value;
@@ -62,13 +72,6 @@ export default function Home(props: { data: { data: [] } }) {
 			console.log(response);
 		});
 	};
-	const handleSearch = () => {
-		console.log(userInput);
-	};
-
-
-
-         
 
 	return (
 		<div className='w-full border-#57534e border-1'>
@@ -128,7 +131,7 @@ export default function Home(props: { data: { data: [] } }) {
 												</h5>
 												<p className='text-xl'>10 бодлого бодуулна</p>
 												<div className='flex'>
-													{/* <Avatar image={ad.photo} /> */}
+													<img style={{ width: `40px`, height: `40px` }} src={`http://localhost:8000/post/photo/photo_${ad._id}`} />
 													<p className='text-gray-500'>
 														Зар тавигдсан хугацаа:{ad.createdAt}
 													</p>

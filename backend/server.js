@@ -13,15 +13,17 @@ dotenv.config({ path: "./config.env" });
 
 const app = express();
 app.use(cors())
-
+connectDB();
 app.use(express.json());
-// app.use(fileupload())
+app.use(fileupload())
 // app.use(bodyParser.urlencoded({ extended: false }))
 // app.use(bodyParser.json())
 
+
 //advertising router
 app.use("/advertisings", advertisingRouter);
-app.set("view engine", "ejs");
+// app.set("view engine", "ejs");
+
 app.use("/post", postRouter);
 //users router
 app.use("/users", userRouter);
@@ -39,7 +41,6 @@ app.use(errorHandler);
 // const upload = multer({ storage: storage });
 
 
-connectDB();
 app.listen(process.env.PORT, () => {
   console.log(`${process.env.PORT} listening `);
 });
