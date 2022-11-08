@@ -15,7 +15,7 @@ module.exports = {
       colors: {
         'light-purple': '#e6d1f2',
         'mid-purple': '#ccb7e5',
-        'dark-purple': '#804fb3'
+        'dark-purple': '#804fb3',
       },
       animation: {
         border: "border 1s ease",

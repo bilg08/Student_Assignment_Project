@@ -11,7 +11,7 @@ export const UserSideBar = () => {
 			<aside
 				className='w-96 ml-24 h-[100vh]'
 				aria-label='Sidebar'>
-				<div className=' overflow-y-auto py-4 px-3 bg-light-purple rounded-lg dark:bg-gray-800 flex-col align-center items-center h-full border border-light-purple'>
+				<div className=' overflow-y-auto py-4 px-3 bg-light-purple rounded-lg  flex-col align-center items-center h-full border border-light-purple'>
 					<ul className='space-y-2 '>
 						<li className='flex justify-center'>
 							<div className='h-64 w-64 rounded-full border-white border-2 shadow-sidebarbox mb-16 bg-white'></div>
@@ -44,7 +44,7 @@ export const UserSideBar = () => {
 							/>
 						</SidebarBox>
 					</ul>
-					<ul className='pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700'>
+					<ul className='pt-4 mt-4 space-y-2 border-t border-gray-200 '>
 						<ColasipbleSidebarBox>
 							<MenuList2
 								name={"Хийсэн бие даалтын тоо"}
@@ -135,7 +135,7 @@ export const UserSideBar = () => {
 								svg={
 									<svg
 										aria-hidden='true'
-										className='flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'
+										className='flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 '
 										fill='currentColor'
 										viewBox='0 0 20 20'
 										xmlns='http://www.w3.org/2000/svg'>
@@ -158,7 +158,7 @@ export const SeizedSideBar = () => {
 		<aside
 			className='fixed top-64 flex justify-center left-2 md:w-24 xs:w-48 h-fit'
 			aria-label='Sidebar'>
-			<div className=' overflow-y-auto py-4 px-3 bg-dark-purple rounded-lg dark:bg-gray-800 flex-col align-center h-full border border-light-purple text-white'>
+			<div className=' overflow-y-auto py-4 px-3 bg-dark-purple rounded-lg flex-col align-center h-full border border-light-purple text-white'>
 				<ul className='space-y-2 '>
 					<MenuList2
 						name={""}
@@ -274,7 +274,7 @@ export const SeizedSideBar = () => {
 						svg={
 							<svg
 								aria-hidden='true'
-								className='flex-shrink-0 w-6 h-6 text-white transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'
+								className='flex-shrink-0 w-6 h-6 text-white transition duration-75  group-hover:text-gray-900 '
 								fill='currentColor'
 								viewBox='0 0 20 20'
 								xmlns='http://www.w3.org/2000/svg'>
@@ -291,53 +291,4 @@ export const SeizedSideBar = () => {
 	);
 };
 
-//Comments
 
-{
-	/* <Image
-									src={user}
-									alt=''
-									style={{
-										width: "container-fit",
-										height: "container-fit",
-										border: "1px solid black",
-										borderRadius: "50%",
-									}}
-								/> */
-}
-{
-	/* <svg
-									xmlns='http://www.w3.org/2000/svg'
-									fill='none'
-									viewBox='0 0 24 24'
-									strokeWidth='1.5'
-									stroke='currentColor'
-									className='w-6 h-6'>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										d='M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z'
-									/>
-								</svg> */
-}
-
-{
-	/* <div
-								className='flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group'
-								onClick={(e) => getMore()}>
-								<svg
-									xmlns='http://www.w3.org/2000/svg'
-									fill='none'
-									viewBox='0 0 24 24'
-									strokeWidth='1.5'
-									stroke='currentColor'
-									className='w-6 h-6'>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										d='M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75'
-									/>
-								</svg>
-								<span className='ml-4'>Хийсэн бие даалтын тоо</span>
-							</div> */
-}

@@ -10,7 +10,6 @@ import { useWindowWidth } from "../hooks";
 const UserProfile = () => {
 	const { cActive, setCactive } = useCollectionContext();
 	const width = useWindowWidth();
-	console.log(width);
 
 	return (
 		<div style={{ display: "flex", flexDirection: "row" }}>
