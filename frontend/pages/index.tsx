@@ -4,8 +4,6 @@ import {
 	Button,
 	Card,
 	Shadow,
-	Avatar,
-	SeizedSideBar,
 } from "../components/index";
 import { AiOutlineSearch } from "react-icons/ai";
 import { MdLocationOn } from "react-icons/md";
@@ -56,13 +54,7 @@ export default function Home(props: { data: { data: [] } }) {
 		}
 		getData();
 	}, [isAgainGetDatas]);
-	//TO-DO
-	const handleSearch = () => {
-		console.log(userInput);
-	};
-
-	const memoizedCard = useMemo(() => {}, []);
-
+	//TO-D
 	const onclick = (el: React.MouseEvent<HTMLButtonElement>) => {
 		const button: HTMLButtonElement = el.currentTarget;
 		const id = button.value;
@@ -70,6 +62,13 @@ export default function Home(props: { data: { data: [] } }) {
 			console.log(response);
 		});
 	};
+	const handleSearch = () => {
+		console.log(userInput);
+	};
+
+
+
+         
 
 	return (
 		<div className='w-full border-#57534e border-1'>
