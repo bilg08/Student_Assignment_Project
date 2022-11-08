@@ -4,14 +4,7 @@ const PostSchema = new mongoose.Schema({
   //   owner: {
   //     type: mongoose.Schema.ObjectId,
   //     ref: "User",
-  //     required: [true, "Нэрийг оруулна уу"],
-  //     maxLength: [50, "НЭРНЫ УРТ ИХ БАЙНА"],
   //   },
-  // isNew: {
-  //   type: String,
-  //   required: [true, "Шинэ эсэхийг оруулна уу"],
-  //   default: "Үнэ тохирно",
-  // },
   subject: {
     type: String,
     required: [true, "Шинэ эсэхийг оруулна уу"],
@@ -23,9 +16,9 @@ const PostSchema = new mongoose.Schema({
     maxLength: [50, "НЭРНЫ УРТ ИХ БАЙНА"],
   },
   photo: {
-      data: Buffer,
-      contentType: String
-  },
+      type:String
+  }
+,
   price: {
     type: String,
     required: [true, "Үнийг оруулна уу"],

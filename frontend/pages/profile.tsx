@@ -9,11 +9,13 @@ import { useCollectionContext } from "../context/isActive";
 import { useWindowWidth } from "../hooks";
 const UserProfile = () => {
 	const { cActive, setCactive } = useCollectionContext();
-	const width = useWindowWidth();
+
+	const windowWidth = useWindowWidth();
+
 
 	return (
 		<div style={{ display: "flex", flexDirection: "row" }}>
-			{width >= 950 ? <UserSideBar /> : <SeizedSideBar />}
+			{windowWidth >= 950 ? <UserSideBar /> : <SeizedSideBar />}
 			<ReceivedPosts />
 			{cActive ? (
 				<PostModal

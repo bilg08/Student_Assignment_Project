@@ -41,7 +41,10 @@ type userInputType = {
 
 export default function Home(props: { data: { data: [] } }) {
 	const { selectedAd, setSelectedAd } = useSelectedContext();
-	const [userInput, setUserInput] = useState<userInputType | object>();
+  const [userInput, setUserInput] = useState<userInputType | object>({
+    school: "",
+    subject:""
+  });
 	const [ads, setAds] = useState<adsType[]>([]);
 	const windowWidth = useWindowWidth();
 	const [showModal, setShowModal] = useState(false);
@@ -50,7 +53,6 @@ export default function Home(props: { data: { data: [] } }) {
 		async function getData() {
 			try {
 				const datas = await axios.get("http://localhost:8000/post");
-
 				setAds(datas.data.data);
 			} catch (error) {}
 		}
@@ -121,7 +123,7 @@ export default function Home(props: { data: { data: [] } }) {
 												</h5>
 												<p className='text-xl'>10 бодлого бодуулна</p>
 												<div className='flex'>
-													{/* <Avatar image={ad.photo} /> */}
+													<img style={{ width: `40px`, height: `40px` }} src={`http://localhost:8000/post/photo/photo_${ad._id}`} />
 													<p className='text-gray-500'>
 														Зар тавигдсан хугацаа:{ad.createdAt}
 													</p>
