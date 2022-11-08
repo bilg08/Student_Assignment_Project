@@ -65,14 +65,6 @@ export default function Home(props: { data: { data: [] } }) {
 
 	const memoizedCard = useMemo(() => {}, []);
 
-	const onclick = (el: React.MouseEvent<HTMLButtonElement>) => {
-		const button: HTMLButtonElement = el.currentTarget;
-		const id = button.value;
-		axios.delete(`http://localhost:8000/post/${id}`).then(function (response) {
-			console.log(response);
-		});
-	};
-
 	return (
 		<div className='w-full border-#57534e border-1'>
 			<div className='flex h-40  justify-center flex-col items-center md:flex-row m-auto max-w-screen-xl gap-5'>
@@ -102,12 +94,12 @@ export default function Home(props: { data: { data: [] } }) {
 								<Card
 									index={index}
 									key={index}>
-									<div className='w-full max-w-sm   rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700'>
+									<div className='w-full max-w-sm   rounded-lg border border-gray-200 shadow-md '>
 										<div className='flex justify-end px-4 pt-4'>
 											<button
 												id='dropdownButton'
 												data-dropdown-toggle='dropdown'
-												className='w-10 h-10  inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5'
+												className='w-10 h-10  inline-block text-gray-500 hover:bg-gray-100  focus:ring-4 focus:outline-none focus:ring-gray-200  rounded-lg text-sm p-1.5'
 												type='button'>
 												<svg
 													className='w-6 h-6'
@@ -126,7 +118,7 @@ export default function Home(props: { data: { data: [] } }) {
 													setSelectedAd({ ad, index });
 													setShowModal(true);
 												}}>
-												<h5 className='mb-1 text-xl font-medium text-gray-900 dark:text-white'>
+												<h5 className='mb-1 text-xl font-medium text-gray-900 '>
 													{ad.advertisingHeader}
 												</h5>
 												<p className='text-xl'>10 бодлого бодуулна</p>
@@ -139,13 +131,6 @@ export default function Home(props: { data: { data: [] } }) {
 											</div>
 										</div>
 									</div>
-									<button
-										onClick={onclick}
-										value={ad._id}
-										className='border-[#000] border-[2px] mt-2'>
-										{" "}
-										Hasah(tur zuur hiigeed orhichii){" "}
-									</button>
 								</Card>
 							);
 						})}
