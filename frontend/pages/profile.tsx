@@ -7,11 +7,12 @@ import {
 } from "../components/index";
 import { useCollectionContext } from "../context/isActive";
 import { useWindowWidth } from "../hooks";
+import LoginPage from "./loginPage";
 const UserProfile = () => {
 	const { cActive, setCactive } = useCollectionContext();
-
+	const [isLogged, setIsLogged] = useState(false);
 	const windowWidth = useWindowWidth();
-
+	if(!isLogged) return <LoginPage/>
 
 	return (
 		<div style={{ display: "flex", flexDirection: "row" }}>

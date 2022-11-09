@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const {checkAccessToken} = require('../middleware/checkAccessToken')
 const {
   getPosts,
   getPost,

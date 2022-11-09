@@ -6,10 +6,10 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <IsAgainGetDatasProvider>
       <CollectionContextProvider>
-    <SelectedAdContextProvider>
-        <LayOut>
-            <Component {...pageProps} />
-        </LayOut>
+        <SelectedAdContextProvider>
+          <LayOut>
+              <Component {...pageProps} />
+          </LayOut>
       </SelectedAdContextProvider>
     </CollectionContextProvider>
     </IsAgainGetDatasProvider>

@@ -14,13 +14,9 @@ import { useSelectedContext } from "../context/index";
 import { useWindowWidth } from "../hooks/index";
 import axios from "axios";
 import { useIsAgainGetDatas } from "../context/againGetAllDatas";
+import LoginPage from "./loginPage";
 
-export async function getServerSideProps() {
-	const res = await fetch(`http://localhost:8000/post`);
-	const data = await res.json();
 
-	return { props: { data } };
-}
 
 type adsType = {
 	_id: string | number | readonly string[] | undefined;
@@ -39,12 +35,12 @@ type userInputType = {
 	school: String | "school";
 };
 
-export default function Home(props: { data: { data: [] } }) {
+export default function Home() {
 	const { selectedAd, setSelectedAd } = useSelectedContext();
-  const [userInput, setUserInput] = useState<userInputType | object>({
-    school: "",
-    subject:""
-  });
+	const [userInput, setUserInput] = useState<userInputType | object>({
+		school: "",
+		subject:""
+	});
 	const [ads, setAds] = useState<adsType[]>([]);
 	const windowWidth = useWindowWidth();
 	const [showModal, setShowModal] = useState(false);
