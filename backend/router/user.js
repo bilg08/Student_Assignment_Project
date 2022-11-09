@@ -1,11 +1,8 @@
 const express = require('express')
 const router = express.Router();
-const {getUsers,getUser,changeUser,createUser,deleteUser} = require('../controller/user')
-
-router.get("/", getUsers).post("/", createUser);
-router
-  .get("/:id", getUser)
-  .delete("/:id", deleteUser)
-  .put("/:id", changeUser);
+const {createUser, login} = require('../controller/user')
+const {checkAccessToken} = require('../middleware/checkAccessToken')
+router.post("/register", createUser);
+router.post('/login',login)
 
 module.exports = router;
