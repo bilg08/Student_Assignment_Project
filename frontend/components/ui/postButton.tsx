@@ -5,20 +5,6 @@ export interface PostButtonProps {
 }
 
 export const PostButton: React.FC<PostButtonProps> = ({ prop, data, ym }) => {
-	console.log(data);
-	const handleOnClick = (e: any) => {
-		// if(e.target.innerText === 'Delete')
-	};
-	// {
-	// name:'chat',
-	// function:()=> {
-
-	// }
-	// }
-	//funtiongetHaha{
-	// console.log()
-	// }
-	//<Button onClick={gethaha}> haha</Button>
 	return (
 		<div className='pt-4 '>
 			<button
