@@ -141,7 +141,8 @@ export default function Home(props: { data: { data: [] } }) {
 
 					{selectedAd && showModal && windowWidth < 935 && (
 						<Shadow>
-							<Card>
+							<div>
+								<Card>
 								<Card>
 									<div className='relative'>
 										<h1 className='text-4xl  font-bold'>
@@ -165,6 +166,7 @@ export default function Home(props: { data: { data: [] } }) {
 									<p>{selectedAd.ad.detail}</p>
 								</Card>
 							</Card>
+							</div>
 						</Shadow>
 					)}
 					{/* ************************************************************************************************ */}

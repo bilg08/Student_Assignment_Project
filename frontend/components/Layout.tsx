@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {  ReactNode } from 'react';
+import { Props } from '../types';
 import { Header, Footer } from './index';
-export const LayOut = ({children}:any) => {
+export const LayOut = (props:{children:ReactNode}) => {
     return (
       <div className='h-[100vh] w-full'>
         <Header/>
-          {children}
+          {props.children}
         <Footer/>
       </div>
     );
