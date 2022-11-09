@@ -1,6 +1,7 @@
-import {useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import loginStyles from '../styles/login.module.css'
-import axios from 'axios'
+import axios from 'axios';
+
 
 const LoginPage = () => {
     const [isLogin, setIsLogin] = useState(true)
@@ -10,24 +11,23 @@ const LoginPage = () => {
       setUserInput({ ...userInput, [e.target.name]: e.target.value })
       console.log(userInput)
   }
-  async function login() {
-    // await axios
-    //   .post("http://localhost:8000/user/login", userInput)
-    //   .then((response) => {
-    //     console.log(response)
-    //   }).catch(err => alert('iim hereglegc baihgui'));
+    async function login() {
+      console.log(userInput)
+    await axios
+      .post("http://localhost:8000/users/login", userInput)
+      .then((response) => {
+          console.log(response.data.token)
+      }).catch(err => alert('iim hereglegc baihgui'));
   }
    
-    const handleSubmit = async (e: any) => {
-        e.preventDefault();
-        console.log('success');
-        // await axios
-        // .post("http://localhost:8000/user/register",userInput)
-        // .then((response) => {
-        //   console.log(response)
-        // });
-        
-    }
+  async function signUp() {
+    console.log(userInput)
+  await axios
+    .post("http://localhost:8000/users/register", userInput)
+    .then((response) => {
+        console.log(response.data.token)
+    }).catch(err => alert('iim hereglegc baihgui'));
+}
     return (
         
         <div className={loginStyles.section}>
@@ -48,20 +48,26 @@ const LoginPage = () => {
                         <div className={loginStyles.container}>
                         <div className={loginStyles.form}>
                             <h2>Нэвтрэх</h2>
-                            <form>
+                            <form onSubmit={(e)=>e.preventDefault()}>
                                 <div className={loginStyles.inputBox}>
-                                    <input onChange={takeUserInput} type="text" placeholder="Нэр" name='name'/>
+                                    <input onChange={takeUserInput} type="text" placeholder="ИМайл" name='email'/>
                                 </div>
                                 <div className={loginStyles.inputBox}>
                                     <input onChange={takeUserInput} name="password" type="password" placeholder="Нууц үг"/>
                                 </div>
                                 <div className={loginStyles.inputBox}>
-                                    <input onClick={() => login()} type="submit" value="Нэвтрэх"/>
+                                    <input onClick={(e) => {
+                                        login()
+                                    }} type="submit" value="Нэвтрэх"/>
                                 </div>
                             <p className={loginStyles.forget}>Нууц үгээ мартсан
                                 </p>
-                                <p onClick={() => setIsLogin(false)} className={loginStyles.forget}>Шинэ хэрэглэгч? <button style={{ color: '#804fb3' }}>Бүртгүүлэх</button>
+                                <p onClick={() => {
+                                    setUserInput({})
+                                    setIsLogin(false)
+                                }} className={loginStyles.forget}>Шинэ хэрэглэгч? <button style={{ color: '#804fb3' }}>Бүртгүүлэх</button>
                                 </p>
+                               
                             </form>
                         </div>
                     </div>}
@@ -70,12 +76,12 @@ const LoginPage = () => {
                         <div className={loginStyles.container}>
                         <div className={loginStyles.form}>
                             <h2>Бүртгүүлэх</h2>
-                            <form onSubmit={(e)=>{handleSubmit(e)}}>
+                            <form onSubmit={(e)=>e.preventDefault()}>
                                 <div className={loginStyles.inputBox}>
-                                    <input onChange={takeUserInput} type="text" placeholder="Таны нэр"/>
+                                    <input onChange={takeUserInput} type="text" placeholder="Таны нэр" name='name'/>
                                 </div>
                                 <div className={loginStyles.inputBox}>
-                                    <input onChange={takeUserInput} name="text" type="text" placeholder="Сургууль"/>
+                                    <input onChange={takeUserInput}  type="text" placeholder="Сургууль" name="school"/>
                                 </div>
                                 <div className={loginStyles.inputBox}>
                                     <input onChange={takeUserInput} name="email" type='email' placeholder="И-мэйл" />
@@ -84,7 +90,9 @@ const LoginPage = () => {
                                     <input onChange={takeUserInput} name="password" type="password" placeholder="Нууц үг" />
                                 </div>
                                 <div className={loginStyles.inputBox}>
-                                    <input  type="submit" value="Бүртгүүлэх" />
+                                    <input onClick={(e) => {
+                                        signUp()
+                                    }}  type="submit" value="Бүртгүүлэх" />
                                 </div>
                             <p onClick={()=>setIsLogin(true)}  className={loginStyles.forget}>Би өмнө нь бүртгүүлчихсэн <button style={{color:'#804fb3'}}>Нэвтрэх</button>
                                 </p>
@@ -93,6 +101,7 @@ const LoginPage = () => {
                     </div>}
                 
             </div>
+           
         </div>
     )
 }

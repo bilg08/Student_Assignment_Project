@@ -15,6 +15,7 @@ const UserSchema = new mongoose.Schema({
       "Та зөв емайл оруулна уу",
     ],
   },
+  
   password: {
     type: String,
     minLength: 4,
@@ -29,8 +30,8 @@ UserSchema.pre("save", async function () {
 
 UserSchema.methods.generateJWT = () => {
   const token = jwt.sign({
-    id:this._id
-  },"SECRET_KEY_JWT",{expiresIn:'1d'})
+    name: this.name
+  }, "SECRET_KEY_JWT", { expiresIn: '1d' });
 return token
 }
 

@@ -10,9 +10,11 @@ const userRouter = require("./router/user.js");
 const postRouter = require("./router/post");
 const fileupload = require("express-fileupload")
 dotenv.config({ path: "./config.env" });
-
+const corsOptions = {
+  origin:"*"
+}
 const app = express();
-app.use(cors())
+app.use(cors(corsOptions))
 connectDB();
 app.use(express.json());
 app.use(fileupload())
