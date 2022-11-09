@@ -7,6 +7,13 @@ module.exports = {
   ],
   theme: {
     extend: {
+      width: {
+        'pwidth': '25vh',
+      },
+      height: {
+        'pheight': '25vh',
+        'pcontainer': '27vh'
+      },
       boxShadow: {
         'sidebarbox': '0 8px 30px -5px #804fb3',
         'sidebarbox2': '0 15px 30px -1px #ccb7e5',

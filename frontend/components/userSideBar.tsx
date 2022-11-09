@@ -13,8 +13,8 @@ export const UserSideBar = () => {
 				aria-label='Sidebar'>
 				<div className=' overflow-y-auto py-4 px-3 bg-light-purple rounded-lg  flex-col align-center items-center h-full border border-light-purple'>
 					<ul className='space-y-2 '>
-						<li className='flex justify-center'>
-							<div className='h-64 w-64 rounded-full border-white border-2 shadow-sidebarbox mb-16 bg-white'></div>
+						<li className='h-pcontainer flex justify-center align-center '>
+							<div className='h-pheight w-pwidth rounded-full border-white border-2 shadow-sidebarbox mb-16 bg-white'></div>
 						</li>
 
 						{/* ovgig uurchluh */}
@@ -290,5 +290,3 @@ export const SeizedSideBar = () => {
 		</aside>
 	);
 };
-
-
