@@ -108,7 +108,7 @@
 .container {
     position: relative;
     width: 400px;
-    height: 400px;
+    height: auto;
     min-height: 400px;
     background: rgba(255,255,255,0.1);
     border-radius: 10px;
@@ -167,9 +167,10 @@
     color: #fff;
 }
 .form .inputBox input[type="submit"]{
+    margin-left: 60px;
     background: #fff;
     color: #666;
-    max-width: 100px;
+    max-width: 200px;
     cursor: pointer;
     margin-bottom: 20px;
     font-weight: 600;
