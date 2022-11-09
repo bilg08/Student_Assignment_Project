@@ -2,7 +2,6 @@ const connectDB = require("./mongoDb");
 const bodyParser = require('body-parser');
 const express = require("express");
 const dotenv = require("dotenv");
-const multer = require('multer')
 const cors = require("cors");
 const advertisingRouter = require("./router/ad.js");
 const errorHandler = require("./middleware/error");

@@ -59,6 +59,14 @@ export default function Home() {
 		console.log(userInput);
 	};
 
+	const onclick  = (el: React.MouseEvent<HTMLButtonElement>) => {
+		const button: HTMLButtonElement = el.currentTarget;
+		const id = button.value
+		axios.delete(`http://localhost:8000/post/${id}`)
+		.then(function (response) {
+		  console.log(response);
+		})
+	}
 	const memoizedCard = useMemo(() => {}, []);
 
 	return (
@@ -119,12 +127,13 @@ export default function Home() {
 												</h5>
 												<p className='text-xl'>10 бодлого бодуулна</p>
 												<div className='flex'>
-													<img style={{ width: `40px`, height: `40px` }} src={`http://localhost:8000/post/photo/photo_${ad._id}`} />
+													<img style={{ width: `40px`, height: `40px` }} src={`http://localhost:8000/post/photo/${ad.photo}`} />
 													<p className='text-gray-500'>
 														Зар тавигдсан хугацаа:{ad.createdAt}
 													</p>
 												</div>
 											</div>
+											<button onClick={onclick} value={ad._id} className='border-[#000] border-[2px] mt-2'> Hasah(tur zuur hiigeed orhichii) </button>
 										</div>
 									</div>
 								</Card>
