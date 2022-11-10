@@ -1,47 +1,49 @@
-import { createContext, ReactNode, useContext, useEffect, useRef, useState } from "react";
-
+import {
+	createContext,
+	ReactNode,
+	useContext,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
+import { getCookie } from "cookies-next";
 type Props = {
-  children: ReactNode;
+	children: ReactNode;
 };
 
 interface IsUserLoggedContextInterface {
-  isLoggedIn: any;
-  setIsLoggedIn: (_val: any) => void;
+	isLoggedIn: any;
+	setIsLoggedIn: (_val: any) => void;
 }
 
 export const IsUserLoggedContext = createContext<IsUserLoggedContextInterface>({
-    isLoggedIn: false,
-    setIsLoggedIn: (val: any) => {},
+	isLoggedIn: false,
+	setIsLoggedIn: (val: any) => {},
 });
 
 export const IsUserLoggedContextProvider = ({ children }: Props) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const loadedRef = useRef<any>(false);
-  
-useEffect(() => {
-  getTokenFromLocal()
-},[])
-async function getTokenFromLocal() {
-  let token;
-  try {
-    token = await localStorage.getItem('token');
-   if(token) setIsLoggedIn(true)
-  } catch (error) {
-    
-  }
-  
-  
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const loadedRef = useRef<any>(false);
 
-}
-  return (
-    <IsUserLoggedContext.Provider
-      value={{
-        isLoggedIn, setIsLoggedIn
-      }}
-    >
-      {children}
-    </IsUserLoggedContext.Provider>
-  );
+	useEffect(() => {
+		getTokenFromLocal();
+	}, []);
+	async function getTokenFromLocal() {
+		let token;
+		try {
+			token = await getCookie("token");
+			if (token) setIsLoggedIn(true);
+		} catch (error) {}
+	}
+	return (
+		<IsUserLoggedContext.Provider
+			value={{
+				isLoggedIn,
+				setIsLoggedIn,
+			}}>
+			{children}
+		</IsUserLoggedContext.Provider>
+	);
 };
 
 export const useIsUserLoggedContext = () => useContext(IsUserLoggedContext);

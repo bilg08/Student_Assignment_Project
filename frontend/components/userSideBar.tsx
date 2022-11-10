@@ -5,7 +5,10 @@ import {
 	SidebarBox2,
 	ColasipbleSidebarBox,
 } from "../components/index";
+import { deleteCookie } from "cookies-next";
+import { useIsUserLoggedContext } from "../context";
 export const UserSideBar = () => {
+	const { isLoggedIn, setIsLoggedIn } = useIsUserLoggedContext();
 	return (
 		<>
 			<aside
@@ -131,6 +134,10 @@ export const UserSideBar = () => {
 
 						<SidebarBox2>
 							<MenuList2
+								onClick={() => {
+									deleteCookie("token");
+									location.reload();
+								}}
 								name={"Гарах"}
 								svg={
 									<svg
@@ -290,5 +297,3 @@ export const SeizedSideBar = () => {
 		</aside>
 	);
 };
-
-
