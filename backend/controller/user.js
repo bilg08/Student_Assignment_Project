@@ -42,7 +42,6 @@ exports.createUser = async (req, res) => {
 
 exports.getUserPosts = async (req, res) => {
   try {
-    const user = await UserSchema.findById(req.user.id);
     const posts = await PostSchema.find({ owner: req.user.id })
 
     res.status(200).json({

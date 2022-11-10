@@ -8,11 +8,13 @@ const {
   updatePost,
   createPost,
   getPostPhoto,
+  createPostPhoto,
 } = require("../controller/post");
-router.get("/photo/:photoname", getPostPhoto);
+router.route("/photo/:photoname").get(getPostPhoto);
 
 router.get("/", getPosts)
 router.route("/").post(checkAccessToken, createPost);
+router.route("/:id/photo").post(checkAccessToken, createPostPhoto);
 
 router.get("/:id", getPost).delete("/:id", deletePost).put("/:id", updatePost)
 
