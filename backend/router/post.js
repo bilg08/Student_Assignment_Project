@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {checkAccessToken} = require('../middleware/checkAccessToken')
+const { checkAccessToken } = require('../middleware/checkAccessToken')
 const {
   getPosts,
   getPost,
@@ -11,7 +11,8 @@ const {
 } = require("../controller/post");
 router.get("/photo/:photoname", getPostPhoto);
 
-router.get("/", getPosts).post("/", createPost);
+router.get("/", getPosts)
+router.route("/").post(checkAccessToken, createPost);
 
 router.get("/:id", getPost).delete("/:id", deletePost).put("/:id", updatePost)
 

@@ -1,11 +1,11 @@
-const UserSchema = require("../model/user");
+const UserSchema = require("../model/user");;
+const PostSchema = require("../model/postSchema");
 const bcrypt = require('bcrypt')
 const asyncHandler = require('../middleware/asyncHandler');
 const MyError = require('../utils/myError');
 const jwt = require('jsonwebtoken')
-exports.login =  asyncHandler(async (req, res) => {
+exports.login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  console.log(email,password)
   if (!email || !password) {
     throw MyError("EMAIL NUUTS UGEE ORUULNA UU", 400);
   }
@@ -13,31 +13,48 @@ exports.login =  asyncHandler(async (req, res) => {
   if (!user) {
     throw MyError("EMAIL NUUTS UG BURUU BAINA", 400);
   }
-  const ok = await bcrypt.compare(password, user.password);  
+  const ok = await bcrypt.compare(password, user.password);
+
   if (ok) {
-    const token = user.generateJWT();
+    const token = user.getJsonWebToken();
     res.status(200).json({
       token
-    })
+    });
   }
 })
 
 exports.createUser = async (req, res) => {
   try {
     const user = await UserSchema.create(req.body);
-    const token = user.generateJWT();
+    const token = user.getJsonWebToken();
+
     res.status(200).json({
-      data:user,
+      data: user,
       token
-    });  
-    } catch (error) {
-      res.status(400).json({
-        error:error.message
-      }); 
-    }
+    });
+
+  } catch (error) {
+    res.status(400).json({
+      error: error.message
+    });
+  }
 };
-exports.checkJwt = async(req, res) => {
-  const { token } = req.body;
-  const user =  jwt.verify(token, "SECRET_KEY_JWT");
-  res.status(200).json({user})
+
+exports.getUserPosts = async (req, res) => {
+  try {
+    const user = await UserSchema.findById(req.user.id);
+    const posts = await PostSchema.find({ owner: req.user.id })
+
+    res.status(200).json({
+      data: posts
+    });
+
+  } catch (error) {
+    res.status(400).json({
+      error: error.message
+    });
+  }
+}
+exports.checkJwt = async (req, res) => {
+
 }

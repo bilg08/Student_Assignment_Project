@@ -1,14 +1,13 @@
 const mongoose = require("mongoose");
 
 const PostSchema = new mongoose.Schema({
-  //   owner: {
-  //     type: mongoose.Schema.ObjectId,
-  //     ref: "User",
-  //   },
+  owner: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User",
+  },
   subject: {
     type: String,
-    required: [true, "Шинэ эсэхийг оруулна уу"],
-    default: "Үнэ тохирно",
+    required: [true, "Хичээлийн сэдвээ оруулна уу"],
   },
   advertisingHeader: {
     type: String,
@@ -16,12 +15,13 @@ const PostSchema = new mongoose.Schema({
     maxLength: [50, "НЭРНЫ УРТ ИХ БАЙНА"],
   },
   photo: {
-      type:String
+    type: String
   }
-,
+  ,
   price: {
     type: String,
     required: [true, "Үнийг оруулна уу"],
+    default: "Үнэ тохирно"
   },
   detail: {
     type: String,

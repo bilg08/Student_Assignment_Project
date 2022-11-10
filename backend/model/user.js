@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema({
       "Та зөв емайл оруулна уу",
     ],
   },
-  
+
   password: {
     type: String,
     minLength: 4,
@@ -23,16 +23,18 @@ const UserSchema = new mongoose.Schema({
     select: false,
   },
 });
-UserSchema.pre("save", async function () {
+UserSchema.pre('save', async function () {
   const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password,salt)
+  this.password = await bcrypt.hash(this.password, salt);
 });
 
-UserSchema.methods.generateJWT = () => {
-  const token = jwt.sign({
-    name: this.name
-  }, "SECRET_KEY_JWT", { expiresIn: '1d' });
-return token
-}
+UserSchema.methods.getJsonWebToken = function () {
+  const token = jwt.sign(
+    { id: this._id },
+    process.env.JSON_WEB_TOKEN,
+    { expiresIn: '1d' }
+  );
+  return token
 
-module.exports = mongoose.model('User',UserSchema)
+}
+module.exports = mongoose.model('User', UserSchema)
