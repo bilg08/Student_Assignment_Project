@@ -1,11 +1,28 @@
 import { PostReceived } from "./ui/postReceived";
 import { PostButton } from "./ui/postButton";
 import { ProfileCard, Button } from "../components/index";
-import data from "../data/advertisings.json";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-
+import { getCookie } from "cookies-next";
 export const ReceivedPosts = () => {
+	const [personalPosts, setPersonalPosts] = useState([]);
+	useEffect(() => {
+		const getPersonalData = async () => {
+			const token = getCookie("token");
+			console.log(token);
+
+			try {
+				const datas = await axios.get("http://localhost:8000/users/posts", {
+					headers: {
+						Authorization: token,
+					},
+				});
+				setPersonalPosts(datas.data.data);
+				console.log(personalPosts);
+			} catch (error) {}
+		};
+		getPersonalData();
+	}, []);
 	const buttonArr = [
 		{
 			textValue: "Chat",
@@ -61,12 +78,12 @@ export const ReceivedPosts = () => {
 			</div>
 			{chosen ? (
 				<div className='overscroll-y-none  flex-col flex items-center pb-[100px]'>
-					{data.map((el, ind) => {
+					{personalPosts.map((el, ind) => {
 						return (
 							<ProfileCard key={ind}>
 								<PostReceived
-									name={el.advertisingHeader}
-									owner={el.owner.name}
+									name={el.subject}
+									owner={"oruuln"}
 									description={el.detail}
 								/>
 								<div className='flex flex-row flex-wrap'>
@@ -85,16 +102,17 @@ export const ReceivedPosts = () => {
 				</div>
 			) : (
 				<div className='overscroll-y-none  flex-col flex items-center pb-[100px]'>
-					{data.map((el, ind) => {
+					{personalPosts.map((el, ind) => {
+						console.log(el);
 						return (
 							<ProfileCard key={ind}>
 								<PostReceived
-									name={el.advertisingHeader}
-									owner={el.owner.name}
+									name={el.subject}
+									owner={"oruuln"}
 									description={el.detail}
 								/>
 								<div className='flex flex-row flex-wrap'>
-									{buttonArr?.map((el, index): any => (
+									{postedButtonArr?.map((el, index): any => (
 										<PostButton
 											key={index}
 											data={el.textValue}

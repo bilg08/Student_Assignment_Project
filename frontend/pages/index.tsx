@@ -9,14 +9,11 @@ import {
 } from "../components/index";
 import { AiOutlineSearch } from "react-icons/ai";
 import { MdLocationOn } from "react-icons/md";
-import advertisings from "../data/advertisings.json" assert { type: "json" };
+// import advertisings from "../data/advertisings.json" assert { type: "json" };
 import { useSelectedContext } from "../context/index";
 import { useWindowWidth } from "../hooks/index";
 import axios from "axios";
 import { useIsAgainGetDatas } from "../context/againGetAllDatas";
-import LoginPage from "./loginPage";
-
-
 
 type adsType = {
 	_id: string | number | readonly string[] | undefined;
@@ -39,7 +36,7 @@ export default function Home() {
 	const { selectedAd, setSelectedAd } = useSelectedContext();
 	const [userInput, setUserInput] = useState<userInputType | object>({
 		school: "",
-		subject:""
+		subject: "",
 	});
 	const [ads, setAds] = useState<adsType[]>([]);
 	const windowWidth = useWindowWidth();
@@ -59,14 +56,13 @@ export default function Home() {
 		console.log(userInput);
 	};
 
-	const onclick  = (el: React.MouseEvent<HTMLButtonElement>) => {
+	const onclick = (el: React.MouseEvent<HTMLButtonElement>) => {
 		const button: HTMLButtonElement = el.currentTarget;
-		const id = button.value
-		axios.delete(`http://localhost:8000/post/${id}`)
-		.then(function (response) {
-		  console.log(response);
-		})
-	}
+		const id = button.value;
+		axios.delete(`http://localhost:8000/post/${id}`).then(function (response) {
+			console.log(response);
+		});
+	};
 	const memoizedCard = useMemo(() => {}, []);
 
 	return (
@@ -127,13 +123,22 @@ export default function Home() {
 												</h5>
 												<p className='text-md'>{ad.detail}</p>
 												<div className='flex'>
-													<img style={{ width: `40px`, height: `40px` }} src={`http://localhost:8000/post/photo/${ad.photo}`} />
+													<img
+														style={{ width: `40px`, height: `40px` }}
+														src={`http://localhost:8000/post/photo/${ad.photo}`}
+													/>
 													<p className='text-gray-500'>
 														Зар тавигдсан хугацаа:{ad.createdAt}
 													</p>
 												</div>
 											</div>
-											<button onClick={onclick} value={ad._id} className='border-[#000] border-[2px] mt-2'> Hasah(tur zuur hiigeed orhichii) </button>
+											<button
+												onClick={onclick}
+												value={ad._id}
+												className='border-[#000] border-[2px] mt-2'>
+												{" "}
+												Hasah(tur zuur hiigeed orhichii){" "}
+											</button>
 										</div>
 									</div>
 								</Card>
@@ -148,29 +153,29 @@ export default function Home() {
 						<Shadow>
 							<div>
 								<Card>
-								<Card>
-									<div className='relative'>
-										<h1 className='text-4xl  font-bold'>
-											{selectedAd.ad.advertisingHeader}
-										</h1>
-										<h3 className='text-2xl font-bold color-silver'>
-											Захиалагч:Билгүүн
-										</h3>
-										<p className='text-gray-500'>
-											Зар тавигдсан хугацаа:{selectedAd.ad.createdAt}
-										</p>
-										<Button>Хийх</Button>
-										<button
-											onClick={() => setShowModal(false)}
-											style={{ position: "absolute", top: 0, right: 0 }}>
-											X
-										</button>
-									</div>
+									<Card>
+										<div className='relative'>
+											<h1 className='text-4xl  font-bold'>
+												{selectedAd.ad.advertisingHeader}
+											</h1>
+											<h3 className='text-2xl font-bold color-silver'>
+												Захиалагч:Билгүүн
+											</h3>
+											<p className='text-gray-500'>
+												Зар тавигдсан хугацаа:{selectedAd.ad.createdAt}
+											</p>
+											<Button>Хийх</Button>
+											<button
+												onClick={() => setShowModal(false)}
+												style={{ position: "absolute", top: 0, right: 0 }}>
+												X
+											</button>
+										</div>
+									</Card>
+									<Card>
+										<p>{selectedAd.ad.detail}</p>
+									</Card>
 								</Card>
-								<Card>
-									<p>{selectedAd.ad.detail}</p>
-								</Card>
-							</Card>
 							</div>
 						</Shadow>
 					)}

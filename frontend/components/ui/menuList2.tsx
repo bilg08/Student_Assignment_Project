@@ -15,9 +15,9 @@ export const MenuList2: React.FC<MenuListProps> = ({
 }) => {
 	const { cActive, setCactive } = useCollectionContext();
 
-	const getMore = () => {
-		alert("hiinee");
-	};
+	// const getMore = () => {
+	// 	alert("hiinee");
+	// };
 
 	return (
 		<li>
@@ -25,6 +25,7 @@ export const MenuList2: React.FC<MenuListProps> = ({
 				className='flex items-center p-2 text-base font-normal text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 '
 				// onClick={(e) => getMore()}
 				onClick={() => {
+					console.log("click");
 					isActive ? setCactive(true) : setCactive(false);
 					onClick;
 				}}>

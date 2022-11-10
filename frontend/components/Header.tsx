@@ -3,7 +3,6 @@ import { useIsUserLoggedContext } from "../context";
 export const Header = () => {
 	const router = useRouter();
 	const { isLoggedIn } = useIsUserLoggedContext();
-	console.log(isLoggedIn);
 	return (
 		<header>
 			<nav className='bg-white border-gray-200 px-4 lg:px-6 py-2.5 '>
