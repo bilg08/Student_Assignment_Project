@@ -14,13 +14,9 @@ import { useSelectedContext } from "../context/index";
 import { useWindowWidth } from "../hooks/index";
 import axios from "axios";
 import { useIsAgainGetDatas } from "../context/againGetAllDatas";
+import LoginPage from "./loginPage";
 
-export async function getServerSideProps() {
-	const res = await fetch(`http://localhost:8000/post`);
-	const data = await res.json();
 
-	return { props: { data } };
-}
 
 type adsType = {
 	_id: string | number | readonly string[] | undefined;
@@ -39,12 +35,12 @@ type userInputType = {
 	school: String | "school";
 };
 
-export default function Home(props: { data: { data: [] } }) {
+export default function Home() {
 	const { selectedAd, setSelectedAd } = useSelectedContext();
-  const [userInput, setUserInput] = useState<userInputType | object>({
-    school: "",
-    subject:""
-  });
+	const [userInput, setUserInput] = useState<userInputType | object>({
+		school: "",
+		subject:""
+	});
 	const [ads, setAds] = useState<adsType[]>([]);
 	const windowWidth = useWindowWidth();
 	const [showModal, setShowModal] = useState(false);
@@ -63,6 +59,14 @@ export default function Home(props: { data: { data: [] } }) {
 		console.log(userInput);
 	};
 
+	const onclick  = (el: React.MouseEvent<HTMLButtonElement>) => {
+		const button: HTMLButtonElement = el.currentTarget;
+		const id = button.value
+		axios.delete(`http://localhost:8000/post/${id}`)
+		.then(function (response) {
+		  console.log(response);
+		})
+	}
 	const memoizedCard = useMemo(() => {}, []);
 
 	return (
@@ -121,14 +125,15 @@ export default function Home(props: { data: { data: [] } }) {
 												<h5 className='mb-1 text-xl font-medium text-gray-900 '>
 													{ad.advertisingHeader}
 												</h5>
-												<p className='text-xl'>10 бодлого бодуулна</p>
+												<p className='text-md'>{ad.detail}</p>
 												<div className='flex'>
-													<img style={{ width: `40px`, height: `40px` }} src={`http://localhost:8000/post/photo/photo_${ad._id}`} />
+													<img style={{ width: `40px`, height: `40px` }} src={`http://localhost:8000/post/photo/${ad.photo}`} />
 													<p className='text-gray-500'>
 														Зар тавигдсан хугацаа:{ad.createdAt}
 													</p>
 												</div>
 											</div>
+											<button onClick={onclick} value={ad._id} className='border-[#000] border-[2px] mt-2'> Hasah(tur zuur hiigeed orhichii) </button>
 										</div>
 									</div>
 								</Card>

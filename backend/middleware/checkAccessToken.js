@@ -6,9 +6,9 @@ module.exports.checkAccessToken = async(req,res,next) => {
     try {
         const user = await jwt.verify(token,`SECRET_KEY_JWT`) ;
         req.user.id = user.id;
+        next();
     } catch (error) {
        
     }
-    next()
 
 }

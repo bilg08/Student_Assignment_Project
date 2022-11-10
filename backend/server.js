@@ -2,7 +2,6 @@ const connectDB = require("./mongoDb");
 const bodyParser = require('body-parser');
 const express = require("express");
 const dotenv = require("dotenv");
-const multer = require('multer')
 const cors = require("cors");
 const advertisingRouter = require("./router/ad.js");
 const errorHandler = require("./middleware/error");
@@ -10,12 +9,15 @@ const userRouter = require("./router/user.js");
 const postRouter = require("./router/post");
 const fileupload = require("express-fileupload")
 dotenv.config({ path: "./config.env" });
-
+const corsOptions = {
+  origin:"*"
+}
 const app = express();
-app.use(cors())
+app.use(cors(corsOptions))
 connectDB();
-app.use(express.json());
 app.use(fileupload())
+
+app.use(express.json());
 // app.use(bodyParser.urlencoded({ extended: false }))
 // app.use(bodyParser.json())
 

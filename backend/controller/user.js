@@ -1,9 +1,11 @@
 const UserSchema = require("../model/user");
 const bcrypt = require('bcrypt')
 const asyncHandler = require('../middleware/asyncHandler');
-const MyError = require('../utils/myError')
+const MyError = require('../utils/myError');
+const jwt = require('jsonwebtoken')
 exports.login =  asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+  console.log(email,password)
   if (!email || !password) {
     throw MyError("EMAIL NUUTS UGEE ORUULNA UU", 400);
   }
@@ -11,19 +13,13 @@ exports.login =  asyncHandler(async (req, res) => {
   if (!user) {
     throw MyError("EMAIL NUUTS UG BURUU BAINA", 400);
   }
-  if(await bcrypt.compare(req.body.password,user.password)) {
+  const ok = await bcrypt.compare(password, user.password);  
+  if (ok) {
     const token = user.generateJWT();
     res.status(200).json({
-      status:true,
       token
     })
-  }else{
-    res.status(400).json({
-      status:false,
-      error:"Нууц үг буруу байна"
-    })
   }
-  
 })
 
 exports.createUser = async (req, res) => {
@@ -40,3 +36,8 @@ exports.createUser = async (req, res) => {
       }); 
     }
 };
+exports.checkJwt = async(req, res) => {
+  const { token } = req.body;
+  const user =  jwt.verify(token, "SECRET_KEY_JWT");
+  res.status(200).json({user})
+}
