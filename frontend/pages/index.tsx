@@ -8,7 +8,7 @@ import {
 	SeizedSideBar,
 } from "../components/index";
 import { AiOutlineSearch } from "react-icons/ai";
-import { MdLocationOn } from "react-icons/md";
+import { MdHeight, MdLocationOn } from "react-icons/md";
 import advertisings from "../data/advertisings.json" assert { type: "json" };
 import { useSelectedContext } from "../context/index";
 import { useWindowWidth } from "../hooks/index";
@@ -89,8 +89,8 @@ export default function Home() {
 				<Button onClick={handleSearch}>Хайх</Button>
 			</div>
 
-			<div style={{ backgroundColor: `#f6f5f4` }}>
-				<div className='max-w-screen-xl m-auto flex  justify-center items-start relative'>
+			<div style={{ backgroundColor: `#f6f5f4`,height:'auto' }}>
+				<div className='max-w-screen-xl m-auto min-h-screen flex  justify-center items-start relative'>
 					{/* //Бүх зараа үзүүлэх хэсэг */}
 					<div className='m-5 w-6/12 min-w-[500px] flex flex-col m-auto gap-10 overflow-scroll'>
 						{ads.map((ad, index) => {

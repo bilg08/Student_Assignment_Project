@@ -15,9 +15,15 @@ const PostSchema = new mongoose.Schema({
     maxLength: [50, "НЭРНЫ УРТ ИХ БАЙНА"],
   },
   photo: {
-    type: String
-  }
-  ,
+    type: String,
+    required: [true],
+    default: "no-photo.jpeg"
+  },
+  workers:{
+   type:Array,
+   required:true,
+   default:[]
+  },
   price: {
     type: String,
     required: [true, "Үнийг оруулна уу"],
