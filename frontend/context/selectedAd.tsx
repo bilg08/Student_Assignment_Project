@@ -5,12 +5,13 @@ export const SelectedAdContext = createContext<SelectedAdContextType>({
     index: null,
     ad: {
       owner: {
-        name:""
+        name: "",
       },
+      _id:"",
       advertisingHeader:"",
       createdAt: "",
       detail:""
-    }
+    },
   },
   setSelectedAd: (_val: any) => {},
 });

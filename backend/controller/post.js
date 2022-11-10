@@ -1,4 +1,6 @@
 const PostSchema = require("../model/postSchema");
+const UserSchema = require("../model/user");
+
 const MyError = require("../utils/myError");
 const asyncHandler = require("../middleware/asyncHandler");
 const path = require('path');
@@ -27,7 +29,6 @@ exports.getPost = asyncHandler(async (req, res, next) => {
 
 exports.createPost = asyncHandler(async (req, res, next) => {
   req.body.owner = req.user.id;
-  console.log(req.user.id)
   const newPost = await PostSchema.create(req.body);
   res.status(200).json({
     success: true,
@@ -64,7 +65,6 @@ exports.deletePost = asyncHandler(async (req, res, next) => {
   if (!posts) {
     throw new MyError("not found", 400);
   }
-
   res.status(200).json({
     success: true,
     data: posts,
@@ -84,16 +84,32 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
 });
 
 exports.addToWorkers = asyncHandler(async (req, res, next) => {
-  //  req.user.id post.id
-  
-
+  const post = await PostSchema.findById(req.params.id);
+  if (!post) {
+   throw new MyError('iim zar baihgui',400)
+  }
+  if (post.owner.toString() == req.user.id) {
+   throw new MyError("ene tanii zar baina", 400);
+  }
+  const postPendingRequest = post.pendingRequest;
+  if (!postPendingRequest.includes(req.user.id)) {
+    const changedPostPendingRequest = [...postPendingRequest, req.user.id];
+    post.pendingRequest = changedPostPendingRequest;
+    post.save();
+    res.status(200).json({
+      data: post,
+    });
+  } else {
+    res.status(400).json({
+      error: "ta enehuu zart huselt ilgeesen baina",
+    });
+  }
 });
 
 
 
 exports.getPostPhoto = asyncHandler(async (req, res, next) => {
   const { photoname } = req.params;
-  console.log(photoname)
   fs.readFile(`./images/post/${photoname}`, (err, data) => {
     if(err) {
       console.log(err,'err')
@@ -102,4 +118,11 @@ exports.getPostPhoto = asyncHandler(async (req, res, next) => {
     res.setHeader('content-type', "image/png")
     res.end(data);
   });
+});
+
+exports.getWorkersInfo = asyncHandler(async (req, res, next) => {
+  
+  const user = await UserSchema.findById(req.body.userId);
+  
+  
 });

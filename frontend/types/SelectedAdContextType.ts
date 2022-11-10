@@ -3,8 +3,9 @@ export type SelectedAdContextType = {
     index: any,
     ad: {
       owner: {
-        name:String
+        name: String,
       },
+      _id:String,
       advertisingHeader: String,
       createdAt: String,
     detail:String

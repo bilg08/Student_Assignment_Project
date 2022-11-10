@@ -6,6 +6,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, "НЭРЭЭ ОРУУЛНА УУ"],
   },
+  averageRating: {
+    type: Number,
+    required: true,
+  },
   email: {
     type: String,
     required: [true, "Емайлаа ОРУУЛНА УУ"],

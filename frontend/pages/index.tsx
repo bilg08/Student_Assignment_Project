@@ -14,7 +14,7 @@ import { useSelectedContext } from "../context/index";
 import { useWindowWidth } from "../hooks/index";
 import axios from "axios";
 import { useIsAgainGetDatas } from "../context/againGetAllDatas";
-
+import { getCookie } from 'cookies-next';
 type adsType = {
 	_id: string | number | readonly string[] | undefined;
 	advertisingHeader: String;
@@ -55,6 +55,19 @@ export default function Home() {
 	const handleSearch = () => {
 		console.log(userInput);
 	};
+
+	const requestToDoWork = async (id:String) => {
+			const token = getCookie('token');
+		try {
+			const datas = await axios.post(`http://localhost:8000/post/${id}/work`, {
+					headers: {
+						Authorization: token,
+					},
+				});
+		} catch (error) {
+			console.log(error)
+			}
+		};
 
 	const onclick = (el: React.MouseEvent<HTMLButtonElement>) => {
 		const button: HTMLButtonElement = el.currentTarget;
@@ -164,7 +177,7 @@ export default function Home() {
 											<p className='text-gray-500'>
 												Зар тавигдсан хугацаа:{selectedAd.ad.createdAt}
 											</p>
-											<Button>Хийх</Button>
+											<Button onClick={() => requestToDoWork(selectedAd.ad._id)}>Хийх</Button>
 											<button
 												onClick={() => setShowModal(false)}
 												style={{ position: "absolute", top: 0, right: 0 }}>

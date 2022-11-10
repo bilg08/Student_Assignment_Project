@@ -54,6 +54,6 @@ exports.getUserPosts = async (req, res) => {
     });
   }
 }
-exports.checkJwt = async (req, res) => {
-
-}
+exports.PostsUserHaveToDo = async (req, res) => {
+  const user = await UserSchema.findById(req.user.id);
+};

@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const advertisingRouter = require("./router/ad.js");
 const errorHandler = require("./middleware/error");
 const userRouter = require("./router/user.js");
 const postRouter = require("./router/post");
@@ -23,7 +22,6 @@ app.use(express.json());
 
 
 //advertising router
-app.use("/advertisings", advertisingRouter);
 // app.set("view engine", "ejs");
 
 app.use("/post", postRouter);

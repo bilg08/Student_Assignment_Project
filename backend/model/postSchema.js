@@ -19,10 +19,13 @@ const PostSchema = new mongoose.Schema({
     required: [true],
     default: "no-photo.jpeg"
   },
-  workers:{
-   type:Array,
-   required:true,
-   default:[]
+  worker:{
+   type:mongoose.Schema.ObjectId,
+  },
+  pendingRequest: {
+    type: Array,
+    required: true,
+    default: []
   },
   price: {
     type: String,

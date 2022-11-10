@@ -9,7 +9,6 @@ export const ReceivedPosts = () => {
 	useEffect(() => {
 		const getPersonalData = async () => {
 			const token = getCookie("token");
-			console.log(token);
 
 			try {
 				const datas = await axios.get("http://localhost:8000/users/posts", {
