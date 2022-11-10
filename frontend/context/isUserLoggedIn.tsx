@@ -15,18 +15,22 @@ export const IsUserLoggedContext = createContext<IsUserLoggedContextInterface>({
 });
 
 export const IsUserLoggedContextProvider = ({ children }: Props) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const loadedRef = useRef<any>(false);
   
 useEffect(() => {
-  if (loadedRef.current) {
-    return;
+  getTokenFromLocal()
+},[])
+async function getTokenFromLocal() {
+  let token;
+  try {
+    token = await localStorage.getItem('token');
+   if(token) setIsLoggedIn(true)
+  } catch (error) {
+    
   }
-  loadedRef.current = true;
-  let savedHistory = getTokenFromLocal();
   
-})
-function getTokenFromLocal() {
+  
 
 }
   return (

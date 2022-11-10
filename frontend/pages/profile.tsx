@@ -5,14 +5,15 @@ import {
 	ReceivedPosts,
 	SeizedSideBar,
 } from "../components/index";
+import { useIsUserLoggedContext } from "../context";
 import { useCollectionContext } from "../context/isActive";
 import { useWindowWidth } from "../hooks";
 import LoginPage from "./loginPage";
 const UserProfile = () => {
 	const { cActive, setCactive } = useCollectionContext();
-	const [isLogged, setIsLogged] = useState(false);
+	const {isLoggedIn} = useIsUserLoggedContext()
 	const windowWidth = useWindowWidth();
-	if(!isLogged) return <LoginPage/>
+	if(!isLoggedIn) return <LoginPage/>
 
 	return (
 		<div style={{ display: "flex", flexDirection: "row" }}>
