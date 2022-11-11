@@ -85,25 +85,48 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
 
 exports.addToWorkers = asyncHandler(async (req, res, next) => {
   const post = await PostSchema.findById(req.params.id);
+  console.log(post)
   if (!post) {
-   throw new MyError('iim zar baihgui',400)
+    throw new MyError('iim zar baihgui',400)
   }
   if (post.owner.toString() == req.user.id) {
-   throw new MyError("ene tanii zar baina", 400);
+    throw new MyError('ene tanii zar baina',400)
   }
   const postPendingRequest = post.pendingRequest;
-  if (!postPendingRequest.includes(req.user.id)) {
-    const changedPostPendingRequest = [...postPendingRequest, req.user.id];
-    post.pendingRequest = changedPostPendingRequest;
+  if(postPendingRequest.length===0) {
+    const user = await UserSchema.findById(req.user.id);
+    const newPendingRequest = [...postPendingRequest,{
+      averageRating:user.averageRating,
+      email:user.email,
+      id:user._id
+    }];
+    post.pendingRequest = newPendingRequest;
     post.save();
     res.status(200).json({
-      data: post,
-    });
-  } else {
-    res.status(400).json({
-      error: "ta enehuu zart huselt ilgeesen baina",
-    });
+      success:true,
+      data:post
+    })
+  }else if(postPendingRequest.length>0) {
+    postPendingRequest.map(async(pendingRequest)=> {
+      if(pendingRequest.id === req.user.id) {
+    throw new MyError('ta ene zart huselt ilgeesen baina',400)
+
+      }
+      const user = await UserSchema.findById(req.user.id);
+      const newPendingRequest = [...postPendingRequest,{
+        averageRating:user.averageRating,
+        email:user.email,
+        id:user._id
+      }];
+      post.pendingRequest = newPendingRequest;
+      post.save();
+      res.status(200).json({
+        success:true,
+        data:post
+      })
+    })
   }
+  
 });
 
 
@@ -120,9 +143,3 @@ exports.getPostPhoto = asyncHandler(async (req, res, next) => {
   });
 });
 
-exports.getWorkersInfo = asyncHandler(async (req, res, next) => {
-  
-  const user = await UserSchema.findById(req.body.userId);
-  
-  
-});

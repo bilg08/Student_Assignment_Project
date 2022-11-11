@@ -23,7 +23,11 @@ const PostSchema = new mongoose.Schema({
    type:mongoose.Schema.ObjectId,
   },
   pendingRequest: {
-    type: Array,
+    type: [{
+      id:String,
+      averageRating:Number,
+      email:String
+    }],
     required: true,
     default: []
   },

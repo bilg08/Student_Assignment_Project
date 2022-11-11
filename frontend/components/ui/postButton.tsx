@@ -1,7 +1,7 @@
 export interface PostButtonProps {
 	prop?: string;
 	data?: string;
-	ym?: () => {};
+	ym?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export const PostButton: React.FC<PostButtonProps> = ({ prop, data, ym }) => {

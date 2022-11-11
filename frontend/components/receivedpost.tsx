@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 export const ReceivedPosts = () => {
-	const [personalPosts, setPersonalPosts] = useState([]);
+	const [personalPosts, setPersonalPosts] = useState([{subject:"",detail:"",pendingRequest:[{id:"",averageRating:"",email:""}]}]);
 	useEffect(() => {
 		const getPersonalData = async () => {
 			const token = getCookie("token");
@@ -16,6 +16,7 @@ export const ReceivedPosts = () => {
 						Authorization: token,
 					},
 				});
+				console.log(datas.data)
 				setPersonalPosts(datas.data.data);
 				console.log(personalPosts);
 			} catch (error) {}
@@ -94,7 +95,22 @@ export const ReceivedPosts = () => {
 											ym={el.function}
 										/>
 									))}
+									<div>
+								{el.pendingRequest.map(request=> {
+									return (
+										<div className="flex justify-between w-[400px] items-center">
+											Имайл:{request.email},Дундаж үнэлгээ:{request.averageRating}
+										<PostButton
+											data={'confirm'}
+											prop={'rgb(225 29 72)'}
+										/>
+									</div>
+									)
+								})}
+
 								</div>
+								</div>
+
 							</ProfileCard>
 						);
 					})}
@@ -119,6 +135,17 @@ export const ReceivedPosts = () => {
 											ym={el.function}
 										/>
 									))}
+								</div>
+								<div>
+								{el.pendingRequest.map(request=> {
+									return (
+										<div>
+											<p>{request.email}</p>
+											<p>{request.averageRating}</p>
+										</div>
+									)
+								})}
+
 								</div>
 							</ProfileCard>
 						);

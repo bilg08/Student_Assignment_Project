@@ -9,6 +9,7 @@ const UserSchema = new mongoose.Schema({
   averageRating: {
     type: Number,
     required: true,
+    default:0
   },
   email: {
     type: String,
