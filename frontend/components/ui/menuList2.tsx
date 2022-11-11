@@ -1,7 +1,7 @@
 import { useCollectionContext } from "../../context/isActive";
 
 export interface MenuListProps {
-	onClick: () => {};
+	onClick: () => void;
 	name: string;
 	svg: any;
 	isActive?: any;
@@ -27,7 +27,7 @@ export const MenuList2: React.FC<MenuListProps> = ({
 				onClick={() => {
 					console.log("click");
 					isActive ? setCactive(true) : setCactive(false);
-					onClick;
+					onClick();
 				}}>
 				{svg}
 				<span className='ml-4 cursor-pointer'>{name}</span>
