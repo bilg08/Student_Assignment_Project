@@ -101,8 +101,16 @@ const LoginPage = () => {
 									<input
 										onChange={takeUserInput}
 										type='text'
+										placeholder='Таны Овог'
+										name='FirstName'
+									/>
+								</div>
+								<div className={loginStyles.inputBox}>
+									<input
+										onChange={takeUserInput}
+										type='text'
 										placeholder='Таны нэр'
-										name='name'
+										name='LastName'
 									/>
 								</div>
 								<div className={loginStyles.inputBox}>
@@ -110,7 +118,15 @@ const LoginPage = () => {
 										onChange={takeUserInput}
 										type='text'
 										placeholder='Сургууль'
-										name='school'
+										name='School'
+									/>
+								</div>
+								<div className={loginStyles.inputBox}>
+									<input
+										onChange={takeUserInput}
+										type='text'
+										placeholder='Түвшин'
+										name='level'
 									/>
 								</div>
 								<div className={loginStyles.inputBox}>

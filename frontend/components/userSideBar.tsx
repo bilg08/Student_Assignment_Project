@@ -6,7 +6,32 @@ import {
 	ColasipbleSidebarBox,
 } from "../components/index";
 import { deleteCookie } from "cookies-next";
+import { useCollectionContext } from "../context/index";
+import { useEffect, useState } from "react";
+import { getCookie } from "cookies-next";
+import axios from "axios";
+
 export const UserSideBar = () => {
+	const [user, setUser] = useState({});
+	const [editing, setEditing] = useState(false);
+	const { cActive, setCactive } = useCollectionContext();
+	const isActive = true;
+	useEffect(() => {
+		const getPersonalInfo = async () => {
+			const token = getCookie("token");
+
+			try {
+				const datas = await axios.get("http://localhost:8000/users/myInfo", {
+					headers: {
+						Authorization: token,
+					},
+				});
+				setUser(datas.data.data);
+			} catch (error) {}
+		};
+		getPersonalInfo();
+	}, []);
+
 	return (
 		<>
 			<aside
@@ -14,32 +39,33 @@ export const UserSideBar = () => {
 				aria-label='Sidebar'>
 				<div className=' overflow-y-auto py-4 px-3 bg-light-purple rounded-lg  flex-col align-center items-center h-full border border-light-purple'>
 					<ul className='space-y-2 '>
-						<li className='flex justify-center'>
-							<div className='h-64 w-64 rounded-full border-white border-2 shadow-sidebarbox mb-16 bg-white'></div>
-						</li>
-
-						{/* ovgig uurchluh */}
+						{!editing ? (
+							<li className='flex justify-center'>
+								<div className='h-64 w-64 rounded-full border-white border-2 shadow-sidebarbox mb-16 bg-white'></div>
+							</li>
+						) : (
+							<input type='image' />
+						)}
 						<SidebarBox>
 							<MenuList
-								name={"Tsolmonbayar"}
+								name={user.LastName}
 								spanText={"Овог"}
 								href={""}
 							/>
-							{/* neriig uurchluh */}
 							<MenuList
-								name={"Enerel"}
+								name={user.FirstName}
 								spanText={"Нэр"}
 								href={""}
 							/>
 						</SidebarBox>
 						<SidebarBox>
 							<MenuList
-								name={"NUM"}
+								name={user.School}
 								spanText={"Их сургууль"}
-								href={"/num"}
+								href={""}
 							/>
 							<MenuList
-								name={"1"}
+								name={user.level}
 								spanText={"Курс"}
 								href={""}
 							/>
@@ -48,6 +74,7 @@ export const UserSideBar = () => {
 					<ul className='pt-4 mt-4 space-y-2 border-t border-gray-200 '>
 						<ColasipbleSidebarBox>
 							<MenuList2
+								onClick={() => {}}
 								name={"Хийсэн бие даалтын тоо"}
 								svg={
 									<svg
@@ -68,6 +95,7 @@ export const UserSideBar = () => {
 						</ColasipbleSidebarBox>
 						<ColasipbleSidebarBox>
 							<MenuList2
+								onClick={() => {}}
 								name={"Бие даалтын дундаж үнэлгээ"}
 								svg={
 									<svg
@@ -89,6 +117,9 @@ export const UserSideBar = () => {
 						<div style={{ height: "0.8vw" }}></div>
 						<SidebarBox2>
 							<MenuList2
+								onClick={() => {
+									setEditing(!editing);
+								}}
 								name={"Профайл өөрчлөх"}
 								svg={
 									<svg
@@ -110,6 +141,9 @@ export const UserSideBar = () => {
 
 						<SidebarBox2>
 							<MenuList2
+								onClick={() => {
+									isActive ? setCactive(true) : setCactive(false);
+								}}
 								name={"Зар Нэмэх"}
 								svg={
 									<svg
@@ -126,7 +160,6 @@ export const UserSideBar = () => {
 										/>
 									</svg>
 								}
-								isActive={true}
 							/>
 						</SidebarBox2>
 
@@ -161,6 +194,8 @@ export const UserSideBar = () => {
 	);
 };
 export const SeizedSideBar = () => {
+	const { cActive, setCactive } = useCollectionContext();
+	const isActive = true;
 	return (
 		<aside
 			className='fixed top-64 flex justify-center left-2 md:w-24 xs:w-48 h-fit'
@@ -168,6 +203,7 @@ export const SeizedSideBar = () => {
 			<div className=' overflow-y-auto py-4 px-3 bg-dark-purple rounded-lg flex-col align-center h-full border border-light-purple text-white'>
 				<ul className='space-y-2 '>
 					<MenuList2
+						onClick={() => {}}
 						name={""}
 						svg={
 							<svg
@@ -186,6 +222,7 @@ export const SeizedSideBar = () => {
 						}
 					/>
 					<MenuList2
+						onClick={() => {}}
 						name={""}
 						svg={
 							<svg
@@ -204,6 +241,7 @@ export const SeizedSideBar = () => {
 						}
 					/>
 					<MenuList2
+						onClick={() => {}}
 						name={""}
 						svg={
 							<svg
@@ -222,6 +260,7 @@ export const SeizedSideBar = () => {
 						}
 					/>
 					<MenuList2
+						onClick={() => {}}
 						name={""}
 						svg={
 							<svg
@@ -240,24 +279,9 @@ export const SeizedSideBar = () => {
 						}
 					/>
 					<MenuList2
-						name={""}
-						svg={
-							<svg
-								xmlns='http://www.w3.org/2000/svg'
-								fill='none'
-								viewBox='0 0 24 24'
-								strokeWidth='1.5'
-								stroke='currentColor'
-								className='w-8 h-8 text-white'>
-								<path
-									strokeLinecap='round'
-									strokeLinejoin='round'
-									d='M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125'
-								/>
-							</svg>
-						}
-					/>
-					<MenuList2
+						onClick={() => {
+							isActive ? setCactive(true) : setCactive(false);
+						}}
 						name={""}
 						svg={
 							<svg
@@ -274,9 +298,14 @@ export const SeizedSideBar = () => {
 								/>
 							</svg>
 						}
-						isActive={true}
 					/>
 					<MenuList2
+						onClick={() => {
+							console.log("hey");
+
+							deleteCookie("token");
+							location.reload();
+						}}
 						name={""}
 						svg={
 							<svg

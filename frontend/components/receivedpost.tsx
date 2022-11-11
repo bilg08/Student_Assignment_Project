@@ -5,7 +5,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 export const ReceivedPosts = () => {
-	const [personalPosts, setPersonalPosts] = useState([{subject:"",detail:"",pendingRequest:[{id:"",averageRating:"",email:""}]}]);
+	const [personalPosts, setPersonalPosts] = useState([
+		{
+			subject: "",
+			detail: "",
+			pendingRequest: [{ id: "", averageRating: "", email: "" }],
+		},
+	]);
 	useEffect(() => {
 		const getPersonalData = async () => {
 			const token = getCookie("token");
@@ -16,7 +22,7 @@ export const ReceivedPosts = () => {
 						Authorization: token,
 					},
 				});
-				console.log(datas.data)
+				console.log(datas.data);
 				setPersonalPosts(datas.data.data);
 				console.log(personalPosts);
 			} catch (error) {}
@@ -96,21 +102,20 @@ export const ReceivedPosts = () => {
 										/>
 									))}
 									<div>
-								{el.pendingRequest.map(request=> {
-									return (
-										<div className="flex justify-between w-[400px] items-center">
-											Имайл:{request.email},Дундаж үнэлгээ:{request.averageRating}
-										<PostButton
-											data={'confirm'}
-											prop={'rgb(225 29 72)'}
-										/>
+										{el.pendingRequest.map((request) => {
+											return (
+												<div className='flex justify-between w-[400px] items-center'>
+													Имайл:{request.email},Дундаж үнэлгээ:
+													{request.averageRating}
+													<PostButton
+														data={"confirm"}
+														prop={"rgb(225 29 72)"}
+													/>
+												</div>
+											);
+										})}
 									</div>
-									)
-								})}
-
 								</div>
-								</div>
-
 							</ProfileCard>
 						);
 					})}
@@ -127,7 +132,7 @@ export const ReceivedPosts = () => {
 									description={el.detail}
 								/>
 								<div className='flex flex-row flex-wrap'>
-									{postedButtonArr?.map((el, index): any => (
+									{buttonArr?.map((el, index): any => (
 										<PostButton
 											key={index}
 											data={el.textValue}
@@ -137,15 +142,14 @@ export const ReceivedPosts = () => {
 									))}
 								</div>
 								<div>
-								{el.pendingRequest.map(request=> {
-									return (
-										<div>
-											<p>{request.email}</p>
-											<p>{request.averageRating}</p>
-										</div>
-									)
-								})}
-
+									{el.pendingRequest.map((request) => {
+										return (
+											<div>
+												<p>{request.email}</p>
+												<p>{request.averageRating}</p>
+											</div>
+										);
+									})}
 								</div>
 							</ProfileCard>
 						);
