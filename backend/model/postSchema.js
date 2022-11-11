@@ -20,7 +20,17 @@ const PostSchema = new mongoose.Schema({
     default: "no-photo.jpeg"
   },
   worker:{
-   type:mongoose.Schema.ObjectId,
+    type:{
+      id:String,
+      averageRating:Number,
+      email:String
+    },
+    required:true,
+    default:{
+      id:"",
+      averageRating:0,
+      email:""
+    }
   },
   pendingRequest: {
     type: [{
