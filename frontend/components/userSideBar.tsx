@@ -6,9 +6,7 @@ import {
 	ColasipbleSidebarBox,
 } from "../components/index";
 import { deleteCookie } from "cookies-next";
-import { useIsUserLoggedContext } from "../context";
 export const UserSideBar = () => {
-	const { isLoggedIn, setIsLoggedIn } = useIsUserLoggedContext();
 	return (
 		<>
 			<aside
@@ -135,6 +133,8 @@ export const UserSideBar = () => {
 						<SidebarBox2>
 							<MenuList2
 								onClick={() => {
+									console.log("hey");
+
 									deleteCookie("token");
 									location.reload();
 								}}
