@@ -1,10 +1,10 @@
 import { useCollectionContext } from "../../context/isActive";
-import axios from "axios";
+import axios, { Axios } from "axios";
 import { useState } from "react";
 import { Shadow } from "../Shadow";
 import React from "react";
 import { MyImage } from "../index";
-import Image from "next/image";
+import { arrayBuffer, json } from "stream/consumers";
 export interface PostModalProps {
   cActive: any;
   setCactive: any;
@@ -14,46 +14,39 @@ export const PostModal: React.FC<PostModalProps> = ({
   cActive,
   setCactive,
 }) => {
-  const [fileSelected, setFileSelected] = useState<any | null>(null);
+  const [fileSelected, setFileSelected] = useState<any | null>([]);
   const [createObjectURL, setCreateObjectURL] = useState<any | null>(null);
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-   
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    
-    const data:any = {
-      advertisingHeader: event.currentTarget.first.value,
-      detail: event.currentTarget.second.value,
-      price: event.currentTarget.third.value,
-      subject: event.currentTarget.fourth.value,
-      file: fileSelected,
-    };
+    const formDatas = new FormData();
+    formDatas.append("advertisingHeader", event.currentTarget.first.value);
+    formDatas.append("detail", event.currentTarget.second.value);
+    formDatas.append("price", event.currentTarget.third.value);
+    formDatas.append("subject", event.currentTarget.fourth.value);
+    formDatas.append("file", fileSelected);
 
-    const body = new FormData();
-    body.append("form", data);
-
-    const formData = new FormData()
-    formData.append('image',fileSelected)
-    axios
-      .post(`http://localhost:8000/post`,{
-        body})
-      .then((response) => {
+    axios({
+      method: "post",
+      url: "http://localhost:8000/post",
+      data: formDatas,
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+      .then(function (response) {
         console.log(response);
+        setCactive(false);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(function (response) {
+        console.log(response);
       });
   };
 
   const uploadFile = function (e: any) {
-    console.log(fileSelected);
     if (e.target.files && e.target.files[0]) {
       const i = e.target.files[0];
       setFileSelected(i);
       setCreateObjectURL(URL.createObjectURL(i));
     }
-    
   };
 
   return (
