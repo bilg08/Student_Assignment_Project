@@ -19,9 +19,9 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
 
 	useEffect(() => {
     let socket = connectChatServer();
-    socket.onAny((type, message) => {
+    socket.onAny(async(type, message) => {
 		if (message) {
-		setIsSentMessage(e => !e)
+	await setIsSentMessage(e => !e)
 		  scrollToLastMessage()
 		}
     });
