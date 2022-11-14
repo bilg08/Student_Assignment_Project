@@ -3,8 +3,6 @@ import React, { useState } from "react";
 import { ColasipbleChatBox } from "./chatBox";
 export const UserProfileBox = (request: any) => {
 	const [isChatting, setChatting] = useState(false);
-	console.log(request);
-
 	return (
 		<div>
 			<div className='flex flex-row items-center'>
@@ -16,11 +14,11 @@ export const UserProfileBox = (request: any) => {
 			<div className='flex flex-row'>
 				<PostButton
 					data={"Батлах"}
-					prop={"rgb(225 29 72)"}
+					prop={"rgb(191, 252, 198)"}
 				/>
 				<PostButton
 					data={isChatting ? "Дуусгах" : "Харилцах"}
-					prop={"rgb(225 29 72)"}
+					prop={"#FDFD96"}
 					ym={() => setChatting(!isChatting)}
 				/>
 			</div>

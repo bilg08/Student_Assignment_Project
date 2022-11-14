@@ -96,7 +96,7 @@ export const ReceivedPosts = () => {
 									<h1>Хийх хүсэлтүүд:</h1>
 									{el.pendingRequest.map((request) => {
 										return (
-											<div className='border border-black rounded-lg flex flex-col p-2'>
+											<div className=' h-fit lg:w-full md:w-5/6 xs:w-[80%] border border-black rounded-lg flex flex-col p-2'>
 												<UserProfileBox request={request} />
 											</div>
 										);

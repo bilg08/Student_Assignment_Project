@@ -10,7 +10,7 @@ export const ColasipbleChatBox = () => {
 				<input className='border border-black rounded-lg w-4/6 h-8 align-center mt-2 mr-2'></input>
 				<PostButton
 					data={"Send"}
-					prop={"#C4FAF8"}
+					prop={"rgb(220, 211, 255)"}
 					ym={() => {}}></PostButton>
 			</div>
 		</div>

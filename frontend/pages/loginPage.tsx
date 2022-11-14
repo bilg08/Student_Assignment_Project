@@ -114,12 +114,32 @@ const LoginPage = () => {
 									/>
 								</div>
 								<div className={loginStyles.inputBox}>
-									<input
-										onChange={takeUserInput}
-										type='text'
+									<select
 										placeholder='Сургууль'
+										style={{
+											width: "100%",
+											background: "rgba(255,255,255,0.2)",
+											border: "none",
+											outline: "none",
+											padding: "10px 20px",
+											borderRadius: "35px",
+											borderWidth: "1px",
+											borderStyle: "solid",
+											borderColor: "rgba(255,255,255,0.5)",
+											borderRight: "1px solid rgba(255,255,255,0.2)",
+											borderBottom: "1px solid rgba(255,255,255,0.2)",
+											fontSize: "16px",
+											letterSpacing: "1px",
+											color: "#fff",
+											boxShadow: "0 5px 15px rgba(0,0,0,0.05)",
+										}}
 										name='School'
-									/>
+										id=''
+										onChange={takeUserInput}>
+										<option value='NUM'>NUM</option>
+										<option value='UFE'>UFE</option>
+										<option value='MUST'>MUST</option>
+									</select>
 								</div>
 								<div className={loginStyles.inputBox}>
 									<input
