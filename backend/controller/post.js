@@ -1,11 +1,12 @@
 const PostSchema = require("../model/postSchema");
 const UserSchema = require("../model/user");
-
+const ChatSchema = require('../model/chat')
 const MyError = require("../utils/myError");
 const asyncHandler = require("../middleware/asyncHandler");
 const path = require("path");
 const fs = require("fs");
 const e = require("express");
+const { default: mongoose } = require("mongoose");
 exports.getPosts = asyncHandler(async (req, res, next) => {
   const posts = await PostSchema.find();
 
@@ -113,13 +114,18 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
   }
   const postPendingRequest = post.pendingRequest;
   if (postPendingRequest.length === 0) {
-    const user = await UserSchema.findById(req.user.id);
+    if(!postOwnerChatRooms.includes(req.user.id)&&!requestedPersonChatRooms.includes(post.owner.toString())) {
+      const chatRoomName = `chatRoom_${req.user.id}_${post.owner.toString()}`;
+      const chatRoom = mongoose.model(chatRoomName,ChatSchema)
+      const user = await UserSchema.findById(req.user.id);
     const newPendingRequest = [
       ...postPendingRequest,
       {
         averageRating: user.averageRating,
         email: user.email,
         id: user._id,
+        chatRoomName
+
       },
     ];
     post.pendingRequest = newPendingRequest;
@@ -128,6 +134,11 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
       success: true,
       data: post,
     });
+
+       await UserSchema.findByIdAndUpdate(req.user.id,{chatRooms:[...requestedPersonChatRooms,chatRoomName]})
+       await UserSchema.findByIdAndUpdate(post.owner,{chatRooms:[...postOwnerChatRooms,chatRoomName]});
+    }
+
   } else if (postPendingRequest.length > 0) {
     postPendingRequest.map(async (pendingRequest) => {
       if (pendingRequest.id.toString() === req.user.id) {
@@ -135,23 +146,29 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
       }
       const user = await UserSchema.findById(req.user.id);
       if(!postOwnerChatRooms.includes(req.user.id)&&!requestedPersonChatRooms.includes(post.owner.toString())) {
-         await UserSchema.findByIdAndUpdate(req.user.id,{chatRooms:[...requestedPersonChatRooms,post.owner.toString()]})
-         await UserSchema.findByIdAndUpdate(post.owner,{chatRooms:[...postOwnerChatRooms,post.owner.toString()]})
+        const chatRoomName = `chatRoom_${req.user.id}_${post.owner.toString()}`;
+        const chatRoom = mongoose.model(chatRoomName,ChatSchema)
+        
+
+         await UserSchema.findByIdAndUpdate(req.user.id,{chatRooms:[...requestedPersonChatRooms,chatRoomName]})
+         await UserSchema.findByIdAndUpdate(post.owner,{chatRooms:[...postOwnerChatRooms,chatRoomName]});
+         const newPendingRequest = [
+          ...postPendingRequest,
+          {
+            averageRating: user.averageRating,
+            email: user.email,
+            id: user._id,
+            chatRoomName
+          },
+        ];
+        post.pendingRequest = newPendingRequest;
+        post.save();
+        res.status(200).json({
+          success: true,
+          data: post,
+        });
       }
-      const newPendingRequest = [
-        ...postPendingRequest,
-        {
-          averageRating: user.averageRating,
-          email: user.email,
-          id: user._id,
-        },
-      ];
-      post.pendingRequest = newPendingRequest;
-      post.save();
-      res.status(200).json({
-        success: true,
-        data: post,
-      });
+      
     });
   }
 });
