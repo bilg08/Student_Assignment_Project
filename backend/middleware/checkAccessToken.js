@@ -8,6 +8,7 @@ module.exports.checkAccessToken = async (req, res, next) => {
     try {
         const user = await jwt.verify(token, process.env.JSON_WEB_TOKEN);
         req.user = user;
+        console.log(user)
     } catch (error) {
 
     }

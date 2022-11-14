@@ -166,8 +166,6 @@ export const UserSideBar = () => {
 						<SidebarBox2>
 							<MenuList2
 								onClick={() => {
-									console.log("hey");
-
 									deleteCookie("token");
 									location.reload();
 								}}
@@ -301,8 +299,6 @@ export const SeizedSideBar = () => {
 					/>
 					<MenuList2
 						onClick={() => {
-							console.log("hey");
-
 							deleteCookie("token");
 							location.reload();
 						}}
