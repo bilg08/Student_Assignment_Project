@@ -44,6 +44,7 @@ export default function Home() {
     async function getData() {
       try {
         const datas = await axios.get("http://localhost:8000/post");
+        console.log(datas.data.data)
         setAds(datas.data.data);
       } catch (error) {}
     }
