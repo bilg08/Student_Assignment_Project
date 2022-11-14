@@ -2,14 +2,26 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt')
 const UserSchema = new mongoose.Schema({
-  name: {
+  FirstName: {
     type: String,
     required: [true, "НЭРЭЭ ОРУУЛНА УУ"],
+  },
+  LastName: {
+    type: String,
+    required: [true, "ОВГОО ОРУУЛНА УУ"],
+  },
+  School: {
+    type: String,
+    required: [true, "СУРГУУЛИА ОРУУЛНА УУ"],
+  },
+  level: {
+    type: Number,
+    required: [true, "ТҮВШНЭЭ ОРУУЛНА УУ"]
   },
   averageRating: {
     type: Number,
     required: true,
-    default:0
+    default: 0
   },
   email: {
     type: String,

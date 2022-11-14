@@ -9,7 +9,7 @@ const postRouter = require("./router/post");
 const fileupload = require("express-fileupload")
 dotenv.config({ path: "./config.env" });
 const corsOptions = {
-  origin:"*"
+  origin: "*"
 }
 const app = express();
 app.use(cors(corsOptions))

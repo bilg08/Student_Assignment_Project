@@ -6,28 +6,14 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useIsAgainGetDatas } from "../context";
 export const ReceivedPosts = () => {
-	const [personalPosts, setPersonalPosts] = useState([{ subject: "", detail: "", worker: { id: "", averageRating: "", email: "" }, pendingRequest: [{ id: "", averageRating: "", email: "" }] }]);
-	const { isAgainGetDatas } = useIsAgainGetDatas();
-	const [postToBeDone, setPostToBeDone] = useState([]);
-
-
-	useEffect(() => {
-		const getPostToBeDoneData = async () => {
-			const token = getCookie("token");
-			try {
-				const datas = await axios.get("http://localhost:8000/post/postToBeDone", {
-					headers: {
-						Authorization: token,
-					},
-				});
-				setPostToBeDone(datas.data.data)
-			} catch (error) { }
-		};
-		getPostToBeDoneData();
-	}, [isAgainGetDatas]);
-
-
-
+	const [personalPosts, setPersonalPosts] = useState([
+		{
+			subject: "",
+			detail: "",
+			worker: { id: "", averageRating: "", email: "" },
+			pendingRequest: [{ id: "", averageRating: "", email: "" }],
+		},
+	]);
 	useEffect(() => {
 		const getPersonalData = async () => {
 			const token = getCookie("token");
@@ -38,12 +24,11 @@ export const ReceivedPosts = () => {
 						Authorization: token,
 					},
 				});
-				console.log(datas.data);
 				setPersonalPosts(datas.data.data);
-			} catch (error) { }
+			} catch (error) {}
 		};
 		getPersonalData();
-	}, [isAgainGetDatas]);
+	}, []);
 	const buttonArr = [
 		{
 			textValue: "Chat",
@@ -117,15 +102,16 @@ export const ReceivedPosts = () => {
 										/>
 									))}
 									<div>
-										{el.pendingRequest.map(request => {
+										{el.pendingRequest.map((request) => {
 											return (
-												<div className="bg-green-500 flex flex-col">
+												<div className='bg-green-500 flex flex-col'>
 													<h1>Хийх хүсэлтүүд</h1>
-													<div className="flex justify-between w-[400px] items-center">
-														Имайл:{request.email},Дундаж үнэлгээ:{request.averageRating}
+													<div className='flex justify-between w-[400px] items-center'>
+														Имайл:{request.email},Дундаж үнэлгээ:
+														{request.averageRating}
 														<PostButton
-															data={'Батлах'}
-															prop={'rgb(225 29 72)'}
+															data={"Батлах"}
+															prop={"rgb(225 29 72)"}
 														/>
 														<PostButton
 															data={'Харилцах'}
@@ -133,20 +119,21 @@ export const ReceivedPosts = () => {
 														/>
 													</div>
 												</div>
-											)
+											);
 										})}
-										{el.worker.id &&
-											<div className="bg-yellow-300 flex flex-col">
+										{el.worker.id && (
+											<div className='bg-yellow-300 flex flex-col'>
 												<h1>Хийх хүн</h1>
-												<div className="flex items-center justify-around">
-													{el.worker.email} <PostButton
-														data={'Харилцах'}
-														prop={'rgb(225 29 72)'}
-													/>
 
+												<div className='flex items-center justify-around'>
+													{el.worker.email}{" "}
+													<PostButton
+														data={"Харилцах"}
+														prop={"rgb(225 29 72)"}
+													/>
 												</div>
 											</div>
-										}
+										)}
 									</div>
 								</div>
 							</ProfileCard>
@@ -164,7 +151,7 @@ export const ReceivedPosts = () => {
 									description={el.detail}
 								/>
 								<div className='flex flex-row flex-wrap'>
-									{postedButtonArr?.map((el, index): any => (
+									{buttonArr?.map((el, index): any => (
 										<PostButton
 											key={index}
 											data={el.textValue}
@@ -174,13 +161,13 @@ export const ReceivedPosts = () => {
 									))}
 								</div>
 								<div>
-									{el.pendingRequest.map(request => {
+									{el.pendingRequest.map((request) => {
 										return (
 											<div>
 												<p>{request.email}</p>
 												<p>{request.averageRating}</p>
 											</div>
-										)
+										);
 									})}
 								</div>
 							</ProfileCard>

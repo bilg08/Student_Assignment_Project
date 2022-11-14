@@ -11,9 +11,9 @@ import { useWindowWidth } from "../hooks";
 import LoginPage from "./loginPage";
 const UserProfile = () => {
 	const { cActive, setCactive } = useCollectionContext();
-	const {isLoggedIn} = useIsUserLoggedContext()
+	const { isLoggedIn } = useIsUserLoggedContext();
 	const windowWidth = useWindowWidth();
-	if(!isLoggedIn) return <LoginPage/>
+	if (!isLoggedIn) return <LoginPage />;
 
 	return (
 		<div style={{ display: "flex", flexDirection: "row" }}>
