@@ -116,15 +116,16 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
   if (postPendingRequest.length === 0) {
     if(!postOwnerChatRooms.includes(req.user.id)&&!requestedPersonChatRooms.includes(post.owner.toString())) {
       const chatRoomName = `chatRoom_${req.user.id}_${post.owner.toString()}`;
-      const chatRoom = mongoose.model(chatRoomName,ChatSchema)
+      const chatRoom = await mongoose.model(chatRoomName,ChatSchema)
       const user = await UserSchema.findById(req.user.id);
-    const newPendingRequest = [
+      console.log(chatRoomName)
+      const newPendingRequest = [
       ...postPendingRequest,
       {
         averageRating: user.averageRating,
         email: user.email,
         id: user._id,
-        chatRoomName
+        chatRoomName:chatRoomName
 
       },
     ];
@@ -152,6 +153,8 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
 
          await UserSchema.findByIdAndUpdate(req.user.id,{chatRooms:[...requestedPersonChatRooms,chatRoomName]})
          await UserSchema.findByIdAndUpdate(post.owner,{chatRooms:[...postOwnerChatRooms,chatRoomName]});
+      console.log(chatRoomName)
+         
          const newPendingRequest = [
           ...postPendingRequest,
           {

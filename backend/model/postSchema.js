@@ -36,7 +36,8 @@ const PostSchema = new mongoose.Schema({
     type: [{
       id:String,
       averageRating:Number,
-      email:String
+      email:String,
+      chatRoomName:String
     }],
     required: true,
     default: []
