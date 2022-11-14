@@ -27,14 +27,7 @@ exports.getPost = asyncHandler(async (req, res, next) => {
   });
 });
 
-// exports.createPost = asyncHandler(async (req, res, next) => {
 
-//   const newPost = await PostSchema.create(req.body);
-//   res.status(200).json({
-//     success: true,
-//     data: newPost,
-//   });
-// });
 exports.createPostPhoto = asyncHandler(async (req, res, next) => {
   const post = await PostSchema.findById(req.params.id);
   const file = req.files.file;
@@ -105,6 +98,7 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
 });
 
 exports.addToWorkers = asyncHandler(async (req, res, next) => {
+  console.log(req.body.id,'req.body','asjfhbashjfvahjsfvhjasbcmn')
   const post = await PostSchema.findById(req.params.id);
   const postOwner = await UserSchema.findById(post.owner);
   const requestedPerson = await UserSchema.findById(req.user.id);
@@ -117,46 +111,50 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
   if (post.owner.toString() === req.user.id) {
     throw new MyError("ene tanii zar baina", 400);
   }
-  // const postPendingRequest = post.pendingRequest;
-  // if (postPendingRequest.length === 0) {
-  //   const user = await UserSchema.findById(req.user.id);
-  //   const newPendingRequest = [
-  //     ...postPendingRequest,
-  //     {
-  //       averageRating: user.averageRating,
-  //       email: user.email,
-  //       id: user._id,
-  //     },
-  //   ];
-  //   post.pendingRequest = newPendingRequest;
-  //   post.save();
-  //   res.status(200).json({
-  //     success: true,
-  //     data: post,
-  //   });
-  // } else if (postPendingRequest.length > 0) {
-  //   postPendingRequest.map(async (pendingRequest) => {
-  //     if (pendingRequest.id === req.body.workerId) {
-  //       console.log(pendingRequest.id === req.body.workerId)
-  //       throw new MyError("ta ene zart huselt ilgeesen baina", 400);
-  //     }
-  //     const user = await UserSchema.findById(req.user.id);
-  //     const newPendingRequest = [
-  //       ...postPendingRequest,
-  //       {
-  //         averageRating: user.averageRating,
-  //         email: user.email,
-  //         id: user._id,
-  //       },
-  //     ];
-  //     post.pendingRequest = newPendingRequest;
-  //     post.save();
-  //     res.status(200).json({
-  //       success: true,
-  //       data: post,
-  //     });
-  //   });
-  // }
+  const postPendingRequest = post.pendingRequest;
+  if (postPendingRequest.length === 0) {
+    const user = await UserSchema.findById(req.user.id);
+    const newPendingRequest = [
+      ...postPendingRequest,
+      {
+        averageRating: user.averageRating,
+        email: user.email,
+        id: user._id,
+      },
+    ];
+    post.pendingRequest = newPendingRequest;
+    post.save();
+    res.status(200).json({
+      success: true,
+      data: post,
+    });
+  } else if (postPendingRequest.length > 0) {
+    postPendingRequest.map(async (pendingRequest) => {
+      if (pendingRequest.id.toString() === req.user.id) {
+        throw new MyError("ta ene zart huselt ilgeesen baina", 400);
+      }
+      const user = await UserSchema.findById(req.user.id);
+      if(!postOwnerChatRooms.includes(req.user.id)&&!requestedPersonChatRooms.includes(post.owner.toString())) {
+         await UserSchema.findByIdAndUpdate(req.user.id,{chatRooms:[...requestedPersonChatRooms,post.owner.toString()]})
+         await UserSchema.findByIdAndUpdate(post.owner,{chatRooms:[...postOwnerChatRooms,post.owner.toString()]})
+      
+        }
+      const newPendingRequest = [
+        ...postPendingRequest,
+        {
+          averageRating: user.averageRating,
+          email: user.email,
+          id: user._id,
+        },
+      ];
+      post.pendingRequest = newPendingRequest;
+      post.save();
+      res.status(200).json({
+        success: true,
+        data: post,
+      });
+    });
+  }
 });
 
 exports.getPostPhoto = asyncHandler(async (req, res, next) => {
