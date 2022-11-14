@@ -1,11 +1,33 @@
 import { PostReceived } from "./ui/postReceived";
 import { PostButton } from "./ui/postButton";
-import { ProfileCard, Button } from "../components/index";
+import { ProfileCard, Button, Chat } from "../components/index";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
+import { useIsAgainGetDatas } from "../context";
 export const ReceivedPosts = () => {
 	const [personalPosts, setPersonalPosts] = useState([{ subject: "", detail: "", worker: { id: "", averageRating: "", email: "" }, pendingRequest: [{ id: "", averageRating: "", email: "" }] }]);
+	const { isAgainGetDatas } = useIsAgainGetDatas();
+	const [postToBeDone, setPostToBeDone] = useState([]);
+
+
+	useEffect(() => {
+		const getPostToBeDoneData = async () => {
+			const token = getCookie("token");
+			try {
+				const datas = await axios.get("http://localhost:8000/post/postToBeDone", {
+					headers: {
+						Authorization: token,
+					},
+				});
+				setPostToBeDone(datas.data.data)
+			} catch (error) { }
+		};
+		getPostToBeDoneData();
+	}, [isAgainGetDatas]);
+
+
+
 	useEffect(() => {
 		const getPersonalData = async () => {
 			const token = getCookie("token");
@@ -21,7 +43,7 @@ export const ReceivedPosts = () => {
 			} catch (error) { }
 		};
 		getPersonalData();
-	}, []);
+	}, [isAgainGetDatas]);
 	const buttonArr = [
 		{
 			textValue: "Chat",
@@ -105,8 +127,11 @@ export const ReceivedPosts = () => {
 															data={'Батлах'}
 															prop={'rgb(225 29 72)'}
 														/>
+														<PostButton
+															data={'Харилцах'}
+															prop={'rgb(225 29 72)'}
+														/>
 													</div>
-
 												</div>
 											)
 										})}
@@ -114,18 +139,16 @@ export const ReceivedPosts = () => {
 											<div className="bg-yellow-300 flex flex-col">
 												<h1>Хийх хүн</h1>
 												<div className="flex items-center justify-around">
-												{el.worker.email} <PostButton
-													data={'Харилцах'}
-													prop={'rgb(225 29 72)'}
-												/>
-											</div>
+													{el.worker.email} <PostButton
+														data={'Харилцах'}
+														prop={'rgb(225 29 72)'}
+													/>
+
+												</div>
 											</div>
 										}
-
-
 									</div>
 								</div>
-
 							</ProfileCard>
 						);
 					})}
@@ -133,7 +156,6 @@ export const ReceivedPosts = () => {
 			) : (
 				<div className='overscroll-y-none  flex-col flex items-center pb-[100px]'>
 					{personalPosts.map((el, ind) => {
-						console.log(el);
 						return (
 							<ProfileCard key={ind}>
 								<PostReceived

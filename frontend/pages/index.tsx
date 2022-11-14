@@ -4,11 +4,9 @@ import {
   Button,
   Card,
   Shadow,
-  Avatar,
-  SeizedSideBar,
 } from "../components/index";
 import { AiOutlineSearch } from "react-icons/ai";
-import { MdHeight, MdLocationOn } from "react-icons/md";
+import { MdLocationOn } from "react-icons/md";
 
 import { useSelectedContext } from "../context/index";
 import { useWindowWidth } from "../hooks/index";
@@ -55,18 +53,23 @@ export default function Home() {
   const handleSearch = () => {
     console.log(userInput);
   };
+  
 
   const requestToDoWork = async (id: String) => {
     const token = getCookie("token");
-    try {
-      const datas = await axios.post(`http://localhost:8000/post/${id}/work`, {
-        headers: {
-          Authorization: token,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    
+     await axios({
+        method: "post",
+        url: `http://localhost:8000/post/${id}/work`,
+        headers: {"authorization":getCookie('token')},
+      })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (response) {
+          console.log(response);
+        });
+    
   };
 
   const onclick = (el: React.MouseEvent<HTMLButtonElement>) => {

@@ -59,6 +59,7 @@ exports.createPostPhoto = asyncHandler(async (req, res, next) => {
 });
 
 exports.createPost = asyncHandler(async (req, res, next) => {
+  
   const newPost = await PostSchema.create(req.body);
   const file = req.files.file;
   file.name = `photo_${newPost.id}${path.parse(file.name).ext}`;
@@ -68,7 +69,8 @@ exports.createPost = asyncHandler(async (req, res, next) => {
       console.log(err, "err");
     }
     console.log('amjilttai')
-  })
+  });
+  newPost.owner = req.user.id;
   newPost.photo = file.name;
   newPost.save()
   res.status(200).json({
@@ -104,52 +106,57 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
 
 exports.addToWorkers = asyncHandler(async (req, res, next) => {
   const post = await PostSchema.findById(req.params.id);
+  const postOwner = await UserSchema.findById(post.owner);
+  const requestedPerson = await UserSchema.findById(req.user.id);
+  const postOwnerChatRooms = postOwner.chatRooms;
+  const requestedPersonChatRooms = requestedPerson.chatRooms;
+
   if (!post) {
     throw new MyError("iim zar baihgui", 400);
   }
   if (post.owner.toString() === req.user.id) {
-    console.log(post.owner.toString(), req.user.id);
     throw new MyError("ene tanii zar baina", 400);
   }
-  const postPendingRequest = post.pendingRequest;
-  if (postPendingRequest.length === 0) {
-    const user = await UserSchema.findById(req.user.id);
-    const newPendingRequest = [
-      ...postPendingRequest,
-      {
-        averageRating: user.averageRating,
-        email: user.email,
-        id: user._id,
-      },
-    ];
-    post.pendingRequest = newPendingRequest;
-    post.save();
-    res.status(200).json({
-      success: true,
-      data: post,
-    });
-  } else if (postPendingRequest.length > 0) {
-    postPendingRequest.map(async (pendingRequest) => {
-      if (pendingRequest.id === req.body.workerId) {
-        throw new MyError("ta ene zart huselt ilgeesen baina", 400);
-      }
-      const user = await UserSchema.findById(req.user.id);
-      const newPendingRequest = [
-        ...postPendingRequest,
-        {
-          averageRating: user.averageRating,
-          email: user.email,
-          id: user._id,
-        },
-      ];
-      post.pendingRequest = newPendingRequest;
-      post.save();
-      res.status(200).json({
-        success: true,
-        data: post,
-      });
-    });
-  }
+  // const postPendingRequest = post.pendingRequest;
+  // if (postPendingRequest.length === 0) {
+  //   const user = await UserSchema.findById(req.user.id);
+  //   const newPendingRequest = [
+  //     ...postPendingRequest,
+  //     {
+  //       averageRating: user.averageRating,
+  //       email: user.email,
+  //       id: user._id,
+  //     },
+  //   ];
+  //   post.pendingRequest = newPendingRequest;
+  //   post.save();
+  //   res.status(200).json({
+  //     success: true,
+  //     data: post,
+  //   });
+  // } else if (postPendingRequest.length > 0) {
+  //   postPendingRequest.map(async (pendingRequest) => {
+  //     if (pendingRequest.id === req.body.workerId) {
+  //       console.log(pendingRequest.id === req.body.workerId)
+  //       throw new MyError("ta ene zart huselt ilgeesen baina", 400);
+  //     }
+  //     const user = await UserSchema.findById(req.user.id);
+  //     const newPendingRequest = [
+  //       ...postPendingRequest,
+  //       {
+  //         averageRating: user.averageRating,
+  //         email: user.email,
+  //         id: user._id,
+  //       },
+  //     ];
+  //     post.pendingRequest = newPendingRequest;
+  //     post.save();
+  //     res.status(200).json({
+  //       success: true,
+  //       data: post,
+  //     });
+  //   });
+  // }
 });
 
 exports.getPostPhoto = asyncHandler(async (req, res, next) => {
@@ -187,4 +194,13 @@ exports.confirmWorkRequest = asyncHandler(async (req, res, next) => {
       });
     }
   }
+});
+
+
+exports.showPostToBeDone = asyncHandler(async (req, res, next) => {
+   const Posts = await PostSchema.find();
+  const postToBeDone = Posts.filter(post=>post.worker ===req.user.id);
+   res.status(200).json({
+    data:postToBeDone
+   })
 });

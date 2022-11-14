@@ -20,7 +20,11 @@ const UserSchema = new mongoose.Schema({
       "Та зөв емайл оруулна уу",
     ],
   },
-
+  chatRooms: {
+    type: [String],
+    required:true,
+    default:[]
+  },
   password: {
     type: String,
     minLength: 4,

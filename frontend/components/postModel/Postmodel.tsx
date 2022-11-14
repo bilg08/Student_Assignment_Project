@@ -5,6 +5,7 @@ import { Shadow } from "../Shadow";
 import React from "react";
 import { MyImage } from "../index";
 import { arrayBuffer, json } from "stream/consumers";
+import { getCookie } from "cookies-next";
 export interface PostModalProps {
   cActive: any;
   setCactive: any;
@@ -30,7 +31,7 @@ export const PostModal: React.FC<PostModalProps> = ({
       method: "post",
       url: "http://localhost:8000/post",
       data: formDatas,
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: { "Content-Type": "multipart/form-data","authorization":getCookie('token')},
     })
       .then(function (response) {
         console.log(response);
