@@ -137,8 +137,7 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
       if(!postOwnerChatRooms.includes(req.user.id)&&!requestedPersonChatRooms.includes(post.owner.toString())) {
          await UserSchema.findByIdAndUpdate(req.user.id,{chatRooms:[...requestedPersonChatRooms,post.owner.toString()]})
          await UserSchema.findByIdAndUpdate(post.owner,{chatRooms:[...postOwnerChatRooms,post.owner.toString()]})
-      
-        }
+      }
       const newPendingRequest = [
         ...postPendingRequest,
         {
