@@ -57,11 +57,14 @@ export default function Home() {
 
   const requestToDoWork = async (id: String) => {
     const token = getCookie("token");
-    
      await axios({
         method: "post",
+        data:{
+          id
+        },
         url: `http://localhost:8000/post/${id}/work`,
-        headers: {"authorization":getCookie('token')},
+        headers: {"authorization":getCookie('token')
+      },
       })
         .then(function (response) {
           console.log(response);
