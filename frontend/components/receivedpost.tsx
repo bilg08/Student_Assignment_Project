@@ -114,8 +114,8 @@ export const ReceivedPosts = () => {
 															prop={"rgb(225 29 72)"}
 														/>
 														<PostButton
-															data={'Харилцах'}
-															prop={'rgb(225 29 72)'}
+															data={"Харилцах"}
+															prop={"rgb(225 29 72)"}
 														/>
 													</div>
 												</div>
