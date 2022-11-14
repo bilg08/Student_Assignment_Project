@@ -5,7 +5,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useIsAgainGetDatas } from "../context";
+import { ColasipbleChatBox } from "./chat/chatBox";
 export const ReceivedPosts = () => {
+	const [isChatting, setChatting] = useState(false);
 	const [personalPosts, setPersonalPosts] = useState([
 		{
 			subject: "",
@@ -17,7 +19,7 @@ export const ReceivedPosts = () => {
 	useEffect(() => {
 		const getPersonalData = async () => {
 			const token = getCookie("token");
-
+			console.log(token);
 			try {
 				const datas = await axios.get("http://localhost:8000/users/posts", {
 					headers: {
@@ -33,7 +35,7 @@ export const ReceivedPosts = () => {
 		{
 			textValue: "Chat",
 			style: "#DCD3FF",
-			function: () => console.log("chat"),
+			function: () => setChatting(!isChatting),
 		},
 		{
 			textValue: "Submit",
@@ -50,7 +52,7 @@ export const ReceivedPosts = () => {
 		{
 			textValue: "Chat",
 			style: "#DCD3FF",
-			function: () => console.log("chat"),
+			function: () => setChatting(!isChatting),
 		},
 		{
 			textValue: "Edit",
@@ -113,9 +115,11 @@ export const ReceivedPosts = () => {
 															data={"Батлах"}
 															prop={"rgb(225 29 72)"}
 														/>
+														{isChatting ? <ColasipbleChatBox /> : <></>}
 														<PostButton
 															data={"Харилцах"}
 															prop={"rgb(225 29 72)"}
+															onClick={() => setChatting(!isChatting)}
 														/>
 													</div>
 												</div>
@@ -150,15 +154,17 @@ export const ReceivedPosts = () => {
 									owner={"oruuln"}
 									description={el.detail}
 								/>
-								<div className='flex flex-row flex-wrap'>
-									{buttonArr?.map((el, index): any => (
-										<PostButton
-											key={index}
-											data={el.textValue}
-											prop={el.style}
-											ym={el.function}
-										/>
-									))}
+								<div className='flex flex-row flex-wrap h-fit items-end'>
+									{buttonArr?.map((el, index): any => {
+										return (
+											<PostButton
+												key={index}
+												data={el.textValue}
+												prop={el.style}
+												ym={el.function}
+											/>
+										);
+									})}
 								</div>
 								<div>
 									{el.pendingRequest.map((request) => {
