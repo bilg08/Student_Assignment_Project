@@ -4,10 +4,8 @@ import { ProfileCard, Button, Chat } from "../components/index";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
-import { useIsAgainGetDatas } from "../context";
-import { ColasipbleChatBox } from "./chat/chatBox";
+import { UserProfileBox } from "./chat/userProfile";
 export const ReceivedPosts = () => {
-	const [isChatting, setChatting] = useState(false);
 	const [personalPosts, setPersonalPosts] = useState([
 		{
 			subject: "",
@@ -33,11 +31,6 @@ export const ReceivedPosts = () => {
 	}, []);
 	const buttonArr = [
 		{
-			textValue: "Chat",
-			style: "#DCD3FF",
-			function: () => setChatting(!isChatting),
-		},
-		{
 			textValue: "Submit",
 			style: "#BFFCC6",
 			function: () => console.log("submit"),
@@ -49,11 +42,6 @@ export const ReceivedPosts = () => {
 		},
 	];
 	const postedButtonArr = [
-		{
-			textValue: "Chat",
-			style: "#DCD3FF",
-			function: () => setChatting(!isChatting),
-		},
 		{
 			textValue: "Edit",
 			style: "#C4FAF8",
@@ -103,42 +91,29 @@ export const ReceivedPosts = () => {
 											ym={el.function}
 										/>
 									))}
-									<div>
-										{el.pendingRequest.map((request) => {
-											return (
-												<div className='bg-green-500 flex flex-col'>
-													<h1>Хийх хүсэлтүүд</h1>
-													<div className='flex justify-between w-[400px] items-center'>
-														Имайл:{request.email},Дундаж үнэлгээ:
-														{request.averageRating}
-														<PostButton
-															data={"Батлах"}
-															prop={"rgb(225 29 72)"}
-														/>
-														{isChatting ? <ColasipbleChatBox /> : <></>}
-														<PostButton
-															data={"Харилцах"}
-															prop={"rgb(225 29 72)"}
-															onClick={() => setChatting(!isChatting)}
-														/>
-													</div>
-												</div>
-											);
-										})}
-										{el.worker.id && (
-											<div className='bg-yellow-300 flex flex-col'>
-												<h1>Хийх хүн</h1>
-
-												<div className='flex items-center justify-around'>
-													{el.worker.email}{" "}
-													<PostButton
-														data={"Харилцах"}
-														prop={"rgb(225 29 72)"}
-													/>
-												</div>
+								</div>
+								<div>
+									<h1>Хийх хүсэлтүүд:</h1>
+									{el.pendingRequest.map((request) => {
+										return (
+											<div className=' h-fit lg:w-full md:w-5/6 xs:w-[80%] border border-black rounded-lg flex flex-col p-2'>
+												<UserProfileBox request={request} />
 											</div>
-										)}
-									</div>
+										);
+									})}
+									{el.worker.id && (
+										<div className='bg-yellow-300 flex flex-col'>
+											<h1>Хийх хүн</h1>
+
+											<div className='flex items-center justify-around'>
+												{el.worker.email}{" "}
+												<PostButton
+													data={"Харилцах"}
+													prop={"rgb(225 29 72)"}
+												/>
+											</div>
+										</div>
+									)}
 								</div>
 							</ProfileCard>
 						);
