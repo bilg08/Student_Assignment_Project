@@ -99,7 +99,6 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
 });
 
 exports.addToWorkers = asyncHandler(async (req, res, next) => {
-  console.log(req.body.id,'req.body','asjfhbashjfvahjsfvhjasbcmn')
   const post = await PostSchema.findById(req.params.id);
   const postOwner = await UserSchema.findById(post.owner);
   const requestedPerson = await UserSchema.findById(req.user.id);
@@ -153,7 +152,6 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
 
          await UserSchema.findByIdAndUpdate(req.user.id,{chatRooms:[...requestedPersonChatRooms,chatRoomName]})
          await UserSchema.findByIdAndUpdate(post.owner,{chatRooms:[...postOwnerChatRooms,chatRoomName]});
-      console.log(chatRoomName)
          
          const newPendingRequest = [
           ...postPendingRequest,
@@ -215,9 +213,18 @@ exports.confirmWorkRequest = asyncHandler(async (req, res, next) => {
 
 
 exports.showPostToBeDone = asyncHandler(async (req, res, next) => {
-   const Posts = await PostSchema.find();
-  const postToBeDone = Posts.filter(post=>post.worker ===req.user.id);
-   res.status(200).json({
-    data:postToBeDone
-   })
+  const Posts = await PostSchema.find();
+  function getPostUserInterested() {
+    let data = []
+    for (let i = 0; i < Posts.length; i++) {
+      for (let j = 0; j < Posts[i].pendingRequest.length; j++) {
+        if (Posts[i].pendingRequest[j].email === req.user.email) {
+          data.push(Posts[i]);
+        }
+      }
+    }
+    return data
+  }
+  let data = getPostUserInterested()
+  res.status(200).json({data})
 });
