@@ -1,21 +1,22 @@
 import { PostButton } from "../ui/postButton";
 import React, { useEffect, useState } from "react";
 import { ColasipbleChatBox } from "./chatBox";
-import { io } from 'socket.io-client';
+import { io } from "socket.io-client";
 
 export const UserProfileBox = (request: any) => {
-console.log(request,'request')
 	const [isChatting, setChatting] = useState(false);
-	const [chatRoom, setChatRoom] = useState('');
-	
-	
+	const [chatRoom, setChatRoom] = useState("");
+
 	return (
 		<div>
 			<div className='flex flex-row items-center'>
-				<div className='rounded-full h-12 w-12 border border-black pr-2.5'></div>
-				<div>{request.request.email&&request.request.email}</div>
+				<div className='rounded-full h-12 w-12 border border-black mr-[10px]'></div>
+				<div>{request.request.email && request.request.email}</div>
 			</div>
-			<div className='pl-'>Дундаж үнэлгээ: {request.request.averageRating&&request.request.averageRating}</div>
+			<div>
+				Дундаж үнэлгээ:{" "}
+				{request.request.averageRating && request.request.averageRating}
+			</div>
 			{isChatting ? <ColasipbleChatBox chatRoomName={chatRoom} /> : <></>}
 			<div className='flex flex-row'>
 				<PostButton
@@ -25,9 +26,9 @@ console.log(request,'request')
 				<PostButton
 					data={isChatting ? "Дуусгах" : "Харилцах"}
 					prop={"#FDFD96"}
-					ym={async() => {
-						await setChatRoom(request.request.chatRoomName)
-						setChatting(!isChatting)
+					ym={async () => {
+						await setChatRoom(request.request.chatRoomName);
+						setChatting(!isChatting);
 					}}
 				/>
 			</div>
