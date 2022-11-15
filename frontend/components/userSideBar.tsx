@@ -6,13 +6,13 @@ import {
 	ColasipbleSidebarBox,
 } from "../components/index";
 import { deleteCookie } from "cookies-next";
-import { useCollectionContext } from "../context/index";
+import { useCollectionContext, useUserContext } from "../context/index";
 import { useEffect, useState } from "react";
 import { getCookie } from "cookies-next";
 import axios from "axios";
 
 export const UserSideBar = () => {
-	const [user, setUser] = useState<any>({});
+	const {user,setUser} = useUserContext()
 	const [editing, setEditing] = useState(false);
 	const { cActive, setCactive } = useCollectionContext();
 	const isActive = true;
@@ -27,13 +27,13 @@ export const UserSideBar = () => {
 						Authorization: token,
 					},
 				});
+				console.log(datas.data)
 				setUser(datas.data.data);
 			} catch (error) {}
 		};
 		getPersonalInfo();
 	}, []);
 
-	console.log(user)
 
 	return (
 		<>

@@ -27,7 +27,9 @@ export const UserProfileBox = (request: any) => {
 					data={isChatting ? "Дуусгах" : "Харилцах"}
 					prop={"#FDFD96"}
 					ym={async () => {
+						console.log('kkk')
 						await setChatRoom(request.request.chatRoomName);
+						console.log(request.request,'request.request')
 						setChatting(!isChatting);
 					}}
 				/>

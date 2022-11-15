@@ -65,9 +65,9 @@ export default function Home() {
         headers: {"authorization":getCookie('token')
       },
       })
-        .then(function (response) {
+       .then(function (response) {
         })
-        .catch(function (response) {
+       .catch(function (response) {
         });
     
   };

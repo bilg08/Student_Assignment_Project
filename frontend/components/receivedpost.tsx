@@ -6,7 +6,6 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { UserProfileBox } from "./chat/userProfile";
 import { ColasipbleChatBox } from "./chat/chatBox";
-import { Post } from "./ui/post";
 export const ReceivedPosts = () => {
 	const [personalPosts, setPersonalPosts] = useState([
 		{
@@ -16,7 +15,7 @@ export const ReceivedPosts = () => {
 			pendingRequest: [{ id: "", averageRating: "", email: "" }],
 		},
 	]);
-	const [postIInterested, setPostIInterested] = useState([{ chatRoom: "" }]);
+	const [postIInterested, setPostIInterested] = useState([{ chatRoom: "",subject:"",detail:"" }]);
 	useEffect(() => {
 		const getPostIInterested = async () => {
 			const token = getCookie("token");
@@ -167,12 +166,13 @@ export const ReceivedPosts = () => {
 										data={isChatting ? "Дуусгах" : "Харилцах"}
 										prop={"#FDFD96"}
 										ym={async () => {
+											console.log(el.chatRoom,'el.chatRoom')
 											await setChatRoom(el.chatRoom);
 											setChatting(!isChatting);
 										}}
 									/>
 								</div>
-								{isChatting ? <ColasipbleChatBox /> : <></>}
+								{isChatting ? <ColasipbleChatBox chatRoomName={chatRoom } /> : <></>}
 							</ProfileCard>
 						);
 					})}
