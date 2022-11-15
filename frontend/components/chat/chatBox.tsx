@@ -99,25 +99,28 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
           {messages &&
             messages.map((message) => {
               return (
-                <li
-                  className={`m-1 border-2 relative rounded-xl ${
-                    user.email === message.owner.email
-                      ? `bg-blue-500 `
-                      : "bg-white "
-                  } flex justify-between w-full`}>
+                <li className={`m-1 flex justify-between w-full`}>
                   {user.email === message.owner.email ? (
                     <>
-                      <span >
+                      <span
+                        className={`border-2 px-2 relative rounded-xl ${
+                          user.email === message.owner.email
+                            ? `bg-blue-500 `
+                            : "bg-white "
+                        }`}>
                         {message.message}
                       </span>{" "}
-                      <span >
-                      </span>
+                      <span></span>
                     </>
                   ) : (
                     <>
-                      <span >
-                      </span>
-                      <span >
+                      <span></span>
+                      <span
+                        className={`border-2 px-2 relative rounded-xl ${
+                          user.email === message.owner.email
+                            ? `bg-blue-500 `
+                            : "bg-white "
+                        }`}>
                         {message.message}
                       </span>{" "}
                     </>
