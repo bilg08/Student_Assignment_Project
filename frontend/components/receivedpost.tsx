@@ -5,7 +5,7 @@ import { use, useEffect, useState } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { UserProfileBox } from "./chat/userProfile";
-import { Chosen } from "./ui/chosen"
+import { ColasipbleChatBox } from "./chat/chatBox";
 import { Post } from "./ui/post";
 export const ReceivedPosts = () => {
   const [personalPosts, setPersonalPosts] = useState([
@@ -16,7 +16,7 @@ export const ReceivedPosts = () => {
       pendingRequest: [{ id: "", averageRating: "", email: "" }],
     },
   ]);
-  const [postIInterested, setPostIInterested] = useState();
+	const [postIInterested,setPostIInterested] = useState([{chatRoom:""}])
   useEffect(() => {
     const getPostIInterested = async () => {
       const token = getCookie("token");
@@ -34,6 +34,8 @@ export const ReceivedPosts = () => {
     };
     getPostIInterested();
   }, []);
+
+
   useEffect(() => {
     const getPersonalData = async () => {
       const token = getCookie("token");
@@ -43,7 +45,6 @@ export const ReceivedPosts = () => {
             Authorization: token,
           },
         });
-        console.log(datas.data);
         setPersonalPosts(datas.data.data);
       } catch (error) {}
     };
@@ -51,6 +52,8 @@ export const ReceivedPosts = () => {
   }, []);
 
   const [chosen, setChosen] = useState(true);
+
+  
   return (
     <div className="flex-col items-center lg:w-4/6 md:w-full xs:w-full  m-auto  overflow-auto h-screen  overscroll-y-none md:justify-center pb-[100px]">
       <div className=" h-[50px]  pr-2 z-10 bg-white flex justify-between items-end">
@@ -66,7 +69,11 @@ export const ReceivedPosts = () => {
         <Post data={personalPosts}/>
       ) : (
         <div className="overscroll-y-none  flex-col flex items-center pb-[100px]">
-          <p>Nothing</p>
+		{postIInterested.map((el, ind) => {
+            return (
+              <ColasipbleChatBox chatRoomName={el.chatRoom} />
+            );
+          })}
         </div>
       )}
     </div>

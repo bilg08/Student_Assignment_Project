@@ -116,7 +116,9 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
       const chatRoomName = `chatRoom_${req.user.id}_${post.owner.toString()}`;
       const chatRoom = await mongoose.model(chatRoomName, ChatSchema);
       const user = await UserSchema.findById(req.user.id);
+
       console.log(chatRoomName);
+
       const newPendingRequest = [
         ...postPendingRequest,
         {
@@ -184,7 +186,6 @@ exports.getPostPhoto = asyncHandler(async (req, res, next) => {
   const { photoname } = req.params;
   fs.readFile(`./images/post/${photoname}`, (err, data) => {
     if (err) {
-      console.log(err, "err");
     }
     res.setHeader("content-type", "image/png");
     res.end(data);
@@ -224,7 +225,15 @@ exports.showPostToBeDone = asyncHandler(async (req, res, next) => {
     for (let i = 0; i < Posts.length; i++) {
       for (let j = 0; j < Posts[i].pendingRequest.length; j++) {
         if (Posts[i].pendingRequest[j].email === req.user.email) {
-          data.push(Posts[i]);
+         
+          data.push({
+            subject:Posts[i].subject,
+            advertisingHeader:Posts[i].advertisingHeader,
+            photo:Posts[i].photo,
+            price:Posts[i].price,
+            detail: Posts[i].detail,
+            chatRoom:Posts[i].pendingRequest[j].chatRoomName
+          });
         }
       }
     }

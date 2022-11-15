@@ -34,11 +34,9 @@ export const PostModal: React.FC<PostModalProps> = ({
       headers: { "Content-Type": "multipart/form-data","authorization":getCookie('token')},
     })
       .then(function (response) {
-        console.log(response);
         setCactive(false);
       })
       .catch(function (response) {
-        console.log(response);
       });
   };
 

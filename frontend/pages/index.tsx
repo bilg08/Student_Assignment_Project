@@ -44,7 +44,6 @@ export default function Home() {
     async function getData() {
       try {
         const datas = await axios.get("http://localhost:8000/post");
-        console.log(datas.data.data)
         setAds(datas.data.data);
       } catch (error) {}
     }
@@ -52,7 +51,6 @@ export default function Home() {
   }, [isAgainGetDatas]);
   //TO-DO
   const handleSearch = () => {
-    console.log(userInput);
   };
   
 
@@ -68,10 +66,8 @@ export default function Home() {
       },
       })
         .then(function (response) {
-          console.log(response);
         })
         .catch(function (response) {
-          console.log(response);
         });
     
   };
@@ -80,7 +76,6 @@ export default function Home() {
     const button: HTMLButtonElement = el.currentTarget;
     const id = button.value;
     axios.delete(`http://localhost:8000/post/${id}`).then(function (response) {
-      console.log(response);
     });
   };
   const memoizedCard = useMemo(() => {}, []);
