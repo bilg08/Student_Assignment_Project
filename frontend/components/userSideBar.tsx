@@ -12,7 +12,7 @@ import { getCookie } from "cookies-next";
 import axios from "axios";
 
 export const UserSideBar = () => {
-	const [user, setUser] = useState({});
+	const [user, setUser] = useState<any>({});
 	const [editing, setEditing] = useState(false);
 	const { cActive, setCactive } = useCollectionContext();
 	const isActive = true;
