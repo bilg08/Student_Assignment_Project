@@ -14,21 +14,22 @@ const connectChatServer = () => {
 export const ColasipbleChatBox = ({ chatRoomName }: any) => {
   const [isSentMessage, setIsSentMessage] = useState(false);
   const [message, setMessage] = useState("");
-	const [messages, setMessages] = useState([{message:"",createdAt:"",}]);
+   const [messages, setMessages] = useState([{message:""}]);
   const listRef = useRef<HTMLElement | any>();
 
  	useEffect(() => {
     let socket = connectChatServer();
     socket.onAny(async(type, message) => {
 		if (message) {
-	    await setIsSentMessage(e =>!e);
+      // setMessages(m=>[...m,message])
+	    await setIsSentMessage(e => !e)
 		  scrollToLastMessage()
 		}
     });
     return () => {
       socket.disconnect();
     };
-  }, [isSentMessage]);
+  }, []);
   useEffect(() => {
     let socket = connectChatServer();
     socket.emit(`chat message`, message);
@@ -46,13 +47,13 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
 				  authorization:getCookie('token')
 			  }
 			  });
-		  flushSync(async() => {
-        setMessages(data.data.data)
-      })
-      scrollToLastMessage()
-    } catch (error) {}
+		  flushSync(() => {
+			setMessages(data.data.data);	  
+		  })
+		  scrollToLastMessage()
+      } catch (error) {}
 	  }
-      getMessages();	
+    	getMessages();		  
   },[isSentMessage,chatRoomName]);
 	
  function scrollToLastMessage() {
@@ -63,6 +64,7 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
       behavior:'smooth'
     });
   }
+  useEffect(() => {
 	  async function sendChat() {
       try {
 		   await axios.post(`http://localhost:8000/chat/${chatRoomName}/sendMessage`, { message },
@@ -73,7 +75,8 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
 		  });
       } catch (error) {}
 	  }
-    	  
+    	sendChat();		  
+  },[isSentMessage]);
 
   return (
     <div className="h-48 w-full">
@@ -84,7 +87,7 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
 			  ">
 			  <ul ref={listRef}>
 				  {messages && messages.map(message => {
-				  return <li className="bg-red-500 m-1">{message.message} {message.createdAt}</li>
+				  return <li>{message.message}</li>
 			  })}
 			  </ul>
 		</div>
@@ -100,8 +103,6 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
           prop={"rgb(220, 211, 255)"}
 				  ym={async() => {
 					  await setIsSentMessage(e => !e);
-            sendChat();		
-            
 					  setMessage('')
 		  }}></PostButton>
       </div>

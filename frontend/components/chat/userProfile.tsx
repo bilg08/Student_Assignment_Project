@@ -4,9 +4,11 @@ import { ColasipbleChatBox } from "./chatBox";
 import { io } from 'socket.io-client';
 
 export const UserProfileBox = (request: any) => {
-
+console.log(request,'request')
 	const [isChatting, setChatting] = useState(false);
 	const [chatRoom, setChatRoom] = useState('');
+	
+	
 	return (
 		<div>
 			<div className='flex flex-row items-center'>
@@ -23,8 +25,8 @@ export const UserProfileBox = (request: any) => {
 				<PostButton
 					data={isChatting ? "Дуусгах" : "Харилцах"}
 					prop={"#FDFD96"}
-					ym={() => {
-						setChatRoom(request.request.chatRoomName)
+					ym={async() => {
+						await setChatRoom(request.request.chatRoomName)
 						setChatting(!isChatting)
 					}}
 				/>

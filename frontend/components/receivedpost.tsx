@@ -5,6 +5,7 @@ import { use, useEffect, useState } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { UserProfileBox } from "./chat/userProfile";
+import { ColasipbleChatBox } from "./chat/chatBox";
 export const ReceivedPosts = () => {
   const [personalPosts, setPersonalPosts] = useState([
     {
@@ -14,7 +15,7 @@ export const ReceivedPosts = () => {
       pendingRequest: [{ id: "", averageRating: "", email: "" }],
     }
   ]);
-	const [postIInterested,setPostIInterested] = useState()
+	const [postIInterested,setPostIInterested] = useState([{chatRoom:""}])
   useEffect(() => {
     const getPostIInterested = async () => {
       const token = getCookie("token");
@@ -32,6 +33,8 @@ export const ReceivedPosts = () => {
     };
     getPostIInterested();
   }, []);
+
+
   useEffect(() => {
     const getPersonalData = async () => {
       const token = getCookie("token");
@@ -41,24 +44,13 @@ export const ReceivedPosts = () => {
             Authorization: token,
           },
         });
-        console.log(datas.data);
         setPersonalPosts(datas.data.data);
       } catch (error) {}
     };
     getPersonalData();
   }, []);
-  const buttonArr = [
-    {
-      textValue: "Submit",
-      style: "#BFFCC6",
-      function: () => console.log("submit"),
-    },
-    {
-      textValue: "Cancel",
-      style: "#FFABAB",
-      function: () => console.log("cancel"),
-    },
-  ];
+  
+
   const postedButtonArr = [
     {
       textValue: "Edit",
@@ -79,7 +71,10 @@ export const ReceivedPosts = () => {
       },
     },
   ];
+
   const [chosen, setChosen] = useState(true);
+
+  
   return (
     <div className="flex-col items-center lg:w-4/6 md:w-full xs:w-full  m-auto ml-14 overflow-auto h-screen  overscroll-y-none">
       <div className=" h-[50px]  pr-2 z-10 bg-white flex justify-between items-end">
@@ -136,33 +131,11 @@ export const ReceivedPosts = () => {
         </div>
       ) : (
         <div className="overscroll-y-none  flex-col flex items-center pb-[100px]">
-		{/* {postIInterested.map((el, ind) => {
+		{postIInterested.map((el, ind) => {
             return (
-              <ProfileCard key={ind}>
-                <PostReceived
-                  name={el.subject}
-                  owner={"oruuln"}
-                  description={el.detail}
-                />
-                <div className="flex flex-row flex-wrap h-fit items-end">
-                  {buttonArr?.map((el, index): any => {
-                    return (
-                      <PostButton
-                        key={index}
-                        data={el.textValue}
-                        prop={el.style}
-                        ym={el.function}
-                      />
-                    );
-                  })}
-					</div>
-					<div className=" h-fit lg:w-full md:w-5/6 xs:w-[80%] border border-black rounded-lg flex flex-col p-2">
-						<UserProfileBox request={el} />
-                    </div>
-            
-              </ProfileCard>
+              <ColasipbleChatBox chatRoomName={el.chatRoom} />
             );
-          })} */}
+          })}
         </div>
       )}
     </div>

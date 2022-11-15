@@ -25,9 +25,7 @@ const socketIO = require("socket.io")(http, {
 });
 
 socketIO.on("connection", (socket) => {
-  console.log('socket')
   socket.on("chat message", (msg) => {
-    console.log("msg");
     socketIO.emit("chat message", msg);
   });
   socket.on("disconnect", (socket) => {
@@ -38,11 +36,7 @@ socketIO.on("connection", (socket) => {
 connectDB();
 app.use(fileupload());
 app.use(express.json());
-// app.use(bodyParser.urlencoded({ extended: false }))
-// app.use(bodyParser.json())l
 
-//advertising router
-// app.set("view engine", "ejs");
 
 app.use("/post", postRouter);
 app.use('/chat',chatRouter)
@@ -50,16 +44,7 @@ app.use('/chat',chatRouter)
 app.use("/users", userRouter);
 app.use(errorHandler);
 
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//       cb(null, 'uploads')
-//   },
-//   filename: (req, file, cb) => {
-//       cb(null, file.fieldname + '-' + Date.now())
-//   }
-// });
 
-// const upload = multer({ storage: storage });
 
 http.listen(process.env.PORT, () => {
   console.log(`${process.env.PORT} listening `);
