@@ -14,6 +14,11 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, "СУРГУУЛИА ОРУУЛНА УУ"],
   },
+  photo: {
+    type: String,
+    required: [true],
+    default: "no-photo.jpeg"
+  },
   level: {
     type: Number,
     required: [true, "ТҮВШНЭЭ ОРУУЛНА УУ"]
