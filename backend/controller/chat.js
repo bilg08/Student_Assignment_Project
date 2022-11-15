@@ -6,9 +6,11 @@ exports.sendChat = asyncHandler(async (req, res, next) => {
     const chatRoomName = req.params.chatRoomName;
     const message = req.body.message;
     const chatRoom = mongoose.model(chatRoomName, ChatSchema);
+    console.log(req.user.email)
     chatRoom.create({
         id: req.user.id,
-        message:message
+        owner:{email:req.user.email},
+        message:message,
     });
     res.status(200).json({
         success: true

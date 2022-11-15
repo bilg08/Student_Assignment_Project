@@ -4,7 +4,6 @@ import { ColasipbleChatBox } from "./chatBox";
 import { io } from 'socket.io-client';
 
 export const UserProfileBox = (request: any) => {
-console.log(request,'request')
 	const [isChatting, setChatting] = useState(false);
 	const [chatRoom, setChatRoom] = useState('');
 	
