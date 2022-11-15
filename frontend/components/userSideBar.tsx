@@ -16,12 +16,13 @@ export const UserSideBar = () => {
 	const [editing, setEditing] = useState(false);
 	const { cActive, setCactive } = useCollectionContext();
 	const isActive = true;
+
 	useEffect(() => {
 		const getPersonalInfo = async () => {
 			const token = getCookie("token");
 
 			try {
-				const datas = await axios.get("http://localhost:8000/users/myInfo", {
+				const datas = await axios.get("http://localhost:8000/users/myInfo",  {
 					headers: {
 						Authorization: token,
 					},
@@ -31,6 +32,8 @@ export const UserSideBar = () => {
 		};
 		getPersonalInfo();
 	}, []);
+
+	console.log(user)
 
 	return (
 		<>

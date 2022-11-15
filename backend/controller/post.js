@@ -1,15 +1,15 @@
 const PostSchema = require("../model/postSchema");
 const UserSchema = require("../model/user");
-const ChatSchema = require('../model/chat')
+const ChatSchema = require("../model/chat");
 const MyError = require("../utils/myError");
 const asyncHandler = require("../middleware/asyncHandler");
 const path = require("path");
 const fs = require("fs");
 const e = require("express");
 const { default: mongoose } = require("mongoose");
+
 exports.getPosts = asyncHandler(async (req, res, next) => {
   const posts = await PostSchema.find();
-
   res.status(200).json({
     success: true,
     data: posts,
@@ -27,7 +27,6 @@ exports.getPost = asyncHandler(async (req, res, next) => {
     data: posts,
   });
 });
-
 
 exports.createPostPhoto = asyncHandler(async (req, res, next) => {
   const post = await PostSchema.findById(req.params.id);
@@ -53,25 +52,23 @@ exports.createPostPhoto = asyncHandler(async (req, res, next) => {
 });
 
 exports.createPost = asyncHandler(async (req, res, next) => {
-  
   const newPost = await PostSchema.create(req.body);
   const file = req.files.file;
   file.name = `photo_${newPost.id}${path.parse(file.name).ext}`;
 
   file.mv(`./images/post/${file.name}`, (err) => {
-    if (err){
+    if (err) {
       console.log(err, "err");
     }
-    console.log('amjilttai')
+    console.log("amjilttai");
   });
   newPost.owner = req.user.id;
   newPost.photo = file.name;
-  newPost.save()
+  newPost.save();
   res.status(200).json({
     success: true,
     data: newPost,
   });
-
 });
 
 exports.deletePost = asyncHandler(async (req, res, next) => {
@@ -91,7 +88,6 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
     new: true,
     runValidators: true,
   });
-  ``;
 
   if (!posts) {
     throw new MyError("not found", 400);
@@ -113,53 +109,64 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
   }
   const postPendingRequest = post.pendingRequest;
   if (postPendingRequest.length === 0) {
-    if(!postOwnerChatRooms.includes(req.user.id)&&!requestedPersonChatRooms.includes(post.owner.toString())) {
+    if (
+      !postOwnerChatRooms.includes(req.user.id) &&
+      !requestedPersonChatRooms.includes(post.owner.toString())
+    ) {
       const chatRoomName = `chatRoom_${req.user.id}_${post.owner.toString()}`;
-      const chatRoom = await mongoose.model(chatRoomName,ChatSchema)
+      const chatRoom = await mongoose.model(chatRoomName, ChatSchema);
       const user = await UserSchema.findById(req.user.id);
-      console.log(chatRoomName)
+      console.log(chatRoomName);
       const newPendingRequest = [
-      ...postPendingRequest,
-      {
-        averageRating: user.averageRating,
-        email: user.email,
-        id: user._id,
-        chatRoomName:chatRoomName
+        ...postPendingRequest,
+        {
+          averageRating: user.averageRating,
+          email: user.email,
+          id: user._id,
+          chatRoomName: chatRoomName,
+        },
+      ];
+      post.pendingRequest = newPendingRequest;
+      post.save();
+      res.status(200).json({
+        success: true,
+        data: post,
+      });
 
-      },
-    ];
-    post.pendingRequest = newPendingRequest;
-    post.save();
-    res.status(200).json({
-      success: true,
-      data: post,
-    });
-
-       await UserSchema.findByIdAndUpdate(req.user.id,{chatRooms:[...requestedPersonChatRooms,chatRoomName]})
-       await UserSchema.findByIdAndUpdate(post.owner,{chatRooms:[...postOwnerChatRooms,chatRoomName]});
+      await UserSchema.findByIdAndUpdate(req.user.id, {
+        chatRooms: [...requestedPersonChatRooms, chatRoomName],
+      });
+      await UserSchema.findByIdAndUpdate(post.owner, {
+        chatRooms: [...postOwnerChatRooms, chatRoomName],
+      });
     }
-
   } else if (postPendingRequest.length > 0) {
     postPendingRequest.map(async (pendingRequest) => {
       if (pendingRequest.id.toString() === req.user.id) {
         throw new MyError("ta ene zart huselt ilgeesen baina", 400);
       }
       const user = await UserSchema.findById(req.user.id);
-      if(!postOwnerChatRooms.includes(req.user.id)&&!requestedPersonChatRooms.includes(post.owner.toString())) {
+      if (
+        !postOwnerChatRooms.includes(req.user.id) &&
+        !requestedPersonChatRooms.includes(post.owner.toString())
+      ) {
         const chatRoomName = `chatRoom_${req.user.id}_${post.owner.toString()}`;
-        const chatRoom = mongoose.model(chatRoomName,ChatSchema)
-        
+        const chatRoom = mongoose.model(chatRoomName, ChatSchema);
 
-         await UserSchema.findByIdAndUpdate(req.user.id,{chatRooms:[...requestedPersonChatRooms,chatRoomName]})
-         await UserSchema.findByIdAndUpdate(post.owner,{chatRooms:[...postOwnerChatRooms,chatRoomName]});
-         
-         const newPendingRequest = [
+        await UserSchema.findByIdAndUpdate(req.user.id, {
+          chatRooms: [...requestedPersonChatRooms, chatRoomName],
+        });
+        await UserSchema.findByIdAndUpdate(post.owner, {
+          chatRooms: [...postOwnerChatRooms, chatRoomName],
+        });
+
+        const newPendingRequest = [
           ...postPendingRequest,
           {
             averageRating: user.averageRating,
             email: user.email,
             id: user._id,
-            chatRoomName
+            chatRoomName,
           },
         ];
         post.pendingRequest = newPendingRequest;
@@ -169,7 +176,6 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
           data: post,
         });
       }
-      
     });
   }
 });
@@ -211,11 +217,10 @@ exports.confirmWorkRequest = asyncHandler(async (req, res, next) => {
   }
 });
 
-
 exports.showPostToBeDone = asyncHandler(async (req, res, next) => {
   const Posts = await PostSchema.find();
   function getPostUserInterested() {
-    let data = []
+    let data = [];
     for (let i = 0; i < Posts.length; i++) {
       for (let j = 0; j < Posts[i].pendingRequest.length; j++) {
         if (Posts[i].pendingRequest[j].email === req.user.email) {
@@ -223,8 +228,8 @@ exports.showPostToBeDone = asyncHandler(async (req, res, next) => {
         }
       }
     }
-    return data
+    return data;
   }
-  let data = getPostUserInterested()
-  res.status(200).json({data})
+  let data = getPostUserInterested();
+  res.status(200).json({ data });
 });
