@@ -6,6 +6,7 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { UserProfileBox } from "./chat/userProfile";
 import { ColasipbleChatBox } from "./chat/chatBox";
+import { Post } from "./ui/post";
 export const ReceivedPosts = () => {
 	const [personalPosts, setPersonalPosts] = useState([
 		{
@@ -82,7 +83,6 @@ export const ReceivedPosts = () => {
 			},
 		},
 	];
-
 	const [chosen, setChosen] = useState(true);
 	const [isChatting, setChatting] = useState(false);
 	const [chatRoom, setChatRoom] = useState("");

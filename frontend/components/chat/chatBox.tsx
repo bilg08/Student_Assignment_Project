@@ -14,8 +14,18 @@ const connectChatServer = () => {
 export const ColasipbleChatBox = ({ chatRoomName }: any) => {
 	const [isSentMessage, setIsSentMessage] = useState(false);
 	const [message, setMessage] = useState("");
-	const [messages, setMessages] = useState([{ message: "", createdAt: "" }]);
+	const [messages, setMessages] = useState([
+		{ message: "", createdAt: "", owner: { email: "" } },
+	]);
 	const listRef = useRef<HTMLElement | any>();
+
+	useEffect(() => {
+		let socket = connectChatServer();
+		socket.emit(`chat message`, message);
+		return () => {
+			socket.disconnect();
+		};
+	}, [isSentMessage]);
 
 	useEffect(() => {
 		let socket = connectChatServer();
@@ -28,13 +38,23 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
 		return () => {
 			socket.disconnect();
 		};
-	}, [isSentMessage]);
+	}, []);
+
 	useEffect(() => {
-		let socket = connectChatServer();
-		socket.emit(`chat message`, message);
-		return () => {
-			socket.disconnect();
-		};
+		async function sendChat() {
+			try {
+				await axios.post(
+					`http://localhost:8000/chat/${chatRoomName}/sendMessage`,
+					{ message },
+					{
+						headers: {
+							authorization: getCookie("token"),
+						},
+					}
+				);
+			} catch (error) {}
+		}
+		if (message !== "" && chatRoomName !== "") sendChat();
 	}, [isSentMessage]);
 
 	useEffect(() => {
@@ -55,32 +75,20 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
 			} catch (error) {}
 		}
 		getMessages();
-	}, [isSentMessage, chatRoomName]);
+	}, [chatRoomName, isSentMessage]);
 
+	useEffect(() => {});
 	function scrollToLastMessage() {
-		let lastChild = listRef.current!.lastChild;
-		lastChild?.scrollIntoView({
+		let lastChild = listRef.current.lastChild;
+		lastChild.scrollIntoView({
 			block: "end",
 			inline: "nearest",
 			behavior: "smooth",
 		});
 	}
-	async function sendChat() {
-		try {
-			await axios.post(
-				`http://localhost:8000/chat/${chatRoomName}/sendMessage`,
-				{ message },
-				{
-					headers: {
-						authorization: getCookie("token"),
-					},
-				}
-			);
-		} catch (error) {}
-	}
 
 	return (
-		<div className='h-48 lg:w-[45vw] md:w-[63vw] sm:w-[40vw] mt-3'>
+		<div className='h-48 w-full'>
 			<div
 				id='convo'
 				className='h-2/3 w-5/6 border border-black rounded-lg
@@ -89,11 +97,7 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
 				<ul ref={listRef}>
 					{messages &&
 						messages.map((message) => {
-							return (
-								<li className='bg-red-500 m-1'>
-									{message.message} {message.createdAt}
-								</li>
-							);
+							return <li className='bg-red-500 m-1'>{message.message}</li>;
 						})}
 				</ul>
 			</div>
@@ -108,10 +112,10 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
 					data={"Send"}
 					prop={"rgb(220, 211, 255)"}
 					ym={async () => {
-						await setIsSentMessage((e) => !e);
-						sendChat();
-
-						setMessage("");
+						if (message !== "" && chatRoomName !== "") {
+							await setIsSentMessage((e) => !e);
+							setMessage("");
+						}
 					}}></PostButton>
 			</div>
 		</div>
