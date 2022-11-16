@@ -22,7 +22,7 @@ export const UserSideBar = () => {
 			const token = getCookie("token");
 
 			try {
-				const datas = await axios.get("http://localhost:8000/users/myInfo",  {
+				const datas = await axios.get("https://backend-leap2-production.up.railway.app/users/myInfo",  {
 					headers: {
 						Authorization: token,
 					},

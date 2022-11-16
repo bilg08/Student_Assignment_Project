@@ -21,7 +21,7 @@ export const ReceivedPosts = () => {
 			const token = getCookie("token");
 			try {
 				const datas = await axios.get(
-					"http://localhost:8000/post/postToBeDone",
+					"https://backend-leap2-production.up.railway.app/post/postToBeDone",
 					{
 						headers: {
 							Authorization: token,
@@ -37,7 +37,7 @@ export const ReceivedPosts = () => {
 		const getPersonalData = async () => {
 			const token = getCookie("token");
 			try {
-				const datas = await axios.get("http://localhost:8000/users/posts", {
+				const datas = await axios.get("https://backend-leap2-production.up.railway.app/users/posts", {
 					headers: {
 						Authorization: token,
 					},
@@ -61,7 +61,7 @@ export const ReceivedPosts = () => {
 				const button: HTMLButtonElement = el.currentTarget;
 				const id = button.value;
 				axios
-					.delete(`http://localhost:8000/post/${id}`)
+					.delete(`https://backend-leap2-production.up.railway.app/post/${id}`)
 					.then(function (response) {
 						console.log(response);
 					});
@@ -166,7 +166,6 @@ export const ReceivedPosts = () => {
 										data={isChatting ? "Дуусгах" : "Харилцах"}
 										prop={"#FDFD96"}
 										ym={async () => {
-											console.log(el.chatRoom,'el.chatRoom')
 											await setChatRoom(el.chatRoom);
 											setChatting(!isChatting);
 										}}

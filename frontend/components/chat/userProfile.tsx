@@ -1,7 +1,6 @@
 import { PostButton } from "../ui/postButton";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ColasipbleChatBox } from "./chatBox";
-import { io } from "socket.io-client";
 
 export const UserProfileBox = (request: any) => {
 	const [isChatting, setChatting] = useState(false);

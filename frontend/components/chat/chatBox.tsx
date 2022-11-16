@@ -6,7 +6,7 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useUserContext } from "../../context";
 const connectChatServer = () => {
-  const socket = io("http://localhost:8000/", {
+  const socket = io("https://backend-leap2-production.up.railway.app/", {
     transports: ["websocket"],
   });
   return socket;
@@ -45,7 +45,7 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
     async function sendChat() {
       try {
         await axios.post(
-          `http://localhost:8000/chat/${chatRoomName}/sendMessage`,
+          `https://backend-leap2-production.up.railway.app/chat/${chatRoomName}/sendMessage`,
           { message },
           {
             headers: {
@@ -62,7 +62,7 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
     async function getMessages() {
       try {
         const data = await axios.get(
-          `http://localhost:8000/chat/${chatRoomName}/getMessages`,
+          `https://backend-leap2-production.up.railway.app/chat/${chatRoomName}/getMessages`,
           {
             headers: {
               authorization: getCookie("token"),
@@ -100,11 +100,11 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
             messages.map((message) => {
               return (
                 <li className={`m-1 flex justify-between w-full`}>
-                  {user.email === message.owner.email ? (
+                  {message.owner&&user.email === message.owner.email ? (
                     <>
                       <span
                         className={`border-2 px-2 relative rounded-xl ${
-                          user.email === message.owner.email
+                          message.owner&& user.email === message.owner.email
                             ? `bg-blue-500 `
                             : "bg-white "
                         }`}>
@@ -117,7 +117,7 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
                       <span></span>
                       <span
                         className={`border-2 px-2 relative rounded-xl ${
-                          user.email === message.owner.email
+                          message.owner&& user.email === message.owner.email
                             ? `bg-blue-500 `
                             : "bg-white "
                         }`}>
