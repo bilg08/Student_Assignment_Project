@@ -6,7 +6,7 @@ import {
 	SeizedSideBar,
 } from "../components/index";
 import { useIsUserLoggedContext } from "../context";
-import { useCollectionContext } from "../context/isActive";
+import { useCollectionContext } from "../context/IsActive";
 import { useWindowWidth } from "../hooks";
 import LoginPage from "./loginPage";
 const UserProfile = () => {

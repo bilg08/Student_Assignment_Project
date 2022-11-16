@@ -1,4 +1,4 @@
-import { useCollectionContext } from "../../context/isActive";
+import { useCollectionContext } from "../../context/IsActive";
 import axios, { Axios } from "axios";
 import { useEffect, useState } from "react";
 import { Shadow } from "../Shadow";

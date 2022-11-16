@@ -1,6 +1,6 @@
 import { PostReceived } from "./ui/postReceived";
 import { PostButton } from "./ui/postButton";
-import { ProfileCard, Button, Chat } from "../components/index";
+import { ProfileCard, Button, Chat } from "./index";
 import { use, useEffect, useState } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
@@ -15,7 +15,9 @@ export const ReceivedPosts = () => {
 			pendingRequest: [{ id: "", averageRating: "", email: "" }],
 		},
 	]);
-	const [postIInterested, setPostIInterested] = useState([{ chatRoom: "",subject:"",detail:"" }]);
+	const [postIInterested, setPostIInterested] = useState([
+		{ chatRoom: "", subject: "", detail: "" },
+	]);
 	useEffect(() => {
 		const getPostIInterested = async () => {
 			const token = getCookie("token");
@@ -37,11 +39,14 @@ export const ReceivedPosts = () => {
 		const getPersonalData = async () => {
 			const token = getCookie("token");
 			try {
-				const datas = await axios.get("https://backend-leap2-production.up.railway.app/users/posts", {
-					headers: {
-						Authorization: token,
-					},
-				});
+				const datas = await axios.get(
+					"https://backend-leap2-production.up.railway.app/users/posts",
+					{
+						headers: {
+							Authorization: token,
+						},
+					}
+				);
 				setPersonalPosts(datas.data.data);
 			} catch (error) {}
 		};
@@ -171,7 +176,11 @@ export const ReceivedPosts = () => {
 										}}
 									/>
 								</div>
-								{isChatting ? <ColasipbleChatBox chatRoomName={chatRoom } /> : <></>}
+								{isChatting ? (
+									<ColasipbleChatBox chatRoomName={chatRoom} />
+								) : (
+									<></>
+								)}
 							</ProfileCard>
 						);
 					})}
