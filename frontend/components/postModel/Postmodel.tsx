@@ -6,6 +6,7 @@ import React from "react";
 import { MyImage } from "../index";
 import { arrayBuffer, json } from "stream/consumers";
 import { getCookie } from "cookies-next";
+import { useIsAgainGetDatas } from "../../context";
 export interface PostModalProps {
   cActive: any;
   setCactive: any;
@@ -17,7 +18,9 @@ export const PostModal: React.FC<PostModalProps> = ({
 }) => {
   const [fileSelected, setFileSelected] = useState<any | null>([]);
   const [createObjectURL, setCreateObjectURL] = useState<any | null>(null);
+  const {setIsAgainGetDatas} = useIsAgainGetDatas()
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    setIsAgainGetDatas(true)
     event.preventDefault();
 
     const formDatas = new FormData();
@@ -33,8 +36,11 @@ export const PostModal: React.FC<PostModalProps> = ({
       data: formDatas,
       headers: { "Content-Type": "multipart/form-data","authorization":getCookie('token')},
     })
-      .then(function (response) {
-        setCactive(false);
+      .then(async function (response) {
+        await setCactive(false);
+    setIsAgainGetDatas(false);
+
+        
       })
       .catch(function (response) {
       });

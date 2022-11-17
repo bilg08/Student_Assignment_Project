@@ -6,7 +6,9 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { UserProfileBox } from "./chat/userProfile";
 import { ColasipbleChatBox } from "./chat/chatBox";
+import { useIsAgainGetDatas } from "../context";
 export const ReceivedPosts = () => {
+	const {isAgainGetDatas} = useIsAgainGetDatas()
 	const [personalPosts, setPersonalPosts] = useState([
 		{
 			subject: "",
@@ -17,36 +19,36 @@ export const ReceivedPosts = () => {
 	]);
 	const [postIInterested, setPostIInterested] = useState([{ chatRoom: "", subject: "", detail: "" }]);
 	useEffect(() => {
-		const getPostIInterested = async () => {
-			const token = getCookie("token");
-			try {
-				const datas = await axios.get(
-					"http://localhost:8000/post/postToBeDone",
-					{
-						headers: {
-							Authorization: token,
-						},
-					}
-				);
-				setPostIInterested(datas.data.data);
-			} catch (error) { }
-		};
-		getPostIInterested();
-	}, []);
+    const getPostIInterested = async () => {
+      const token = getCookie("token");
+      try {
+        const datas = await axios.get(
+          "http://localhost:8000/post/postToBeDone",
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+        setPostIInterested(datas.data.data);
+      } catch (error) {}
+    };
+    getPostIInterested();
+  }, [isAgainGetDatas]);
 	useEffect(() => {
-		const getPersonalData = async () => {
-			const token = getCookie("token");
-			try {
-				const datas = await axios.get("http://localhost:8000/users/posts", {
-					headers: {
-						Authorization: token,
-					},
-				});
-				setPersonalPosts(datas.data.data);
-			} catch (error) { }
-		};
-		getPersonalData();
-	}, []);
+    const getPersonalData = async () => {
+      const token = getCookie("token");
+      try {
+        const datas = await axios.get("http://localhost:8000/users/posts", {
+          headers: {
+            Authorization: token,
+          },
+        });
+        setPersonalPosts(datas.data.data);
+      } catch (error) {}
+    };
+    getPersonalData();
+  }, [isAgainGetDatas]);
 
 	const postedButtonArr = [
 		{

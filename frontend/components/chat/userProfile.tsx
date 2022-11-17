@@ -1,12 +1,14 @@
 import { PostButton } from "../ui/postButton";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ColasipbleChatBox } from "./chatBox";
 import axios from "axios";
 import { getCookie } from "cookies-next";
+import { useIsAgainGetDatas } from "../../context";
 
 export const UserProfileBox = ({request,data}:any) => {
 	const [isChatting, setChatting] = useState(false);
 	const [chatRoom, setChatRoom] = useState("");
+	const { setIsAgainGetDatas, isAgainGetDatas } = useIsAgainGetDatas();
 	if(request.worker){
 		return (
 			<div>
@@ -21,7 +23,8 @@ export const UserProfileBox = ({request,data}:any) => {
 			{isChatting ? <ColasipbleChatBox chatRoomName={chatRoom} /> : <></>}
 			<div className='flex flex-row'>
 				<PostButton
-				ym={async()=>{
+						ym={async () => {
+                        setIsAgainGetDatas(true);
                     await axios({
 						method: "delete",
 						url: `http://localhost:8000/post/${request._id}/removeWorker`,
@@ -30,7 +33,8 @@ export const UserProfileBox = ({request,data}:any) => {
 						},
 						headers: {"authorization":getCookie('token')},
 					  })
-						.then(function (response) {
+						.then(async function (response) {
+                         await setIsAgainGetDatas(false)
 						})
 						.catch(function (response) {
 						});
@@ -63,8 +67,11 @@ export const UserProfileBox = ({request,data}:any) => {
 			{isChatting ? <ColasipbleChatBox chatRoomName={chatRoom} /> : <></>}
 			<div className='flex flex-row'>
 				<PostButton
-				ym={async()=>{
-                    try {
+					ym={async () => {
+                          setIsAgainGetDatas(true);
+						
+						try {
+						
 						axios({
 							method: "post",
 							url: `http://localhost:8000/post/${data._id}/confirmWorkRequest`,
@@ -74,6 +81,7 @@ export const UserProfileBox = ({request,data}:any) => {
 							headers: {"authorization":getCookie('token')},
 						  })
 							.then(function (response) {
+                          setIsAgainGetDatas(false);
 							})
 							.catch(function (response) {
 							});

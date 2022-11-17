@@ -37,6 +37,7 @@ export default function Home() {
     subject: "",
   });
   const [ads, setAds] = useState<adsType[]>([]);
+  const [closeDetailImage, setCloseDetailImage] = useState < Boolean|false>(false);
   const windowWidth = useWindowWidth();
   const [showModal, setShowModal] = useState(false);
   const { isAgainGetDatas } = useIsAgainGetDatas();
@@ -72,6 +73,27 @@ export default function Home() {
     
   };
 
+  const DetailImage = (props: {
+    imageSrc: String;
+  }) => {
+    return (
+      <div
+        style={{ display: selectedAd && closeDetailImage ? "flex" : "none" }}
+        className="w-[100%] h-[150vh] bg-grey/3 backdrop-blur-xl absolute z-10">
+        <button
+          onClick={() => setCloseDetailImage(false)}
+          className="absolute p-5 bg-red-500 rounded">
+          X
+        </button>
+        <div className="w-[100%] h-[auto]">
+          <img
+            style={{ margin: `auto`, width: `auto`, height: "auto" }}
+            src={selectedAd && props.imageSrc}
+          />
+        </div>
+      </div>
+    );
+  };
   const onclick = (el: React.MouseEvent<HTMLButtonElement>) => {
     const button: HTMLButtonElement = el.currentTarget;
     const id = button.value;
@@ -82,6 +104,12 @@ export default function Home() {
 
   return (
     <div className="w-full border-#57534e border-1">
+      <DetailImage
+        imageSrc={
+          selectedAd &&
+          `http://localhost:8000/post/photo/${selectedAd.ad.photo}`
+        }
+      />
       <div className="flex h-40  justify-center flex-col items-center md:flex-row m-auto max-w-screen-xl gap-5">
         <Input
           placeholder="Сургууль"
@@ -113,15 +141,13 @@ export default function Home() {
                         id="dropdownButton"
                         data-dropdown-toggle="dropdown"
                         className="w-10 h-10  inline-block text-gray-500 hover:bg-gray-100  focus:ring-4 focus:outline-none focus:ring-gray-200  rounded-lg text-sm p-1.5"
-                        type="button"
-                      >
+                        type="button">
                         <svg
                           className="w-6 h-6"
                           aria-hidden="true"
                           fill="currentColor"
                           viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                          xmlns="http://www.w3.org/2000/svg">
                           <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path>
                         </svg>
                       </button>
@@ -132,17 +158,12 @@ export default function Home() {
                         onClick={() => {
                           setSelectedAd({ ad, index });
                           setShowModal(true);
-                        }}
-                      >
+                        }}>
                         <h5 className="mb-1 text-xl font-medium text-gray-900 ">
                           {ad.advertisingHeader}
                         </h5>
                         <p className="text-md">{ad.detail}</p>
                         <div className="flex">
-                          <img
-                            style={{ width: `40px`, height: `40px` }}
-                            src={`http://localhost:8000/post/photo/${ad.photo}`}
-                          />
                           <p className="text-gray-500">
                             Зар тавигдсан хугацаа:{ad.createdAt}
                           </p>
@@ -151,8 +172,7 @@ export default function Home() {
                       <button
                         onClick={onclick}
                         value={ad._id}
-                        className="border-[#000] border-[2px] mt-2"
-                      >
+                        className="border-[#000] border-[2px] mt-2">
                         {" "}
                         Hasah(tur zuur hiigeed orhichii){" "}
                       </button>
@@ -181,15 +201,20 @@ export default function Home() {
                       <p className="text-gray-500">
                         Зар тавигдсан хугацаа:{selectedAd.ad.createdAt}
                       </p>
+                      <div className="w-[100%] h-auto bg-red-500">
+                        <img
+                          onClick={() => setCloseDetailImage(true)}
+                          style={{ width: `100%`, height: "100%" }}
+                          src={`http://localhost:8000/post/photo/${selectedAd.ad.photo}`}
+                        />
+                      </div>
                       <Button
-                        onClick={() => requestToDoWork(selectedAd.ad._id)}
-                      >
+                        onClick={() => requestToDoWork(selectedAd.ad._id)}>
                         Хийх
                       </Button>
                       <button
                         onClick={() => setShowModal(false)}
-                        style={{ position: "absolute", top: 0, right: 0 }}
-                      >
+                        style={{ position: "absolute", top: 0, right: 0 }}>
                         X
                       </button>
                     </div>
@@ -206,7 +231,7 @@ export default function Home() {
           {/* Tom delgetsen deer haragdah  zarnii delgerengui  */}
           {selectedAd && windowWidth > 935 && (
             <div className={"w-6/12"}>
-              <div className="absolute">
+              <div className="sticky">
                 <Card>
                   <Card>
                     <h1 className="text-4xl  font-bold">
@@ -218,6 +243,13 @@ export default function Home() {
                     <p className="text-gray-500">
                       Зар тавигдсан хугацаа:{selectedAd.ad.createdAt}
                     </p>
+                    <div className="w-[100%] h-auto bg-red-500">
+                      <img
+                        onClick={() => setCloseDetailImage(true)}
+                        style={{ width: `100%`, height: "100%" }}
+                        src={`http://localhost:8000/post/photo/${selectedAd.ad.photo}`}
+                      />
+                    </div>
                     <Button>Хийх</Button>
                   </Card>
                   <Card>
