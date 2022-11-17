@@ -7,7 +7,6 @@ import { getCookie } from "cookies-next";
 export const UserProfileBox = ({request,data}:any) => {
 	const [isChatting, setChatting] = useState(false);
 	const [chatRoom, setChatRoom] = useState("");
-	console.log({request})
 	if(request.worker){
 		return (
 			<div>
@@ -75,7 +74,6 @@ export const UserProfileBox = ({request,data}:any) => {
 							headers: {"authorization":getCookie('token')},
 						  })
 							.then(function (response) {
-								console.log(response)
 							})
 							.catch(function (response) {
 							});

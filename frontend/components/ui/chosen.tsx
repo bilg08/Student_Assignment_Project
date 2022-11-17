@@ -38,7 +38,6 @@ const buttonArr = [
         axios
           .delete(`http://localhost:8000/post/${id}`)
           .then(function (response) {
-            console.log(response);
           });
       },
     },

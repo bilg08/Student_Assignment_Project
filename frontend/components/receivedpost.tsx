@@ -52,7 +52,7 @@ export const ReceivedPosts = () => {
 		{
 			textValue: "Edit",
 			style: "#C4FAF8",
-			function: () => console.log("edit"),
+			function: () => {}
 		},
 		{
 			textValue: "Delete",
@@ -63,7 +63,6 @@ export const ReceivedPosts = () => {
 				axios
 					.delete(`http://localhost:8000/post/${id}`)
 					.then(function (response) {
-						console.log(response);
 					});
 			},
 		},
@@ -80,7 +79,6 @@ export const ReceivedPosts = () => {
 			textValue: "Cancel",
 			style: "#FFABAB",
 			function: () => {
-				console.log("canceled");
 			},
 		},
 	];
@@ -101,7 +99,6 @@ export const ReceivedPosts = () => {
 			{chosen ? (
 				<div className='overscroll-y-none  flex-col flex items-center pb-[100px]'>
 					{personalPosts.map((el, ind) => {
-						console.log(el)
 						return (
 							<ProfileCard key={ind}>
 								<PostReceived

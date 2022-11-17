@@ -13,7 +13,7 @@ export const Post: React.FC<PostListProps> = ({ data }) => {
     {
       textValue: "Edit",
       style: "#C4FAF8",
-      function: () => console.log("edit"),
+      function: () => {},
     },
     {
       textValue: "Delete",
@@ -24,7 +24,6 @@ export const Post: React.FC<PostListProps> = ({ data }) => {
         axios
           .delete(`http://localhost:8000/post/${id}`)
           .then(function (response) {
-            console.log(response);
           });
       },
     },
