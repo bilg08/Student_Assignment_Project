@@ -6,7 +6,7 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useUserContext } from "../../context";
 const connectChatServer = () => {
-  const socket = io("https://backend-leap2-production.up.railway.app/", {
+  const socket = io("http://localhost:8000/", {
     transports: ["websocket"],
   });
   return socket;
@@ -45,7 +45,7 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
     async function sendChat() {
       try {
         await axios.post(
-          `https://backend-leap2-production.up.railway.app/chat/${chatRoomName}/sendMessage`,
+          `http://localhost:8000/chat/${chatRoomName}/sendMessage`,
           { message },
           {
             headers: {
@@ -62,7 +62,7 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
     async function getMessages() {
       try {
         const data = await axios.get(
-          `https://backend-leap2-production.up.railway.app/chat/${chatRoomName}/getMessages`,
+          `http://localhost:8000/chat/${chatRoomName}/getMessages`,
           {
             headers: {
               authorization: getCookie("token"),

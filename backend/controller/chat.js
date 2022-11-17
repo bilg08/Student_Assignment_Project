@@ -17,7 +17,6 @@ exports.sendChat = asyncHandler(async (req, res, next) => {
 });
 
 exports.getChats = asyncHandler(async (req, res, next) => {
-    console.log('kkasfss')
     const chatRoomName = req.params.chatRoomName;
     const chatRoom = mongoose.model(chatRoomName, ChatSchema);
     const data = await chatRoom.find()

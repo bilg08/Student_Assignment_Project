@@ -43,7 +43,7 @@ export default function Home() {
   useEffect(() => {
     async function getData() {
       try {
-        const datas = await axios.get("https://backend-leap2-production.up.railway.app/post");
+        const datas = await axios.get("http://localhost:8000/post");
         setAds(datas.data.data);
       } catch (error) {}
     }
@@ -61,7 +61,7 @@ export default function Home() {
         data:{
           id
         },
-        url: `https://backend-leap2-production.up.railway.app/post/${id}/work`,
+        url: `http://localhost:8000/post/${id}/work`,
         headers: {"authorization":getCookie('token')
       },
       })
@@ -75,7 +75,7 @@ export default function Home() {
   const onclick = (el: React.MouseEvent<HTMLButtonElement>) => {
     const button: HTMLButtonElement = el.currentTarget;
     const id = button.value;
-    axios.delete(`https://backend-leap2-production.up.railway.app/post/${id}`).then(function (response) {
+    axios.delete(`http://localhost:8000/post/${id}`).then(function (response) {
     });
   };
   const memoizedCard = useMemo(() => {}, []);
@@ -141,7 +141,7 @@ export default function Home() {
                         <div className="flex">
                           <img
                             style={{ width: `40px`, height: `40px` }}
-                            src={`https://backend-leap2-production.up.railway.app/post/photo/${ad.photo}`}
+                            src={`http://localhost:8000/post/photo/${ad.photo}`}
                           />
                           <p className="text-gray-500">
                             Зар тавигдсан хугацаа:{ad.createdAt}

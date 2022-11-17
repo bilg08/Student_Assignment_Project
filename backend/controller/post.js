@@ -58,9 +58,7 @@ exports.createPost = asyncHandler(async (req, res, next) => {
 
   file.mv(`./images/post/${file.name}`, (err) => {
     if (err) {
-      console.log(err, "err");
     }
-    console.log("amjilttai");
   });
   newPost.owner = req.user.id;
   newPost.photo = file.name;
@@ -94,7 +92,7 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
   }
 });
 
-exports.addToWorkers = asyncHandler(async (req, res, next) => {
+exports.requestToWorkInThePost = asyncHandler(async (req, res, next) => {
   const post = await PostSchema.findById(req.params.id);
   const postOwner = await UserSchema.findById(post.owner);
   const requestedPerson = await UserSchema.findById(req.user.id);
@@ -117,8 +115,6 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
       const chatRoom = await mongoose.model(chatRoomName, ChatSchema);
       const user = await UserSchema.findById(req.user.id);
 
-      console.log(chatRoomName);
-
       const newPendingRequest = [
         ...postPendingRequest,
         {
@@ -126,6 +122,7 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
           email: user.email,
           id: user._id,
           chatRoomName: chatRoomName,
+          takeRequestToBeConfirmed:false
         },
       ];
       post.pendingRequest = newPendingRequest;
@@ -203,6 +200,7 @@ exports.confirmWorkRequest = asyncHandler(async (req, res, next) => {
           post.worker.averageRating = worker.averageRating;
           post.worker.id = worker.id;
           post.worker.email = worker.email;
+          post.worker.chatRoomName = request.chatRoomName
           post.save();
           res.status(200).json({
             success: true,
@@ -210,7 +208,8 @@ exports.confirmWorkRequest = asyncHandler(async (req, res, next) => {
           });
         }
       });
-    } else {
+    } 
+    else {
       res.status(400).json({
         error: `${post.worker.id} tai hund ta ene zariig ogson baina`,
       });
@@ -241,4 +240,23 @@ exports.showPostToBeDone = asyncHandler(async (req, res, next) => {
   }
   let data = getPostUserInterested();
   res.status(200).json({ data });
+});
+
+
+exports.removeWorkerFromPost = asyncHandler(async (req, res, next) => {
+  const post = await PostSchema.findById(req.params.id)
+ const user = await UserSchema.findById(req.body.workerId)
+ if(post.owner.toString()===req.user.id){
+   if(user._id.toString()===post.worker.id){
+    post.worker.averageRating=0;
+    post.worker.chatRoomName="";
+    post.worker.email="";
+    post.worker.id="",
+    post.save()
+    res.status(200).json({
+      data:{post}
+     })
+   }
+ }
+  
 });

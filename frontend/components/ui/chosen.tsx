@@ -15,19 +15,19 @@ const buttonArr = [
     {
       textValue: "Submit",
       style: "#BFFCC6",
-      function: () => console.log("submit"),
+      function: () => {},
     },
     {
       textValue: "Cancel",
       style: "#FFABAB",
-      function: () => console.log("cancel"),
+      function: () => {},
     },
   ];
   const postedButtonArr = [
     {
       textValue: "Edit",
       style: "#C4FAF8",
-      function: () => console.log("edit"),
+      function: () =>{},
     },
     {
       textValue: "Delete",
@@ -36,7 +36,7 @@ const buttonArr = [
         const button: HTMLButtonElement = el.currentTarget;
         const id = button.value;
         axios
-          .delete(`https://backend-leap2-production.up.railway.app/post/${id}`)
+          .delete(`http://localhost:8000/post/${id}`)
           .then(function (response) {
             console.log(response);
           });
@@ -47,7 +47,6 @@ const buttonArr = [
 
 
 export const Chosen: React.FC<ChosenListProps> = ({ chosen, personalPosts,  }) => {
-    console.log(personalPosts)
 	return (
 		
             <div className="overscroll-y-none  flex-col flex items-center pb-[100px]">

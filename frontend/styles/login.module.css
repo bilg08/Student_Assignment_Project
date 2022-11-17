@@ -7,7 +7,7 @@
     background: linear-gradient(to bottom, #f1f4f9, #dff1ff);
 }
 .color{
-    position: absolute;
+    position: relative;
     filter: blur(150px);
 }
 .color1{
