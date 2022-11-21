@@ -5,8 +5,7 @@ import {
 	ReceivedPosts,
 	SeizedSideBar,
 } from "../components/index";
-import { useIsUserLoggedContext } from "../context";
-import { useCollectionContext } from "../context/IsActive";
+import { useIsUserLoggedContext, useCollectionContext } from "../context/index";
 import { useWindowWidth } from "../hooks";
 import LoginPage from "./loginPage";
 const UserProfile = () => {
