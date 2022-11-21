@@ -1,16 +1,18 @@
-import { createContext, ReactNode, useContext, useState } from "react";
-
+import axios from "axios";
+import { deleteCookie, getCookie } from "cookies-next";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 type Props = {
   children: ReactNode;
 };
 
 interface UserContextInterface {
   user: {
-    LastName: String;
-    FirstName: String;
-    School: String;
-      level: String;
-    email:String
+    LastName: string;
+    FirstName: string;
+    School: string;
+      level: string;
+    email: string;
+    _id:string
   };
   setUser: (_val: any) => void;
 }
@@ -21,7 +23,8 @@ export const UserContext = createContext<UserContextInterface>({
     FirstName: "",
     School: "",
         level: "",
-    email:""
+    email: "",
+    _id:""
   },
   setUser: (val: any) => {},
 });
@@ -33,8 +36,11 @@ export const UserContextProvider = ({ children }: Props) => {
     FirstName: "",
     School: "",
       level: "",
-    email:""
+    email: "",
+    _id:""
+    
   });
+
   return (
     <UserContext.Provider
       value={{

@@ -2,11 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import { Input, Button, Card, Shadow } from "../components/index";
 import { AiOutlineSearch } from "react-icons/ai";
 import { MdLocationOn } from "react-icons/md";
-
-import { useSelectedContext } from "../context/index";
+import { useSelectedContext, useIsAgainGetDatas,useUserContext } from "../context/index";
 import { useWindowWidth } from "../hooks/index";
+import { useModalContext} from '../context/index'
 import axios from "axios";
-import { useIsAgainGetDatas } from "../context/AgainGetAllDatas";
 import { getCookie } from "cookies-next";
 type adsType = {
 	_id: string | number | readonly string[] | undefined;
@@ -27,19 +26,27 @@ type userInputType = {
 
 export default function Home() {
 	const { selectedAd, setSelectedAd } = useSelectedContext();
+	const { user } = useUserContext();
 	const [userInput, setUserInput] = useState<userInputType | object>({
 		school: "",
 		subject: "",
 	});
+	const {setModalText,setOpenModal} = useModalContext()
+	// console.log(user.email,'user')
 	const [ads, setAds] = useState<adsType[]>([]);
 	const windowWidth = useWindowWidth();
 	const [showModal, setShowModal] = useState(false);
 	const { isAgainGetDatas } = useIsAgainGetDatas();
+				console.log(user);
+
 	useEffect(() => {
 		async function getData() {
 			try {
 				const datas = await axios.get("http://localhost:8000/post");
-				setAds(datas.data.data);
+				const posts = datas.data.data.filter((post: { owner: { email: String; }; }) => {
+					return post.owner.toString()!==user._id.toString()
+				});
+				setAds(posts);
 			} catch (error) {}
 		}
 		getData();
@@ -48,6 +55,7 @@ export default function Home() {
 	const handleSearch = () => {};
 
 	const requestToDoWork = async (id: String) => {
+		console.log('kk')
 		const token = getCookie("token");
 		await axios({
 			method: "post",
@@ -57,8 +65,14 @@ export default function Home() {
 			url: `http://localhost:8000/post/${id}/work`,
 			headers: { authorization: getCookie("token") },
 		})
-			.then(function (response) {})
-			.catch(function (response) {});
+			.then(function (response) {
+				console.log(response)
+			})
+			.catch(async function (error) {
+				console.log(error)
+				await setModalText(error.response.data.data);
+				setOpenModal(true)
+			});
 	};
 
 	const onclick = (el: React.MouseEvent<HTMLButtonElement>) => {

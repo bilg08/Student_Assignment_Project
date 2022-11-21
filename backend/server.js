@@ -25,8 +25,8 @@ const socketIO = require("socket.io")(http, {
 });
 
 socketIO.on("connection", (socket) => {
-  socket.on("chat message", (msg) => {
-    socketIO.emit("chat message", msg);
+  socket.onAny((type,msg) => {
+    socketIO.emit(type, msg);
   });
   socket.on("disconnect", (socket) => {
     console.log("userDisconnected");

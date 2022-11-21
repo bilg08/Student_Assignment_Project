@@ -4,8 +4,8 @@ export * from './Footer';
 export * from './Input';
 export * from './Button';
 export * from './Card';
-export * from './UserSideBar';
-export * from './Receivedpost';
+export * from './userSideBar';
+export * from './receivedpost';
 export * from './postModel/Postmodel';
 export * from './ui/menuList';
 export * from "./ui/menuList2";
@@ -15,8 +15,9 @@ export * from './ui/postReceived';
 export * from './ui/postButton';
 export * from './ui/siderBarBox';
 export * from './ui/myImage';
-export * from './ProfileCard';
-export * from './Chat'
+export * from './profileCard';
+export * from './chat';
+export * from './modal'
 
 
 

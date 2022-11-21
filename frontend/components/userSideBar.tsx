@@ -5,10 +5,9 @@ import {
 	SidebarBox2,
 	ColasipbleSidebarBox,
 } from "./index";
-import { deleteCookie } from "cookies-next";
+import { deleteCookie,getCookie } from "cookies-next";
 import { useCollectionContext, useUserContext } from "../context/index";
 import { useEffect, useState } from "react";
-import { getCookie } from "cookies-next";
 import axios from "axios";
 
 export const UserSideBar = () => {
@@ -20,14 +19,12 @@ export const UserSideBar = () => {
 	useEffect(() => {
 		const getPersonalInfo = async () => {
 			const token = getCookie("token");
-
 			try {
 				const datas = await axios.get("http://localhost:8000/users/myInfo", {
 					headers: {
 						Authorization: token,
 					},
 				});
-				console.log(datas.data);
 				setUser(datas.data.data);
 			} catch (error) {}
 		};

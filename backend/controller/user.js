@@ -20,6 +20,7 @@ exports.login = asyncHandler(async (req, res) => {
     const token = user.getJsonWebToken();
     res.status(200).json({
       token,
+      data:user
     });
   }
 });
