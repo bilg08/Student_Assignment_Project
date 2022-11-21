@@ -57,7 +57,7 @@ export const PostModal: React.FC<PostModalProps> = ({
 
 		axios({
 			method: "post",
-			url: "https://backend-leap2-production.up.railway.app/post",
+			url: "http://localhost:8000/post",
 			data: formDatas,
 			headers: {
 				"Content-Type": "multipart/form-data",
