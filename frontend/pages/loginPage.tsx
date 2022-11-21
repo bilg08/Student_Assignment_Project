@@ -25,12 +25,16 @@ const LoginPage = () => {
 	}
 
 	async function signUp() {
-		await axios
-			.post("http://localhost:8000/users/register", userInput)
-			.then(async (response) => {
-				await setCookie("token", response.data.token);
-				location.reload();
-			});
+		try {
+			await axios
+				.post("http://localhost:8000/users/register", userInput)
+				.then(async (response) => {
+					await setCookie("token", response.data.token);
+					location.reload();
+				});
+		} catch (error) {
+			console.log(error?.response.data.error)
+		}
 	}
 	return (
 		<div className={loginStyles.section}>
@@ -136,6 +140,7 @@ const LoginPage = () => {
 										name='School'
 										id=''
 										onChange={takeUserInput}>
+										<option value=''>Сургууль</option>
 										<option value='NUM'>NUM</option>
 										<option value='UFE'>UFE</option>
 										<option value='MUST'>MUST</option>
