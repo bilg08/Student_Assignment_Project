@@ -32,6 +32,10 @@ const PostSchema = new mongoose.Schema({
       email:""
     }
   },
+  school: {
+    type: String,
+    required:true
+  },
   pendingRequest: {
     type: [{
       id:String,

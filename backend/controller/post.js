@@ -1,23 +1,48 @@
 const PostSchema = require("../model/postSchema");
 const UserSchema = require("../model/user");
-const ChatSchema = require('../model/chat');
+const ChatSchema = require("../model/chat");
 const MyError = require("../utils/myError");
 const asyncHandler = require("../middleware/asyncHandler");
 const path = require("path");
 const fs = require("fs");
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 exports.getPosts = asyncHandler(async (req, res, next) => {
   const { userid } = req.headers;
-  let posts = await PostSchema.find();
+  const limit = parseInt(req.query.limit) || 5;
+  const page = parseInt(req.query.page) || 1;
+  const total = await PostSchema.countDocuments() || 1;
+  const pageCount = Math.ceil(total / limit - 1) || 1;
+  let startCount = (page - 1) * limit + 1 || 1;
+  let endCount = startCount + limit - 1 || 1;
+
+  if (pageCount < page) {
+    startCount = 0;
+  } else if (page < 0) {
+    startCount = 0;
+  }
+  const pagination = {
+    startCount,
+    limit,
+    page,
+    total,
+    pageCount,
+    endCount,
+  };
+
+  let posts = await PostSchema.find()
+    .limit(parseInt(limit))
+    .skip(startCount - 1);
+
   if (userid !== null || userid !== undefined) {
-    posts = posts.filter(post => {
-      return post.owner.toString() !== userid
-    })
+    posts = posts.filter((post) => {
+      return post.owner.toString() !== userid;
+    });
   }
   res.status(200).json({
     success: true,
     data: posts,
+    pagination,
   });
 });
 
@@ -63,7 +88,6 @@ exports.createPost = asyncHandler(async (req, res, next) => {
   file.mv(`./images/post/${file.name}`, (err) => {
     if (err) {
     }
-    console.log("amjilttai");
   });
   newPost.owner = req.user.id;
   newPost.photo = file.name;
@@ -98,7 +122,7 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
 });
 
 exports.addToWorkers = asyncHandler(async (req, res, next) => {
-  console.log('addToWorkers')
+  console.log("addToWorkers");
   const post = await PostSchema.findById(req.params.id);
   const postOwner = await UserSchema.findById(post.owner);
   const requestedPerson = await UserSchema.findById(req.user.id);
@@ -107,52 +131,51 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
 
   function isUserExistedInPendingRequest() {
     let isExist;
-    post.pendingRequest.map(el => {
-      if(el.id!==req.user.id) {
+    post.pendingRequest.map((el) => {
+      if (el.id !== req.user.id) {
         isExist = false;
-        return 
+        return;
       }
       isExist = true;
-      return isExist
-    })
+      return isExist;
+    });
   }
-  isUserExistedInPendingRequest()
-  if (isUserExistedInPendingRequest()|| post.pendingRequest.length === 0) {
+  isUserExistedInPendingRequest();
+  if (isUserExistedInPendingRequest() || post.pendingRequest.length === 0) {
     if (post.owner.toString() !== req.user.id) {
       const chatRoomName = `chatRoom_${req.user.id}_${post.owner.toString()}`;
-     
-        await mongoose.model(chatRoomName, ChatSchema);
-        const user = await UserSchema.findById(req.user.id);
-        const postPendingRequest = post.pendingRequest;
-        const newPendingRequest = [
-          ...postPendingRequest,
-          {
-            averageRating: user.averageRating,
-            email: user.email,
-            id: user._id,
-            chatRoomName: chatRoomName,
-          },
-        ];
-        await UserSchema.findByIdAndUpdate(req.user.id, {
-          chatRooms: [...requestedPersonChatRooms, chatRoomName],
-        });
-        await UserSchema.findByIdAndUpdate(post.owner, {
-          chatRooms: [...postOwnerChatRooms, chatRoomName],
-        });
-        post.pendingRequest = newPendingRequest;
-        post.save();
-        res.status(200).json({
-          success: true,
-          data: post,
-        });
-      } 
-  }else {
+
+      await mongoose.model(chatRoomName, ChatSchema);
+      const user = await UserSchema.findById(req.user.id);
+      const postPendingRequest = post.pendingRequest;
+      const newPendingRequest = [
+        ...postPendingRequest,
+        {
+          averageRating: user.averageRating,
+          email: user.email,
+          id: user._id,
+          chatRoomName: chatRoomName,
+        },
+      ];
+      await UserSchema.findByIdAndUpdate(req.user.id, {
+        chatRooms: [...requestedPersonChatRooms, chatRoomName],
+      });
+      await UserSchema.findByIdAndUpdate(post.owner, {
+        chatRooms: [...postOwnerChatRooms, chatRoomName],
+      });
+      post.pendingRequest = newPendingRequest;
+      post.save();
+      res.status(200).json({
+        success: true,
+        data: post,
+      });
+    }
+  } else {
     res.status(400).json({
       success: false,
-      data: 'ta ene zarand huselt ilgeesen baina',
+      data: "ta ene zarand huselt ilgeesen baina",
     });
-}
-
+  }
 });
 
 exports.getPostPhoto = asyncHandler(async (req, res, next) => {
@@ -198,14 +221,13 @@ exports.showPostToBeDone = asyncHandler(async (req, res, next) => {
     for (let i = 0; i < Posts.length; i++) {
       for (let j = 0; j < Posts[i].pendingRequest.length; j++) {
         if (Posts[i].pendingRequest[j].email === req.user.email) {
-
           data.push({
             subject: Posts[i].subject,
             advertisingHeader: Posts[i].advertisingHeader,
             photo: Posts[i].photo,
             price: Posts[i].price,
             detail: Posts[i].detail,
-            chatRoom: Posts[i].pendingRequest[j].chatRoomName
+            chatRoom: Posts[i].pendingRequest[j].chatRoomName,
           });
         }
       }
