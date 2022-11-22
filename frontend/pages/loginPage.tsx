@@ -21,8 +21,8 @@ const LoginPage = () => {
 		await axios
 			.post("http://localhost:8000/users/login", userInput)
 			.then(async (response) => {
-				
-					await setUser(response.data.data);
+				await setUser(response.data.data);
+				setCookie('userId',response.data.data._id)
 				await setCookie("token", response.data.token);
 				await setIsAgainGetDatas((e:any) => !e);
 				
@@ -37,6 +37,7 @@ const LoginPage = () => {
 				.then(async (response) => {
 					await setUser(response.data.data);
 					await setCookie("token", response.data.token);
+					setCookie('userId',response.data.data._id)
 					await setIsAgainGetDatas((e:any)=>!e)
 					setIsLoggedIn(true);
 				});

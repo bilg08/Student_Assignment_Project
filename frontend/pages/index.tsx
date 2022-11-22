@@ -37,25 +37,31 @@ export default function Home() {
 	const windowWidth = useWindowWidth();
 	const [showModal, setShowModal] = useState(false);
 	const { isAgainGetDatas } = useIsAgainGetDatas();
-				console.log(user);
-
 	useEffect(() => {
+		const token = getCookie('userId')
 		async function getData() {
-			try {
-				const datas = await axios.get("http://localhost:8000/post");
-				const posts = datas.data.data.filter((post: { owner: { email: String; }; }) => {
-					return post.owner.toString()!==user._id.toString()
+			await axios({
+				method: "get",
+				url: "http://localhost:8000/post",
+				headers: {
+					userId: token,
+				},
+			})
+				.then(async function (response) {
+					setAds(response.data.data)
+				})
+				.catch(function (response) {
+					console.log(response);
+	
 				});
-				setAds(posts);
-			} catch (error) {}
-		}
+		};
+		
 		getData();
 	}, [isAgainGetDatas]);
 	//TO-DO
 	const handleSearch = () => {};
 
 	const requestToDoWork = async (id: String) => {
-		console.log('kk')
 		const token = getCookie("token");
 		await axios({
 			method: "post",
@@ -65,11 +71,12 @@ export default function Home() {
 			url: `http://localhost:8000/post/${id}/work`,
 			headers: { authorization: getCookie("token") },
 		})
-			.then(function (response) {
-				console.log(response)
+			.then(async function (response) {
+				await setModalText('amjilttai');
+				setOpenModal(true)
 			})
 			.catch(async function (error) {
-				console.log(error)
+				console.log(error.response.data)
 				await setModalText(error.response.data.data);
 				setOpenModal(true)
 			});
