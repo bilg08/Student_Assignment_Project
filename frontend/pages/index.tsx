@@ -26,13 +26,11 @@ type userInputType = {
 
 export default function Home() {
 	const { selectedAd, setSelectedAd } = useSelectedContext();
-	const { user } = useUserContext();
 	const [userInput, setUserInput] = useState<userInputType | object>({
 		school: "",
 		subject: "",
 	});
 	const {setModalText,setOpenModal} = useModalContext()
-	// console.log(user.email,'user')
 	const [ads, setAds] = useState<adsType[]>([]);
 	const windowWidth = useWindowWidth();
 	const [showModal, setShowModal] = useState(false);
@@ -69,7 +67,7 @@ export default function Home() {
 				id,
 			},
 			url: `http://localhost:8000/post/${id}/work`,
-			headers: { authorization: getCookie("token") },
+			headers: { authorization: token },
 		})
 			.then(async function (response) {
 				await setModalText('amjilttai');
@@ -89,7 +87,6 @@ export default function Home() {
 			.delete(`http://localhost:8000/post/${id}`)
 			.then(function (response) {});
 	};
-	const memoizedCard = useMemo(() => {}, []);
 
 	return (
 		<div className='w-full border-#57534e border-1'>
@@ -225,7 +222,9 @@ export default function Home() {
 										<p className='text-gray-500'>
 											Зар тавигдсан хугацаа:{selectedAd.ad.createdAt}
 										</p>
-										<Button>Хийх</Button>
+										<Button
+										onClick={() => requestToDoWork(selectedAd.ad._id)}
+										>Хийх</Button>
 									</Card>
 									<Card>
 										<p>{selectedAd.ad.detail}</p>
