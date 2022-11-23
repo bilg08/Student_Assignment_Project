@@ -15,6 +15,8 @@ export const ReceivedPosts = () => {
 			pendingRequest: [{ id: "", averageRating: "", email: "" }],
 		},
 	]);
+
+	const [loading, setLoading] = useState(false);
 	const [postIInterested, setPostIInterested] = useState([
 		{ chatRoom: "", subject: "", detail: "" },
 	]);
@@ -22,6 +24,7 @@ export const ReceivedPosts = () => {
 		const getPostIInterested = async () => {
 			const token = getCookie("token");
 			try {
+				setLoading(true);
 				const datas = await axios.get(
 					"http://localhost:8000/post/postToBeDone",
 					{
@@ -31,7 +34,11 @@ export const ReceivedPosts = () => {
 					}
 				);
 				setPostIInterested(datas.data.data);
-			} catch (error) {}
+			} catch (error) {
+				console.log(error);
+			} finally {
+				setLoading(false);
+			}
 		};
 		getPostIInterested();
 	}, []);
@@ -39,13 +46,18 @@ export const ReceivedPosts = () => {
 		const getPersonalData = async () => {
 			const token = getCookie("token");
 			try {
+				setLoading(true);
 				const datas = await axios.get("http://localhost:8000/users/posts", {
 					headers: {
 						Authorization: token,
 					},
 				});
 				setPersonalPosts(datas.data.data);
-			} catch (error) {}
+			} catch (error) {
+				console.log(error);
+			} finally {
+				setLoading(false);
+			}
 		};
 		getPersonalData();
 	}, []);
@@ -98,9 +110,11 @@ export const ReceivedPosts = () => {
 					{chosen ? "Хүлээн авсан зар" : "Миний зар"}
 				</Button>
 			</div>
-			{chosen ? (
+
+			{loading && <h1>LOADING ...</h1>}
+			{chosen && !loading ? (
 				<div className='overscroll-y-none  flex-col flex items-center pb-[100px]'>
-					{personalPosts.map((el, ind) => {
+					{personalPosts?.map((el, ind) => {
 						return (
 							<ProfileCard key={ind}>
 								<PostReceived
