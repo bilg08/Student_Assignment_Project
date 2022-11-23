@@ -8,12 +8,12 @@ const fs = require("fs");
 const mongoose = require("mongoose");
 
 exports.getPosts = asyncHandler(async (req, res, next) => {
-  const { userid } = req.headers;
   const limit = parseInt(req.query.limit) || 5;
   const page = parseInt(req.query.page) || 1;
-  const total = await PostSchema.countDocuments() || 1;
+  const { subject, school } = req.query;
+  const total = (await PostSchema.countDocuments()) || 1;
   const pageCount = Math.ceil(total / limit - 1) + 1 || 1;
-  let startCount = (page - 1) * limit  || 1;
+  let startCount = (page - 1) * limit || 1;
   if (pageCount < page) {
     startCount = 0;
   } else if (page < 0) {
@@ -27,12 +27,24 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
     pageCount,
   };
 
-  let posts = await PostSchema.find()
+  let posts = await PostSchema.aggregate([
+    { $match: { school: school } },
+    { $match: { subject: subject } },
+  ])
     .limit(parseInt(limit))
     .skip(startCount - 1);
-  
+
+  if (posts.length === 0) {
+    res.status(200).json({
+      status: false,
+      data: await PostSchema.find()
+        .limit(parseInt(limit))
+        .skip(startCount - 1),
+      pagination,
+    });
+  }
   res.status(200).json({
-    success: true,
+    status: false,
     data: posts,
     pagination,
   });
@@ -114,7 +126,6 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
 });
 
 exports.addToWorkers = asyncHandler(async (req, res, next) => {
-  console.log("addToWorkers");
   const post = await PostSchema.findById(req.params.id);
   const postOwner = await UserSchema.findById(post.owner);
   const requestedPerson = await UserSchema.findById(req.user.id);
