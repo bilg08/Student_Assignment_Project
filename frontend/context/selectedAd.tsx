@@ -8,6 +8,8 @@ export const SelectedAdContext = createContext<SelectedAdContextType>({
         name: "",
       },
       _id:"",
+      photo:"",
+      price:"",
       advertisingHeader:"",
       createdAt: "",
       detail:""

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { UserProfileBox } from "../chat/UserProfile";
+import { UserProfileBox } from "../chat/userProfile";
 import { PostButton } from "./postButton";
 import {
 	ReactElement,

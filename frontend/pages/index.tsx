@@ -26,13 +26,13 @@ type adsType = {
 };
 
 type userInputType = {
-  subject: String | "subject";
-  school: String | "school";
+  subject: string ;
+  school: string ;
 };
 
 export default function Home() {
   const { selectedAd, setSelectedAd } = useSelectedContext();
-  const [userInput, setUserInput] = useState<userInputType | object>({
+  const [userInput, setUserInput] = useState<userInputType>({
     school: "",
     subject: "",
   });
@@ -40,7 +40,7 @@ export default function Home() {
   const [ads, setAds] = useState<adsType[]>([]);
   const windowWidth = useWindowWidth();
   const [showModal, setShowModal] = useState(false);
-  const { isAgainGetDatas } = useIsAgainGetDatas();
+  const { isAgainGetDatas,setIsAgainGetDatas } = useIsAgainGetDatas();
   const [page, setPage] = useState<number>(1);
   const [pagination, setPagination] = useState({ pageCount: 0 });
   const [closeDetailImage, setCloseDetailImage] = useState<Boolean | false>(
@@ -51,13 +51,14 @@ export default function Home() {
     async function getData() {
       await axios({
         method: "get",
-        url: `http://localhost:8000/post/?page=${page}`,
+        url: `http://localhost:8000/post/?page=${page}&school=${userInput.school}&subject=${userInput.subject}`,
         headers: {
           userId: token,
         },
       })
         .then(async function (response) {
           setAds(response.data.data);
+          console.log(response)
           setPagination(response.data.pagination);
         })
         .catch(function (response) {
@@ -68,7 +69,9 @@ export default function Home() {
     getData();
   }, [isAgainGetDatas,page]);
   //TO-DO
-  const handleSearch = () => {};
+  const handleSearch = () => {
+    setIsAgainGetDatas((e:boolean)=>!e)
+  };
 
   const requestToDoWork = async (id: String) => {
     const token = getCookie("token");
@@ -85,7 +88,6 @@ export default function Home() {
         setOpenModal(true);
       })
       .catch(async function (error) {
-        console.log(error.response.data);
         await setModalText(error.response.data.data);
         setOpenModal(true);
       });

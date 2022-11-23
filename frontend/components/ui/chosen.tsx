@@ -7,8 +7,8 @@ import {
 	Key,
 	MouseEventHandler,
 } from "react";
-import { UserProfileBox } from "../chat/UserProfile";
-import { ProfileCard } from "../ProfileCard";
+import { UserProfileBox } from "../chat/userProfile";
+import { ProfileCard } from "../profileCard";
 import { PostButton } from "./postButton";
 import { PostReceived } from "./postReceived";
 
