@@ -56,6 +56,8 @@ export const PostModal: React.FC<PostModalProps> = ({
 		formDatas.append("detail", event.currentTarget.second.value);
 		formDatas.append("price", event.currentTarget.third.value);
 		formDatas.append("subject", subjectRef.current.value);
+		formDatas.append("school", school);
+
 		formDatas.append("file", fileSelected);
 		
 	await axios({
@@ -149,7 +151,6 @@ export const PostModal: React.FC<PostModalProps> = ({
           </label>
           <div className="relative">
             <select
-              ref={subjectRef}
               className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-state"
               name="fourth"
@@ -189,6 +190,7 @@ export const PostModal: React.FC<PostModalProps> = ({
               <select
                 className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="grid-state"
+                ref={subjectRef}
                 name="fourth">
                 {schoolLessons.map((el) => {
                   return <option>{el}</option>;

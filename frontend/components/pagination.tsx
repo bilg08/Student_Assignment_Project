@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useEffect } from "react";
 
 
 export const Pagination = (props:PaginationType) => {
-  const {pagination,setPage,page} = props
+  const {pagination,setPage,page} = props;
   function makePageCountArray() {
     let array = [];
     for (let i = 0; i < pagination.pageCount; i++) {
@@ -55,11 +55,16 @@ export const Pagination = (props:PaginationType) => {
                 onClick={() => setPage(pageCount)}
                 href="#"
                 aria-current="page"
-                className="relative z-10 inline-flex items-center border border-indigo-500 bg-indigo-50 px-4 py-2 text-sm font-medium text-indigo-600 focus:z-20"
-                style={{ background: pageCount === page ? "blue" : "" }}>
+                className={`relative z-10 inline-flex items-center border border-indigo-500  ${pageCount === page ? "bg-indigo-400" : "bg-indigo-50"} bg-indigo-50 px-4 py-2 text-sm font-medium text-indigo-600 focus:z-20`}
+>
                 {pageCount}
               </a>
             ))}
+            {/* {
+              .border-gray-300{
+                background:red
+              }
+            } */}
             <a
               href="#"
               onClick={() => setPage((page: number) => page + 1)}
@@ -92,5 +97,5 @@ type PaginationType = {
     pageCount: number;
   };
   page: number;
-  setPage: Dispatch<SetStateAction<number>>;
+  setPage: Dispatch<SetStateAction<number>> ;
 };

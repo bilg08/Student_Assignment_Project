@@ -9,13 +9,11 @@ const mongoose = require("mongoose");
 
 exports.getPosts = asyncHandler(async (req, res, next) => {
   const { userid } = req.headers;
-  const limit = parseInt(req.query.limit) || 5;
+  const limit = parseInt(req.query.limit) || 2;
   const page = parseInt(req.query.page) || 1;
   const total = await PostSchema.countDocuments() || 1;
-  const pageCount = Math.ceil(total / limit - 1) || 1;
-  let startCount = (page - 1) * limit + 1 || 1;
-  let endCount = startCount + limit - 1 || 1;
-
+  const pageCount = Math.ceil(total / limit - 1) + 1 || 1;
+  let startCount = (page - 1) * limit  || 1;
   if (pageCount < page) {
     startCount = 0;
   } else if (page < 0) {
@@ -27,18 +25,12 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
     page,
     total,
     pageCount,
-    endCount,
   };
 
   let posts = await PostSchema.find()
     .limit(parseInt(limit))
     .skip(startCount - 1);
-
-  if (userid !== null || userid !== undefined) {
-    posts = posts.filter((post) => {
-      return post.owner.toString() !== userid;
-    });
-  }
+  
   res.status(200).json({
     success: true,
     data: posts,
