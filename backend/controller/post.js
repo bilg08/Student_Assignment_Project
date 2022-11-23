@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
 
 exports.getPosts = asyncHandler(async (req, res, next) => {
   const { userid } = req.headers;
-  const limit = parseInt(req.query.limit) || 2;
+  const limit = parseInt(req.query.limit) || 5;
   const page = parseInt(req.query.page) || 1;
   const total = await PostSchema.countDocuments() || 1;
   const pageCount = Math.ceil(total / limit - 1) + 1 || 1;

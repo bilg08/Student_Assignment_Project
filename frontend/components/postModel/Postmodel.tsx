@@ -57,7 +57,6 @@ export const PostModal: React.FC<PostModalProps> = ({
 		formDatas.append("price", event.currentTarget.third.value);
 		formDatas.append("subject", subjectRef.current.value);
 		formDatas.append("school", school);
-
 		formDatas.append("file", fileSelected);
 		
 	await axios({
