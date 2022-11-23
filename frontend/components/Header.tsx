@@ -5,6 +5,7 @@ import {
 	useIsUserLoggedContext,
 	usePostStateContext,
 } from "../context";
+import { useWindowWidth } from "../hooks";
 import { AiOutlineSearch } from "react-icons/ai";
 import { MdLocationOn } from "react-icons/md";
 import { Input, Button, Card, Shadow, PostButton } from "./index";
@@ -14,6 +15,7 @@ type userInputType = {
 };
 export const Header = () => {
 	const router = useRouter();
+	const windowWidth = useWindowWidth();
 	const { isLoggedIn } = useIsUserLoggedContext();
 	const { receivedPost, setReceivedPost } = usePostStateContext();
 	const [userInput, setUserInput] = useState<userInputType | object>({
@@ -63,15 +65,22 @@ export const Header = () => {
 								/>
 								<Button onClick={handleSearch}>Хайх</Button>
 							</div>
-						) : (
-							<div className=' h-[50px]  pr-2 z-10 bg-white flex justify-between items-end'>
-								<h1 className='text-4xl text-center mt-4'>
+						) : windowWidth >= 950 ? (
+							<div className=' h-[50px] w-[35vw]  pr-2 z-10 bg-white flex justify-evenly items-end'>
+								<h1
+									className={`${
+										windowWidth <= 1300 ? "text-[2.4vw]" : "text-[1.4vw]"
+									} text-center mt-4`}>
 									{receivedPost ? "Миний зар" : "Хүлээн авсан зар"}
 								</h1>
 								<Button onClick={() => setReceivedPost(!receivedPost)}>
-									{receivedPost ? "Хүлээн авсан зар" : "Миний зар"}
+									{receivedPost ? "Хүлээн авсан зар →" : "Миний зар →"}
 								</Button>
 							</div>
+						) : (
+							<Button onClick={() => setReceivedPost(!receivedPost)}>
+								{receivedPost ? "Хүлээн авсан зар →" : "Миний зар →"}
+							</Button>
 						)}
 					</div>
 					<div className='flex items-center lg:order-2'>

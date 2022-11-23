@@ -39,19 +39,19 @@ export const ColasipbleSidebarBox = (props: CardDataType) => {
 				{isExpanded ? (
 					<div
 						style={{ marginTop: "25px" }}
-						className='bg-white rounded-lg border-mid-purple border shadow-sidebarbox mt-0 '>
+						className='  mt-0 border border-dark-purple rounded-lg '>
 						{children}
 					</div>
 				) : (
 					<>
 						<div
 							style={{ marginTop: "25px" }}
-							className='bg-white rounded-lg border-mid-purple border shadow-sidebarbox mt-0 '>
+							className='  mt-0 border border-dark-purple rounded-lg '>
 							{children}
 						</div>
 						<div
 							style={{ marginTop: "15px" }}
-							className='bg-white rounded-lg border-mid-purple border shadow-sidebarbox mt-0 flex flex-col'>
+							className='bg-white rounded-lg border-mid-purple border mt-0 flex flex-col'>
 							<div>(хичээлийн нэр):(ng too) </div>
 							<div>(хичээлийн нэр):(ng too) </div>
 							<div>(хичээлийн нэр):(ng too) </div>

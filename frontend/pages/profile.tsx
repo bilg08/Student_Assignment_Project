@@ -15,7 +15,9 @@ const UserProfile = () => {
 	if (!isLoggedIn) return <LoginPage />;
 
 	return (
-		<div style={{ display: "flex", flexDirection: "row" }}>
+		<div
+			style={{ display: "flex", flexDirection: "row" }}
+			className='max-w-screen-xl m-auto min-h-screen flex  justify-center items-baseline relative lg:mt-12 '>
 			{windowWidth >= 950 ? <UserSideBar /> : <SeizedSideBar />}
 			<ReceivedPosts />
 			{cActive ? (

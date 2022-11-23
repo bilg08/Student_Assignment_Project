@@ -97,7 +97,7 @@ export const ReceivedPosts = () => {
 	const [chatRoom, setChatRoom] = useState("");
 
 	return (
-		<div className='flex-col items-center lg:w-4/6 md:w-full xs:w-full  m-auto ml-14 overflow-auto h-screen  overscroll-y-none'>
+		<div className='flex-col items-center lg:w-4/6 md:w-full xs:w-full h-[100%]  m-auto overflow-auto h-screen  overscroll-y-scroll'>
 			{loading && <h1>LOADING ...</h1>}
 			{chosen && !loading ? (
 				<div className='overscroll-y-none  flex-col flex items-center pb-[100px]'>

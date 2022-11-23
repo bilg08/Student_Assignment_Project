@@ -34,43 +34,38 @@ export const UserSideBar = () => {
 	return (
 		<>
 			<aside
-				className='w-96 ml-24 h-[100vh]'
+				className='w-96 ml-24 h-[75vh]'
 				aria-label='Sidebar'>
-				<div className=' overflow-y-auto py-4 px-3 bg-light-purple rounded-lg  flex-col align-center items-center h-full border border-light-purple'>
+				<div className=' overflow-y-auto py-4 px-3 bg-white rounded-lg flex-col align-center items-center h-full border-2 border-dark-purple'>
 					<ul className='space-y-2 '>
 						{!editing ? (
 							<li className='flex justify-center'>
-								<div className='h-64 w-64 rounded-full border-white border-2 shadow-sidebarbox mb-16 bg-white'></div>
+								<div className='h-64 w-64 rounded-full border-dark-purple border-2 mb-16 bg-white'></div>
 							</li>
 						) : (
 							<input type='image' />
 						)}
-						<SidebarBox>
+						<div className='border-2 border-dark-purple rounded-lg'>
 							<MenuList
 								name={user?.LastName}
 								spanText={"Овог"}
-								href={""}
 							/>
 							<MenuList
 								name={user?.FirstName}
 								spanText={"Нэр"}
-								href={""}
 							/>
-						</SidebarBox>
-						<SidebarBox>
 							<MenuList
 								name={user?.School}
 								spanText={"Их сургууль"}
-								href={""}
 							/>
 							<MenuList
 								name={user?.level}
 								spanText={"Курс"}
-								href={""}
 							/>
-						</SidebarBox>
+						</div>
 					</ul>
-					<ul className='pt-4 mt-4 space-y-2 border-t border-gray-200 '>
+					<br />
+					<ul className='space-y-2 border-t border-dark-purple '>
 						<ColasipbleSidebarBox>
 							<MenuList2
 								onClick={() => {}}
@@ -114,76 +109,68 @@ export const UserSideBar = () => {
 							/>
 						</ColasipbleSidebarBox>
 						<div style={{ height: "0.8vw" }}></div>
-						<SidebarBox2>
-							<MenuList2
-								onClick={() => {
-									setEditing(!editing);
-								}}
-								name={"Профайл өөрчлөх"}
-								svg={
-									<svg
-										xmlns='http://www.w3.org/2000/svg'
-										fill='none'
-										viewBox='0 0 24 24'
-										strokeWidth='1.5'
-										stroke='currentColor'
-										className='w-6 h-6'>
-										<path
-											strokeLinecap='round'
-											strokeLinejoin='round'
-											d='M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125'
-										/>
-									</svg>
-								}
-							/>
-						</SidebarBox2>
-
-						<SidebarBox2>
-							<MenuList2
-								onClick={() => {
-									isActive ? setCactive(true) : setCactive(false);
-								}}
-								name={"Зар Нэмэх"}
-								svg={
-									<svg
-										xmlns='http://www.w3.org/2000/svg'
-										fill='none'
-										viewBox='0 0 24 24'
-										strokeWidth='1.5'
-										stroke='currentColor'
-										className='w-6 h-6'>
-										<path
-											strokeLinecap='round'
-											strokeLinejoin='round'
-											d='M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z'
-										/>
-									</svg>
-								}
-							/>
-						</SidebarBox2>
-
-						<SidebarBox2>
-							<MenuList2
-								onClick={() => {
-									deleteCookie("token");
-									location.reload();
-								}}
-								name={"Гарах"}
-								svg={
-									<svg
-										aria-hidden='true'
-										className='flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 '
-										fill='currentColor'
-										viewBox='0 0 20 20'
-										xmlns='http://www.w3.org/2000/svg'>
-										<path
-											fillRule='evenodd'
-											d='M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z'
-											clipRule='evenodd'></path>
-									</svg>
-								}
-							/>
-						</SidebarBox2>
+						<MenuList2
+							onClick={() => {
+								setEditing(!editing);
+							}}
+							name={"Профайл өөрчлөх"}
+							svg={
+								<svg
+									xmlns='http://www.w3.org/2000/svg'
+									fill='none'
+									viewBox='0 0 24 24'
+									strokeWidth='1.5'
+									stroke='currentColor'
+									className='w-6 h-6'>
+									<path
+										strokeLinecap='round'
+										strokeLinejoin='round'
+										d='M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125'
+									/>
+								</svg>
+							}
+						/>
+						<MenuList2
+							onClick={() => {
+								isActive ? setCactive(true) : setCactive(false);
+							}}
+							name={"Зар Нэмэх"}
+							svg={
+								<svg
+									xmlns='http://www.w3.org/2000/svg'
+									fill='none'
+									viewBox='0 0 24 24'
+									strokeWidth='1.5'
+									stroke='currentColor'
+									className='w-6 h-6'>
+									<path
+										strokeLinecap='round'
+										strokeLinejoin='round'
+										d='M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z'
+									/>
+								</svg>
+							}
+						/>
+						<MenuList2
+							onClick={() => {
+								deleteCookie("token");
+								location.reload();
+							}}
+							name={"Гарах"}
+							svg={
+								<svg
+									aria-hidden='true'
+									className='flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 '
+									fill='currentColor'
+									viewBox='0 0 20 20'
+									xmlns='http://www.w3.org/2000/svg'>
+									<path
+										fillRule='evenodd'
+										d='M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z'
+										clipRule='evenodd'></path>
+								</svg>
+							}
+						/>
 					</ul>
 				</div>
 			</aside>
@@ -194,11 +181,13 @@ export const SeizedSideBar = () => {
 	const { cActive, setCactive } = useCollectionContext();
 	const isActive = true;
 	return (
-		<aside
-			className='fixed top-64 flex justify-center left-2 md:w-24 xs:w-48 h-fit'
-			aria-label='Sidebar'>
-			<div className=' overflow-y-auto py-4 px-3 bg-dark-purple rounded-lg flex-col align-center h-full border border-light-purple text-white'>
-				<ul className='space-y-2 '>
+		<section
+			id='bottom-navigation'
+			className='block fixed inset-x-0 bottom-0 z-10 bg-dark-purple '>
+			<div
+				id='tabs'
+				className='flex justify-center pl-4'>
+				<ul className='flex items-center h-fit'>
 					<MenuList2
 						onClick={() => {}}
 						name={""}
@@ -318,6 +307,6 @@ export const SeizedSideBar = () => {
 					/>
 				</ul>
 			</div>
-		</aside>
+		</section>
 	);
 };

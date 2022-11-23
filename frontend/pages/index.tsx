@@ -49,8 +49,6 @@ export default function Home() {
 	useEffect(() => {
 		const token = getCookie("userId");
 		async function getData() {
-			console.log(userInput);
-
 			await axios({
 				method: "get",
 				url: `http://localhost:8000/post/?page=${page}&school=${userInput.school}&subject=${userInput.subject}`,
@@ -60,7 +58,6 @@ export default function Home() {
 			})
 				.then(async function (response) {
 					setAds(response.data.data);
-					console.log(response);
 					setPagination(response.data.pagination);
 				})
 				.catch(function (response) {
@@ -158,7 +155,7 @@ export default function Home() {
 											{ad.detail}
 										</p>
 
-										<PostButton data={"Дэлгэрэнгүй"} />
+										<Button>Дэлгэрэнгүй →</Button>
 									</div>
 								</div>
 							);
@@ -186,16 +183,8 @@ export default function Home() {
 										2021 so far, in reverse chronological order.
 									</p>
 									<div className='flex'>
-										<PostButton
-											prop={"#e6d1f2"}
-											data={"Xийх"}
-											ym={() => requestToDoWork(selectedAd.index)}
-										/>
-										<PostButton
-											ym={() => setShowModal(false)}
-											data={"Гарах"}
-											prop={"#C4FAF8"}
-										/>
+										<Button>Хийх</Button>
+										<Button onClick={() => setShowModal(false)}>Гарах</Button>
 									</div>
 								</div>
 							</div>
@@ -221,11 +210,7 @@ export default function Home() {
 									Here are the biggest enterprise technology acquisitions of
 									2021 so far, in reverse chronological order.
 								</p>
-								<PostButton
-									ym={() => requestToDoWork(selectedAd.index)}
-									data={"Хийх"}
-									prop={"#e6d1f2"}
-								/>
+								<Button>Хийх</Button>
 							</div>
 						</div>
 					)}
