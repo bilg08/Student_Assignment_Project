@@ -18,9 +18,9 @@ export const Input = ({
 		<div className='flex hover:border-dark-purple hover:border-2 focus justify-between pl-4 pr-4 items-center border-solid border border-mid-purple h-12 w-72 rounded-full '>
 			<input
 				className='outline-none placeholder-mid-purple hover:placeholder-dark-purple'
-				onChange={(e) =>
-					onchange({ ...userInput, [e.target.name]: e.target.value })
-				}
+				onChange={(e) => {
+					onchange({ ...userInput, [e.target.name]: e.target.value });
+				}}
 				name={name}
 				placeholder={placeholder}
 			/>

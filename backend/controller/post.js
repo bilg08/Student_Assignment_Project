@@ -27,14 +27,14 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
     pageCount,
   };
 
-  
+  console.log(req.query)
   let posts = await PostSchema.aggregate([
     { $match: { school: school } },
     { $match: { subject: subject } },
   ])
     .limit(parseInt(limit))
     .skip(startCount - 1);
-
+  console.log(posts);
   if (posts.length === 0) {
     res.status(200).json({
       status: false,
@@ -43,14 +43,14 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
         .skip(startCount - 1),
       pagination,
     });
-  }else{
+  } else {
     res.status(200).json({
       status: false,
       data: posts,
       pagination,
     });
   }
-  
+
 });
 
 exports.getPost = asyncHandler(async (req, res, next) => {

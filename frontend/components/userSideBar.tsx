@@ -5,7 +5,7 @@ import {
 	SidebarBox2,
 	ColasipbleSidebarBox,
 } from "./index";
-import { deleteCookie,getCookie } from "cookies-next";
+import { deleteCookie, getCookie } from "cookies-next";
 import { useCollectionContext, useUserContext } from "../context/index";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -47,24 +47,24 @@ export const UserSideBar = () => {
 						)}
 						<SidebarBox>
 							<MenuList
-								name={user.LastName}
+								name={user?.LastName}
 								spanText={"Овог"}
 								href={""}
 							/>
 							<MenuList
-								name={user.FirstName}
+								name={user?.FirstName}
 								spanText={"Нэр"}
 								href={""}
 							/>
 						</SidebarBox>
 						<SidebarBox>
 							<MenuList
-								name={user.School}
+								name={user?.School}
 								spanText={"Их сургууль"}
 								href={""}
 							/>
 							<MenuList
-								name={user.level}
+								name={user?.level}
 								spanText={"Курс"}
 								href={""}
 							/>
