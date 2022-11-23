@@ -1,9 +1,8 @@
 import {
 	MenuList,
 	MenuList2,
-	SidebarBox,
-	SidebarBox2,
 	ColasipbleSidebarBox,
+	MyImage
 } from "./index";
 import { deleteCookie, getCookie } from "cookies-next";
 import { useCollectionContext, useUserContext } from "../context/index";
@@ -12,9 +11,23 @@ import axios from "axios";
 
 export const UserSideBar = () => {
 	const { user, setUser } = useUserContext();
+	const [userInput, setUserInput] = useState(user)
 	const [editing, setEditing] = useState(false);
 	const { cActive, setCactive } = useCollectionContext();
+	const [createObjectURL, setCreateObjectURL] = useState<any | null>(null);
+	const [fileSelected, setFileSelected] = useState<any | null>([]);
 	const isActive = true;
+
+	const uploadFile = function (e: any) {
+		if (e.target.files && e.target.files[0]) {
+			const i = e.target.files[0];
+			setFileSelected(i);
+			setCreateObjectURL(URL.createObjectURL(i));
+		}
+	};
+	const handleChange=(e:any)=>{
+		setUserInput({ ...userInput, [e.target.name]: e.target.value })
+	}
 
 	useEffect(() => {
 		const getPersonalInfo = async () => {
@@ -39,13 +52,11 @@ export const UserSideBar = () => {
 				<div className=' overflow-y-auto py-4 px-3 bg-white rounded-lg flex-col align-center items-center h-full border-2 border-dark-purple'>
 					<ul className='space-y-2 '>
 						{!editing ? (
-							<li className='flex justify-center'>
+							<div>
+								<li className='flex justify-center'>
 								<div className='h-64 w-64 rounded-full border-dark-purple border-2 mb-16 bg-white'></div>
 							</li>
-						) : (
-							<input type='image' />
-						)}
-						<div className='border-2 border-dark-purple rounded-lg'>
+							<div className='border-2 border-dark-purple rounded-lg'>
 							<MenuList
 								name={user?.LastName}
 								spanText={"Овог"}
@@ -63,6 +74,28 @@ export const UserSideBar = () => {
 								spanText={"Курс"}
 							/>
 						</div>
+							</div>
+						) : (
+							<div className='flex-column justify-center items-center w-full'>
+								<MyImage src={createObjectURL} />
+								<input
+									className='block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer  focus:outline-none  '
+									id='small_size'
+									type='file'
+									onChange={()=>{uploadFile}}/>
+								<form >
+									<label>Овог</label>
+									<input className="w-full mt-2 pl-2 text-dark-purple rounded-lg border border-mid-purple" onChange={(e)=>handleChange(e)} type="text" />
+									<label>Нэр</label>
+									<input className="w-full mt-2 pl-2 text-dark-purple rounded-lg border border-mid-purple" onChange={(e)=>handleChange(e)} type="text" />
+									<label>Сургууль</label>
+									<input className="w-full mt-2 pl-2 text-dark-purple rounded-lg border border-mid-purple" onChange={(e)=>handleChange(e)} type="text"/>
+									<label>Түвшин</label>
+									<input className="w-full mt-2 pl-2 text-dark-purple rounded-lg border border-mid-purple" onChange={(e)=>handleChange(e)} type="text"/>
+								</form>
+							</div>
+						)}
+						
 					</ul>
 					<br />
 					<ul className='space-y-2 border-t border-dark-purple '>
