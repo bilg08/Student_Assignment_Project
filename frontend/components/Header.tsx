@@ -4,27 +4,25 @@ import {
 	useIsAgainGetDatas,
 	useIsUserLoggedContext,
 	usePostStateContext,
+	useSearchContext,
 } from "../context";
 import { useWindowWidth } from "../hooks";
 import { AiOutlineSearch } from "react-icons/ai";
 import { MdLocationOn } from "react-icons/md";
-import { Input, Button, Card, Shadow, PostButton } from "./index";
+import { Input, Button } from "./index";
 type userInputType = {
-	subject: String | "subject";
-	school: String | "school";
+	subject: string;
+	school: string;
 };
 export const Header = () => {
 	const router = useRouter();
 	const windowWidth = useWindowWidth();
 	const { isLoggedIn } = useIsUserLoggedContext();
 	const { receivedPost, setReceivedPost } = usePostStateContext();
-	const [userInput, setUserInput] = useState<userInputType | object>({
-		school: "",
-		subject: "",
-	});
+	const { userinput,setUserinput} = useSearchContext();
 	const { setIsAgainGetDatas } = useIsAgainGetDatas();
 	const handleSearch = () => {
-		console.log(userInput);
+		console.log(userinput)
 		setIsAgainGetDatas((e: boolean) => !e);
 	};
 
@@ -51,15 +49,15 @@ export const Header = () => {
 							<div className='flex h-40  justify-center flex-col items-center md:flex-row m-auto max-w-screen-xl gap-5'>
 								<Input
 									placeholder='Сургууль'
-									onchange={setUserInput}
-									userInput={userInput}
+									onchange={setUserinput}
+									userInput={userinput}
 									icon={<AiOutlineSearch />}
 									name='school'
 								/>
 								<Input
 									placeholder='Хичээл'
-									onchange={setUserInput}
-									userInput={userInput}
+									onchange={setUserinput}
+									userInput={userinput}
 									name='subject'
 									icon={<MdLocationOn />}
 								/>
@@ -101,4 +99,5 @@ export const Header = () => {
 			</nav>
 		</header>
 	);
+
 };

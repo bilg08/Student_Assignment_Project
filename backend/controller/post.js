@@ -1,60 +1,39 @@
-const PostSchema = require("../model/postSchema");
-const UserSchema = require("../model/user");
-const ChatSchema = require("../model/chat");
-const MyError = require("../utils/myError");
-const asyncHandler = require("../middleware/asyncHandler");
-const path = require("path");
-const fs = require("fs");
-const mongoose = require("mongoose");
+let PostSchema = require("../model/postSchema");
+let UserSchema = require("../model/user");
+let ChatSchema = require("../model/chat");
+let MyError = require("../utils/myError");
+let asyncHandler = require("../middleware/asyncHandler");
+let path = require("path");
+let fs = require("fs");
+let mongoose = require("mongoose");
 
 exports.getPosts = asyncHandler(async (req, res, next) => {
-  const limit = parseInt(req.query.limit) || 5;
-  const page = parseInt(req.query.page) || 1;
-  const { subject, school } = req.query;
-  const total = (await PostSchema.countDocuments()) || 1;
-  const pageCount = Math.ceil(total / limit - 1) + 1 || 1;
-  let startCount = (page - 1) * limit || 1;
-  if (pageCount < page) {
-    startCount = 0;
-  } else if (page < 0) {
-    startCount = 0;
-  }
-  const pagination = {
-    startCount,
-    limit,
-    page,
-    total,
-    pageCount,
-  };
-
-  console.log(req.query)
-  let posts = await PostSchema.aggregate([
-    { $match: { school: school } },
-    { $match: { subject: subject } },
-  ])
-    .limit(parseInt(limit))
-    .skip(startCount - 1);
-  console.log(posts);
-  if (posts.length === 0) {
-    res.status(200).json({
-      status: false,
-      data: await PostSchema.find()
-        .limit(parseInt(limit))
-        .skip(startCount - 1),
-      pagination,
-    });
-  } else {
-    res.status(200).json({
-      status: false,
-      data: posts,
-      pagination,
-    });
-  }
+  let limit = parseInt(req.query.limit) || 5;
+  let page = parseInt(req.query.page);
+  delete req.query.page
+  let total = await PostSchema.countDocuments();
+  let pageCount = Math.ceil(total / limit);
+  let start = (page - 1) * limit + 1;
+  let end = start + limit - 1;
+  if (end > total) end = total;
+  let pagination = { page, total, pageCount, start, end };
+  if (page < pageCount) pagination.nextPage = page + 1;
+  if (page > 1) pagination.prevPage = page - 1;
+  let posts = await PostSchema.find()
+  .limit(limit)
+  .skip(start - 1)
+    
+  
+  res.status(200).json({
+    status: false,
+    data: posts,
+    pagination,
+  });
 
 });
 
 exports.getPost = asyncHandler(async (req, res, next) => {
-  const posts = await PostSchema.findById(req.params.id);
+  let posts = await PostSchema.findById(req.params.id);
   if (!posts) {
     throw new MyError("not found", 400);
   }
@@ -65,8 +44,8 @@ exports.getPost = asyncHandler(async (req, res, next) => {
 });
 
 exports.createPostPhoto = asyncHandler(async (req, res, next) => {
-  const post = await PostSchema.findById(req.params.id);
-  const file = req.files.file;
+  let post = await PostSchema.findById(req.params.id);
+  let file = req.files.file;
   if (!file.mimetype.startsWith("image")) {
     res.status(400).json({
       data: "ТА ЗУРАГ ОРУУЛНА УУ",
@@ -88,8 +67,8 @@ exports.createPostPhoto = asyncHandler(async (req, res, next) => {
 });
 
 exports.createPost = asyncHandler(async (req, res, next) => {
-  const newPost = await PostSchema.create(req.body);
-  const file = req.files.file;
+  let newPost = await PostSchema.create(req.body);
+  let file = req.files.file;
   file.name = `photo_${newPost.id}${path.parse(file.name).ext}`;
   file.mv(`./images/post/${file.name}`, (err) => {
     if (err) {
@@ -105,7 +84,7 @@ exports.createPost = asyncHandler(async (req, res, next) => {
 });
 
 exports.deletePost = asyncHandler(async (req, res, next) => {
-  const posts = await PostSchema.findByIdAndDelete(req.params.id);
+  let posts = await PostSchema.findByIdAndDelete(req.params.id);
 
   if (!posts) {
     throw new MyError("not found", 400);
@@ -117,7 +96,7 @@ exports.deletePost = asyncHandler(async (req, res, next) => {
 });
 
 exports.updatePost = asyncHandler(async (req, res, next) => {
-  const posts = await PostSchema.findByIdAndUpdate(req.params.id, req.body, {
+  let posts = await PostSchema.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
   });
@@ -128,11 +107,11 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
 });
 
 exports.addToWorkers = asyncHandler(async (req, res, next) => {
-  const post = await PostSchema.findById(req.params.id);
-  const postOwner = await UserSchema.findById(post.owner);
-  const requestedPerson = await UserSchema.findById(req.user.id);
-  const postOwnerChatRooms = postOwner.chatRooms;
-  const requestedPersonChatRooms = requestedPerson.chatRooms;
+  let post = await PostSchema.findById(req.params.id);
+  let postOwner = await UserSchema.findById(post.owner);
+  let requestedPerson = await UserSchema.findById(req.user.id);
+  let postOwnerChatRooms = postOwner.chatRooms;
+  let requestedPersonChatRooms = requestedPerson.chatRooms;
 
   function isUserExistedInPendingRequest() {
     let isExist;
@@ -148,12 +127,12 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
   isUserExistedInPendingRequest();
   if (isUserExistedInPendingRequest() || post.pendingRequest.length === 0) {
     if (post.owner.toString() !== req.user.id) {
-      const chatRoomName = `chatRoom_${req.user.id}_${post.owner.toString()}`;
+      let chatRoomName = `chatRoom_${req.user.id}_${post.owner.toString()}`;
 
       await mongoose.model(chatRoomName, ChatSchema);
-      const user = await UserSchema.findById(req.user.id);
-      const postPendingRequest = post.pendingRequest;
-      const newPendingRequest = [
+      let user = await UserSchema.findById(req.user.id);
+      let postPendingRequest = post.pendingRequest;
+      let newPendingRequest = [
         ...postPendingRequest,
         {
           averageRating: user.averageRating,
@@ -184,7 +163,7 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
 });
 
 exports.getPostPhoto = asyncHandler(async (req, res, next) => {
-  const { photoname } = req.params;
+  let { photoname } = req.params;
   fs.readFile(`./images/post/${photoname}`, (err, data) => {
     if (err) {
     }
@@ -194,13 +173,13 @@ exports.getPostPhoto = asyncHandler(async (req, res, next) => {
 });
 
 exports.confirmWorkRequest = asyncHandler(async (req, res, next) => {
-  const post = await PostSchema.findById(req.params.id);
+  let post = await PostSchema.findById(req.params.id);
 
   if (post.owner.toString() === req.user.id) {
     if (post.worker.id === "") {
       post.pendingRequest.map(async (request) => {
         if (request.id === req.body.workerId) {
-          const worker = await UserSchema.findById(req.body.workerId);
+          let worker = await UserSchema.findById(req.body.workerId);
           post.worker.averageRating = worker.averageRating;
           post.worker.id = worker.id;
           post.worker.email = worker.email;
@@ -220,7 +199,7 @@ exports.confirmWorkRequest = asyncHandler(async (req, res, next) => {
 });
 
 exports.showPostToBeDone = asyncHandler(async (req, res, next) => {
-  const Posts = await PostSchema.find();
+  let Posts = await PostSchema.find();
   function getPostUserInterested() {
     let data = [];
     for (let i = 0; i < Posts.length; i++) {

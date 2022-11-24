@@ -9,25 +9,28 @@ import {
 	CollectionContextProvider,
 	IsUserLoggedContextProvider,
 	PostStateContextProvider,
+	SearchContextProvider
 } from "../context/index";
 export default function App({ Component, pageProps }: AppProps) {
 	return (
-		<ModalContextProvider>
-			<UserContextProvider>
-				<IsUserLoggedContextProvider>
-					<IsAgainGetDatasProvider>
-						<CollectionContextProvider>
-							<SelectedAdContextProvider>
-								<LayOut>
-									<PostStateContextProvider>
-										<Component {...pageProps} />
-									</PostStateContextProvider>
-								</LayOut>
-							</SelectedAdContextProvider>
-						</CollectionContextProvider>
-					</IsAgainGetDatasProvider>
-				</IsUserLoggedContextProvider>
-			</UserContextProvider>
-		</ModalContextProvider>
-	);
+    <SearchContextProvider>
+      <ModalContextProvider>
+        <UserContextProvider>
+          <IsUserLoggedContextProvider>
+            <IsAgainGetDatasProvider>
+              <CollectionContextProvider>
+                <SelectedAdContextProvider>
+                  <LayOut>
+                    <PostStateContextProvider>
+                      <Component {...pageProps} />
+                    </PostStateContextProvider>
+                  </LayOut>
+                </SelectedAdContextProvider>
+              </CollectionContextProvider>
+            </IsAgainGetDatasProvider>
+          </IsUserLoggedContextProvider>
+        </UserContextProvider>
+      </ModalContextProvider>
+    </SearchContextProvider>
+  );
 }
