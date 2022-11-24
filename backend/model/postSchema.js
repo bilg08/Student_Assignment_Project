@@ -17,39 +17,46 @@ const PostSchema = new mongoose.Schema({
   photo: {
     type: String,
     required: [true],
-    default: "no-photo.jpeg"
+    default: "no-photo.jpeg",
   },
-  worker:{
-    type:{
-      id:String,
-      averageRating:Number,
-      email:String
+  worker: {
+    type: {
+      id: String,
+      averageRating: Number,
+      email: String,
     },
-    required:true,
-    default:{
-      id:"",
-      averageRating:0,
-      email:""
-    }
+    required: true,
+    default: {
+      id: "",
+      averageRating: 0,
+      email: "",
+    },
   },
+  group: {
+    type: String,
+    required: true,
+  },
+
   school: {
     type: String,
-    required:true
+    required: true,
   },
   pendingRequest: {
-    type: [{
-      id:String,
-      averageRating:Number,
-      email:String,
-      chatRoomName:String
-    }],
+    type: [
+      {
+        id: String,
+        averageRating: Number,
+        email: String,
+        chatRoomName: String,
+      },
+    ],
     required: true,
-    default: []
+    default: [],
   },
   price: {
     type: String,
     required: [true, "Үнийг оруулна уу"],
-    default: "Үнэ тохирно"
+    default: "Үнэ тохирно",
   },
   detail: {
     type: String,

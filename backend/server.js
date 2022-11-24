@@ -4,7 +4,8 @@ const app = express();
 const connectDB = require("./mongoDb");
 const userRouter = require("./router/user.js");
 const postRouter = require("./router/post");
-const chatRouter = require('./router/chat')
+const chatRouter = require('./router/chat');
+const schoolRouter = require('./router/school')
 const dotenv = require("dotenv");
 const cors = require("cors");
 const errorHandler = require("./middleware/error");
@@ -39,7 +40,8 @@ app.use(express.json());
 
 
 app.use("/post", postRouter);
-app.use('/chat',chatRouter)
+app.use('/chat', chatRouter);
+app.use('/school',schoolRouter)
 //users router
 app.use("/users", userRouter);
 app.use(errorHandler);

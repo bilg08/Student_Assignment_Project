@@ -8,7 +8,6 @@ let fs = require("fs");
 let mongoose = require("mongoose");
 
 exports.getPosts = asyncHandler(async (req, res, next) => {
-  let schools = ['UFE', 'MUST', 'NUM'];
   let limit = parseInt(req.query.limit) || 5;
   let page = parseInt(req.query.page);
   delete req.query.page
@@ -20,10 +19,9 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
   let pagination = { page, total, pageCount, start, end };
   if (page < pageCount) pagination.nextPage = page + 1;
   if (page > 1) pagination.prevPage = page - 1;
-
-  let posts = await PostSchema.find({ school: req.query.school })
-    .limit(limit)
-  .skip(start )
+  let posts = await PostSchema.find()
+  .limit(limit)
+  .skip(start - 1)
     
   
   res.status(200).json({
