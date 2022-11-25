@@ -7,31 +7,22 @@ import {
 	useSearchContext,
 } from "../context";
 import { useWindowWidth } from "../hooks";
-import { AiOutlineSearch } from "react-icons/ai";
-import { MdLocationOn } from "react-icons/md";
-import { Input, Button } from "./index";
+import { Button } from "./index";
 import axios from "axios";
-type userInputType = {
-	subject: string;
-	school: string;
-};
+
 export const Header = () => {
-	const [fileSelected, setFileSelected] = useState<any | null>([]);
-  const [createObjectURL, setCreateObjectURL] = useState<any | null>(null);
-  const [school, setSchool] = useState("");
+  const {userInput,setUserInput} = useSearchContext()
+
   const { setIsAgainGetDatas } = useIsAgainGetDatas();
   const [schoolLessons, setSchoolLessons] = useState([]);
   const [schools, setSchools] = useState<any>([]);
   const [schoolGroup, setSchoolGroup] = useState<any>([]);
-  const [subject, setSubject] = useState("");
-	const [group, setGroup] = useState("");
 		const router = useRouter();
     const windowWidth = useWindowWidth();
     const { isLoggedIn } = useIsUserLoggedContext();
     const { receivedPost, setReceivedPost } = usePostStateContext();
-    const { userinput, setUserinput } = useSearchContext();
     const handleSearch = () => {
-      console.log(userinput);
+      
       setIsAgainGetDatas((e: boolean) => !e);
     };
 
@@ -64,24 +55,24 @@ export const Header = () => {
 
   useEffect(() => {
     schools.map((school1: any) => {
-      if (school1.name === school) {
+      if (school1.name === userInput.school) {
         school1.groupAndThatGrouplessons.map((group: any) =>
           setSchoolGroup((prev: any) => [...prev, group.GroupName])
         );
       }
     });
-  }, [school, group]);
+  }, [userInput.school, userInput.group]);
   useEffect(() => {
     schools.map((school1: any) => {
-      if (school1.name === school) {
+      if (school1.name === userInput.school) {
         school1.groupAndThatGrouplessons.map((group1: any) => {
-          if (group1.GroupName === group) {
+          if (group1.GroupName === userInput.group) {
             setSchoolLessons(group1.course);
           }
         });
       }
     });
-  }, [group]);
+  }, [userInput.group]);
 
 	return (
     <header>
@@ -107,9 +98,9 @@ export const Header = () => {
                 <select
                   className="block appearance-none w-full bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-state"
-                  name="fourth"
+                  name="school"
                   onChange={async (e) => {
-                    await setSchool(e.target.value);
+                    await setUserInput({...userInput,[e.target.name]:e.target.value})
                   }}>
                   {schools.map((school: { name: "" }, i: number) => (
                     <option value={school.name} key={school.name + i}>
@@ -120,19 +111,21 @@ export const Header = () => {
                 <select
                   className="block appearance-none w-full bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-state"
-                  onChange={(e) => setGroup(e.target.value)}
-                  name="fourth">
-                  {schoolGroup?.map((group: string) => (
-                    <option>{group}</option>
+                  onChange={async(e) => {
+                    await setUserInput({...userInput,[e.target.name]:e.target.value})
+                  }}
+                  name="group">
+                  {schoolGroup?.map((group: string,i:string) => (
+                    <option key={group+i}>{group}</option>
                   ))}
                 </select>
                 <select
                   className="block appearance-none w-full bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-state"
-                  onChange={(e) => {
-                    setSubject(e.target.value);
+                  onChange={async(e) => {
+                    await setUserInput({...userInput,[e.target.name]:e.target.value})
                   }}
-                  name="fourth">
+                  name="subject">
                   {schoolLessons?.map((schoolLesson: any, i: number) => {
                     return (
                       <option key={schoolLesson + i}>

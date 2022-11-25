@@ -1,11 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
-import { Input, Button, Card, Shadow, PostButton } from "../components/index";
-import { AiOutlineSearch } from "react-icons/ai";
-import { MdLocationOn } from "react-icons/md";
+import { useEffect, useState } from "react";
+import {  Shadow, PostButton } from "../components/index";
 import {
   useSelectedContext,
   useIsAgainGetDatas,
-  useUserContext,
   useSearchContext,
 } from "../context/index";
 import { useWindowWidth } from "../hooks/index";
@@ -26,20 +23,21 @@ type adsType = {
   price?: string;
 };
 
-type userInputType = {
-  subject: string;
-  school: string;
-};
+const instance = axios.create({
+  baseURL: 'http://localhost:8000.',
+  timeout: 1000,
+  headers: {authorization:getCookie('token')}
+});
 
 export default function Home() {
 
   const { selectedAd, setSelectedAd } = useSelectedContext();
-  const { userinput, setUserinput } = useSearchContext();
   const { setModalText, setOpenModal } = useModalContext();
   const [ads, setAds] = useState<adsType[]>([]);
   const windowWidth = useWindowWidth();
+  const {userInput} = useSearchContext()
   const [showModal, setShowModal] = useState(false);
-  const { isAgainGetDatas, setIsAgainGetDatas } = useIsAgainGetDatas();
+  const { isAgainGetDatas } = useIsAgainGetDatas();
   const [page, setPage] = useState<number>(1);
   const [pagination, setPagination] = useState({ pageCount: 0 });
   const [closeDetailImage, setCloseDetailImage] = useState<boolean>(false);
@@ -48,13 +46,12 @@ export default function Home() {
     async function getData() {
       await axios({
         method: "get",
-        url: `http://localhost:8000/post/?page=${page}&school=${userinput.school}&subject=${userinput.subject}`,
+        url: `http://localhost:8000/post/?page=${page}&school=${userInput.school}&group=${userInput.group}&subject=${userInput.subject}`,
         headers: {
           userId: token,
         },
       })
         .then(async function (response) {
-          console.log(response.data)
           setAds(response.data.data);
           setPagination(response.data.pagination);
         })
@@ -65,15 +62,15 @@ export default function Home() {
 
     getData();
   }, [isAgainGetDatas, page]);
-  //TO-DO
 
   const requestToDoWork = async (id: String) => {
     const token = getCookie("token");
+    console.log(id)
     await axios({
       method: "post",
-      data: {
-        id,
-      },
+      // data: {
+      //   id,
+      // },
       url: `http://localhost:8000/post/${id}/work`,
       headers: { authorization: token },
     })
@@ -82,6 +79,8 @@ export default function Home() {
         setOpenModal(true);
       })
       .catch(async function (error) {
+        console.log(error)
+
         await setModalText(error.response.data.data);
         setOpenModal(true);
       });
@@ -212,7 +211,9 @@ export default function Home() {
                   2021 so far, in reverse chronological order.
                 </p>
                 <PostButton
-                  ym={() => requestToDoWork(selectedAd.index)}
+                  ym={() => {
+                    requestToDoWork(selectedAd.ad._id)
+                  }}
                   data={"Хийх"}
                   prop={"#e6d1f2"}
                 />

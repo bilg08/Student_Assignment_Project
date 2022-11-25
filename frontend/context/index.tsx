@@ -5,4 +5,4 @@ export * from "./isUserLoggedIn";
 export * from "./user";
 export * from "./modal";
 export * from "./WhichPostContext";
-export * from './searchJob'
+export * from './searchJob';

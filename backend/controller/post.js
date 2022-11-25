@@ -8,6 +8,7 @@ let fs = require("fs");
 let mongoose = require("mongoose");
 
 exports.getPosts = asyncHandler(async (req, res, next) => {
+  let {school,group,subject} = req.query;
   let limit = parseInt(req.query.limit) || 5;
   let page = parseInt(req.query.page);
   delete req.query.page
@@ -19,9 +20,14 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
   let pagination = { page, total, pageCount, start, end };
   if (page < pageCount) pagination.nextPage = page + 1;
   if (page > 1) pagination.prevPage = page - 1;
-  let posts = await PostSchema.find()
+
+
+  let posts = await PostSchema.aggregate([{
+    $match:{school,group,subject}
+  }])
   .limit(limit)
-  .skip(start - 1)
+  .skip(start - 1);
+
     
   
   res.status(200).json({
@@ -107,12 +113,14 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
 });
 
 exports.addToWorkers = asyncHandler(async (req, res, next) => {
-  let post = await PostSchema.findById(req.params.id);
+console.log(req.params)
+console.log(await PostSchema.find())
+
+  let post = await PostSchema.findById((req.params.id));
   let postOwner = await UserSchema.findById(post.owner);
   let requestedPerson = await UserSchema.findById(req.user.id);
   let postOwnerChatRooms = postOwner.chatRooms;
   let requestedPersonChatRooms = requestedPerson.chatRooms;
-
   function isUserExistedInPendingRequest() {
     let isExist;
     post.pendingRequest.map((el) => {
@@ -124,7 +132,6 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
       return isExist;
     });
   }
-  isUserExistedInPendingRequest();
   if (isUserExistedInPendingRequest() || post.pendingRequest.length === 0) {
     if (post.owner.toString() !== req.user.id) {
       let chatRoomName = `chatRoom_${req.user.id}_${post.owner.toString()}`;
