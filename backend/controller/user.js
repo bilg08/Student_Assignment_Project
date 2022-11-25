@@ -42,8 +42,18 @@ exports.createUser = async (req, res) => {
 };
 exports.getUserInfo = async (req, res) => {
   const user = await UserSchema.findById(req.user.id);
-  console.log();
-
+  const averageRating = await PostSchema.aggregate([
+    { $match: { "worker.id": req.user.id } },
+    { $group: { _id: "$isDone", avgrate: { $avg: "$worker.averageRating" } } },
+  ]);
+  const workUserHaveDone = await PostSchema.aggregate([
+    { $match: { "worker.id": req.user.id } },
+    { $match:{"isDone":true} },
+  ]);
+  console.log(workUserHaveDone)
+  await UserSchema.findByIdAndUpdate(req.user.id, {
+    averageRating: averageRating[0].avgrate.averageRating,
+  });
   res.status(200).json({
     data: user,
   });

@@ -5,6 +5,11 @@ const PostSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: "User",
   },
+  isDone: {
+    type: Boolean,
+    required: true,
+    default:false
+  },
   subject: {
     type: String,
     required: [true, "Хичээлийн сэдвээ оруулна уу"],
@@ -24,6 +29,7 @@ const PostSchema = new mongoose.Schema({
       id: String,
       averageRating: Number,
       email: String,
+      chatRoomName: String,
     },
     required: true,
     default: {

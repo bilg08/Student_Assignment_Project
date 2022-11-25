@@ -10,7 +10,6 @@ import axios from "axios";
 
 export const Header = () => {
 	const { userInput, setUserInput } = useSearchContext();
-
 	const [schoolLessons, setSchoolLessons] = useState([]);
 	const [schools, setSchools] = useState<any>([]);
 	const [schoolGroup, setSchoolGroup] = useState<any>([]);

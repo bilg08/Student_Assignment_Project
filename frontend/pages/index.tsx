@@ -115,13 +115,13 @@ export default function Home() {
 	}, [userInput.group]);
 	const requestToDoWork = async (id: String) => {
 		const token = getCookie("token");
-		console.log(id);
 		await axios({
 			method: "post",
 			url: `http://localhost:8000/post/${id}/work`,
 			headers: { authorization: token },
 		})
 			.then(async function (response) {
+				console.log(response)
 				await setModalText("amjilttai");
 				setOpenModal(true);
 			})
@@ -292,7 +292,7 @@ export default function Home() {
 										<PostButton
 											prop={"#e6d1f2"}
 											data={"Xийх"}
-											ym={() => requestToDoWork(selectedAd.index)}
+											ym={() => requestToDoWork(selectedAd.ad._id)}
 										/>
 										<PostButton
 											ym={() => setShowModal(false)}
@@ -326,6 +326,7 @@ export default function Home() {
 								</p>
 								<PostButton
 									ym={() => {
+										console.log(selectedAd.ad._id)
 										requestToDoWork(selectedAd.ad._id);
 									}}
 									data={"Хийх"}

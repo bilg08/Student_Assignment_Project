@@ -12,6 +12,8 @@ const {
   addToWorkers,
   confirmWorkRequest,
   showPostToBeDone,
+  cancelWorkRequest,
+  rateWorkerPerformance
 } = require("../controller/post");
 router.route("/photo/:photoname").get(getPostPhoto);
 
@@ -21,7 +23,14 @@ router.route("/:id/photo").post( createPostPhoto);
 
 router.route('/:id/work').post(checkAccessToken, addToWorkers);
 
-router.route('/:id/confirmWorkRequest').post(checkAccessToken,confirmWorkRequest);
+router.route('/:id/confirmWorkRequest').post(checkAccessToken, confirmWorkRequest);
+router
+  .route("/:id/cancelWorkRequest")
+  .post(checkAccessToken, cancelWorkRequest);
+router
+  .route("/:id/rateWorkerPerformance")
+  .post(checkAccessToken, rateWorkerPerformance);
+  
 router.route('/postToBeDone').get(checkAccessToken,showPostToBeDone)
 
 router

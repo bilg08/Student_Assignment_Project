@@ -6,7 +6,7 @@ let asyncHandler = require("../middleware/asyncHandler");
 let path = require("path");
 let fs = require("fs");
 let mongoose = require("mongoose");
-
+let {isOwner} = require('../service/user')
 exports.getPosts = asyncHandler(async (req, res, next) => {
   let {school,group,subject} = req.query;
   let limit = parseInt(req.query.limit) || 5;
@@ -113,8 +113,7 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
 });
 
 exports.addToWorkers = asyncHandler(async (req, res, next) => {
-console.log(req.params)
-console.log(await PostSchema.find())
+
 
   let post = await PostSchema.findById((req.params.id));
   let postOwner = await UserSchema.findById(post.owner);
@@ -181,7 +180,7 @@ exports.getPostPhoto = asyncHandler(async (req, res, next) => {
 
 exports.confirmWorkRequest = asyncHandler(async (req, res, next) => {
   let post = await PostSchema.findById(req.params.id);
-
+  console.log(post)
   if (post.owner.toString() === req.user.id) {
     if (post.worker.id === "") {
       post.pendingRequest.map(async (request) => {
@@ -190,6 +189,7 @@ exports.confirmWorkRequest = asyncHandler(async (req, res, next) => {
           post.worker.averageRating = worker.averageRating;
           post.worker.id = worker.id;
           post.worker.email = worker.email;
+          post.worker.chatRoomName = request.chatRoomName
           post.save();
           res.status(200).json({
             success: true,
@@ -204,6 +204,37 @@ exports.confirmWorkRequest = asyncHandler(async (req, res, next) => {
     }
   }
 });
+
+exports.cancelWorkRequest = asyncHandler(async (req, res, next) => {
+  let post = await PostSchema.findById(req.params.id);
+  post.worker.id = "";
+  post.worker.email = "",
+  post.worker.averageRating = 0;
+  post.isDone = false;
+  post.save();
+  res.status(200).json({
+    data:post
+  })
+});
+
+
+exports.rateWorkerPerformance = asyncHandler(async (req, res, next) => {
+  const {rating} = req.body
+  const post = await PostSchema.findById(req.params.id)
+  const IsOwner = await isOwner(req.params.id, req.user.id);
+  if (IsOwner) {
+    post.worker.averageRating = rating;
+    post.isDone = true;
+    post.save();
+    res.status(200).json({
+      success:true
+    })
+  }
+});
+
+
+
+
 
 exports.showPostToBeDone = asyncHandler(async (req, res, next) => {
   let Posts = await PostSchema.find();

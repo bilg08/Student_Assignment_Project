@@ -94,7 +94,7 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
 		<div className='h-48 w-full'>
 			<div
 				id='convo'
-				className='h-2/3 w-5/6 border border-black rounded-lg
+				className='h-2/3 h-12 w-5/6 border border-black rounded-lg
 			 overflow-scroll 
 			  '>
 				<ul ref={listRef}>

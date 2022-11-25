@@ -40,7 +40,6 @@ export const UserContextProvider = ({ children }: Props) => {
     _id:""
     
   });
-
   return (
     <UserContext.Provider
       value={{

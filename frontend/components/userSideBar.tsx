@@ -57,6 +57,7 @@ export const UserSideBar = () => {
 						},
 					}
 				);
+				console.log(datas.data)
 				setUser(datas.data.data);
 			} catch (error) {}
 		};
