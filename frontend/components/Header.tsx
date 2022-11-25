@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import {
-	useIsAgainGetDatas,
 	useIsUserLoggedContext,
 	usePostStateContext,
 	useSearchContext,
 } from "../context";
 import { useWindowWidth } from "../hooks";
-import { Button } from "./index";
 import axios from "axios";
 
 export const Header = () => {
@@ -87,7 +85,6 @@ export const Header = () => {
 							React
 						</span>
 					</div>
-
 					<div className='flex items-center lg:order-2'>
 						<div
 							style={{ display: isLoggedIn ? "none" : "block" }}
