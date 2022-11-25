@@ -20,7 +20,7 @@ exports.login = asyncHandler(async (req, res) => {
     const token = user.getJsonWebToken();
     res.status(200).json({
       token,
-      data:user
+      data: user
     });
   }
 });
@@ -66,7 +66,7 @@ exports.PostsUserHaveToDo = async (req, res) => {
 };
 
 exports.updateUser = asyncHandler(async (req, res, next) => {
-  const user = await UserSchema.findByIdAndUpdate(req.user.id, req.body, {
+  const user = await UserSchema.findByIdAndUpdate(req.user.id, req.body.data, {
     new: true,
     runValidators: true,
   });

@@ -1,18 +1,18 @@
-import {
-	MenuList,
-	MenuList2,
-	ColasipbleSidebarBox,
-	MyImage
-} from "./index";
+import { MenuList, MenuList2, ColasipbleSidebarBox, MyImage } from "./index";
 import { deleteCookie, getCookie } from "cookies-next";
-import { useCollectionContext, useUserContext } from "../context/index";
+import {
+	IsAgainGetDatas,
+	useCollectionContext,
+	useUserContext,
+	useIsAgainGetDatas,
+} from "../context/index";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 export const UserSideBar = () => {
 	const { user, setUser } = useUserContext();
-	const [userInput, setUserInput] = useState(user)
 	const [editing, setEditing] = useState(false);
+	const { setIsAgainGetDatas, isAgainGetDatas } = useIsAgainGetDatas();
 	const { cActive, setCactive } = useCollectionContext();
 	const [createObjectURL, setCreateObjectURL] = useState<any | null>(null);
 	const [fileSelected, setFileSelected] = useState<any | null>([]);
@@ -25,77 +25,140 @@ export const UserSideBar = () => {
 			setCreateObjectURL(URL.createObjectURL(i));
 		}
 	};
-	const handleChange=(e:any)=>{
-		setUserInput({ ...userInput, [e.target.name]: e.target.value })
-	}
+	const handleChange = (e: any) => {
+		if (e.target.value === "") {
+		} else {
+			setUser({ ...user, [e.target.name]: e.target.value });
+		}
+	};
+	const handleSubmit = async (e: any) => {
+		e.preventDefault();
+		setEditing(false);
+		await axios({
+			method: "post",
+			data: { data: user },
+			url: "http://localhost:8000/users/updateMe",
+			headers: {
+				authorization: getCookie("token"),
+			},
+		}).then(() => setIsAgainGetDatas((e: boolean) => !e));
+	};
 
 	useEffect(() => {
 		const getPersonalInfo = async () => {
 			const token = getCookie("token");
 			try {
-				const datas = await axios.get("http://localhost:8000/users/myInfo", {
-					headers: {
-						Authorization: token,
-					},
-				});
+				const datas = await axios.get(
+					"http://localhost:8000/users/myInfo",
+
+					{
+						headers: {
+							Authorization: token,
+						},
+					}
+				);
 				setUser(datas.data.data);
 			} catch (error) {}
 		};
 		getPersonalInfo();
-	}, []);
+	}, [IsAgainGetDatas]);
 
 	return (
 		<>
 			<aside
 				className='w-96 ml-24 h-[75vh]'
 				aria-label='Sidebar'>
-				<div className=' overflow-y-auto py-4 px-3 bg-white rounded-lg flex-col align-center items-center h-full border-2 border-dark-purple'>
-					<ul className='space-y-2 '>
+				<div className=' overflow-y-scroll py-4 px-3 bg-white rounded-lg flex-col align-center items-center h-full border-2 border-dark-purple'>
+					<ul className='space-y-2'>
 						{!editing ? (
-							<div>
+							<div className='overflow-y-scroll'>
 								<li className='flex justify-center'>
-								<div className='h-64 w-64 rounded-full border-dark-purple border-2 mb-16 bg-white'></div>
-							</li>
-							<div className='border-2 border-dark-purple rounded-lg'>
-							<MenuList
-								name={user?.LastName}
-								spanText={"Овог"}
-							/>
-							<MenuList
-								name={user?.FirstName}
-								spanText={"Нэр"}
-							/>
-							<MenuList
-								name={user?.School}
-								spanText={"Их сургууль"}
-							/>
-							<MenuList
-								name={user?.level}
-								spanText={"Курс"}
-							/>
-						</div>
+									<div className='h-64 w-64 rounded-full border-dark-purple border-2 mb-16 bg-white'></div>
+								</li>
+								<div className='border-2 border-dark-purple rounded-lg'>
+									<MenuList
+										name={user?.LastName}
+										spanText={"Овог"}
+									/>
+									<MenuList
+										name={user?.FirstName}
+										spanText={"Нэр"}
+									/>
+									<MenuList
+										name={user?.School}
+										spanText={"Их сургууль"}
+									/>
+									<MenuList
+										name={user?.level}
+										spanText={"Курс"}
+									/>
+								</div>
 							</div>
 						) : (
-							<div className='flex-column justify-center items-center w-full'>
-								<MyImage src={createObjectURL} />
-								<input
-									className='block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer  focus:outline-none  '
-									id='small_size'
-									type='file'
-									onChange={()=>{uploadFile}}/>
-								<form >
-									<label>Овог</label>
-									<input className="w-full mt-2 pl-2 text-dark-purple rounded-lg border border-mid-purple" onChange={(e)=>handleChange(e)} type="text" />
-									<label>Нэр</label>
-									<input className="w-full mt-2 pl-2 text-dark-purple rounded-lg border border-mid-purple" onChange={(e)=>handleChange(e)} type="text" />
-									<label>Сургууль</label>
-									<input className="w-full mt-2 pl-2 text-dark-purple rounded-lg border border-mid-purple" onChange={(e)=>handleChange(e)} type="text"/>
-									<label>Түвшин</label>
-									<input className="w-full mt-2 pl-2 text-dark-purple rounded-lg border border-mid-purple" onChange={(e)=>handleChange(e)} type="text"/>
+							<div className='flex-column justify-center items-center w-full overflow-y-scroll'>
+								<form
+									onSubmit={(e) => {
+										handleSubmit(e);
+									}}>
+									<MyImage src={createObjectURL} />
+									<input
+										className='block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer  focus:outline-none  '
+										id='small_size'
+										type='file'
+										onChange={() => {
+											uploadFile;
+											handleChange;
+										}}
+										name='photo'
+									/>
+									<label className='text-dark-purple'>Овог</label>
+									<input
+										className='w-full mt-2 pl-2 text-mid-purple rounded-lg border border-mid-purple mb-2'
+										onChange={handleChange}
+										type='text'
+										name='LastName'
+									/>
+									<label className='text-dark-purple'>Нэр</label>
+									<input
+										className='w-full mt-2 pl-2 text-mid-purple rounded-lg border border-mid-purple mb-2'
+										onChange={handleChange}
+										type='text'
+										name='FirstName'
+									/>
+									<label className='text-dark-purple'>Сургууль</label>
+									<select
+										placeholder='Сургууль'
+										className='border border-mid-purple w-full mt-2 rounded-lg p-0.5 text-mid-purple mb-2'
+										name='School'
+										id=''
+										onChange={handleChange}>
+										<option value=''></option>
+										<option value='NUM'>NUM</option>
+										<option value='UFE'>UFE</option>
+										<option value='MUST'>MUST</option>
+									</select>
+									<label className='text-dark-purple'>Түвшин</label>
+									<input
+										className='w-full mt-2 pl-2 text-mid-purple rounded-lg border border-mid-purple mb-2'
+										onChange={handleChange}
+										type='text'
+										name='level'
+									/>
+									<div className='flex justify-between items-center mt-2'>
+										<input
+											type='submit'
+											className='w-[49%] hover:bg-light-purple hover:text-white text-dark-purple rounded-lg border border-dark-purple'
+										/>
+										<input
+											type='button'
+											value='Cancel'
+											onClick={() => setEditing(false)}
+											className='w-[49%] hover:bg-light-purple hover:text-white text-dark-purple rounded-lg border border-dark-purple'
+										/>
+									</div>
 								</form>
 							</div>
 						)}
-						
 					</ul>
 					<br />
 					<ul className='space-y-2 border-t border-dark-purple '>

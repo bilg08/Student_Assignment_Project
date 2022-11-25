@@ -27,7 +27,6 @@ export const Header = () => {
 		console.log(userInput);
 		setIsAgainGetDatas((e: boolean) => !e);
 	};
-
 	return (
 		<header>
 			<nav className='bg-white border-gray-200 px-4 lg:px-6 py-2.5 '>
@@ -71,7 +70,7 @@ export const Header = () => {
 									className={`${
 										windowWidth <= 1300 ? "text-[2.4vw]" : "text-[1.4vw]"
 									} text-center mt-4`}>
-									{receivedPost ? "Миний зар" : "Хүлээн авсан зар"}
+									{false ? "Миний зар" : "Хүлээн авсан зар"}
 								</h1>
 								<Button onClick={() => setReceivedPost(!receivedPost)}>
 									{receivedPost ? "Хүлээн авсан зар →" : "Миний зар →"}
