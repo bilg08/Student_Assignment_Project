@@ -7,21 +7,20 @@ const jwt = require("jsonwebtoken");
 
 exports.login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password) {
-    throw MyError("EMAIL NUUTS UGEE ORUULNA UU", 400);
-  }
-  let user = await UserSchema.findOne({ email }).select("+password");
-  if (!user) {
-    throw MyError("EMAIL NUUTS UG BURUU BAINA", 400);
-  }
-  const ok = await bcrypt.compare(password, user.password);
 
-  if (ok) {
-    const token = user.getJsonWebToken();
+  const user = await UserSchema.findOne({ email }).select('+password');
+  const ok = await user.checkPassword(password);
+  if (!ok) {
+    res.status(400).json({
+      success: false,
+      data:'Нэр нууц үг буруу байна'
+  })
+  }else{
     res.status(200).json({
-      token,
-      data:user
-    });
+      success: true,
+      token: user.getJsonWebToken(),
+      user
+  })
   }
 });
 
