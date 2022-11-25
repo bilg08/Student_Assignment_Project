@@ -6,6 +6,8 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { UserProfileBox } from "./chat/userProfile";
 import { ColasipbleChatBox } from "./chat/chatBox";
+import { useWindowWidth } from "../hooks";
+import { usePostStateContext } from "../context/WhichPostContext";
 export const ReceivedPosts = () => {
 	const [personalPosts, setPersonalPosts] = useState([
 		{
@@ -95,10 +97,36 @@ export const ReceivedPosts = () => {
 	const [chosen, setChosen] = useState(true);
 	const [isChatting, setChatting] = useState(false);
 	const [chatRoom, setChatRoom] = useState("");
+	const windowWidth = useWindowWidth();
 
 	return (
 		<div className='flex-col items-center lg:w-4/6 md:w-full xs:w-full h-[100%]  m-auto overflow-auto h-screen  overscroll-y-scroll'>
 			{loading && <h1>LOADING ...</h1>}
+			<div className=' h-[50px] pl-4 pr-2 z-10 bg-white flex justify-between items-end'>
+				{windowWidth >= 950 ? (
+					<div className=' h-[50px] w-[35vw]  pr-2 z-10 bg-white flex justify-evenly items-end'>
+						<h1
+							className={`${
+								windowWidth <= 1300 ? "text-[2.4vw]" : "text-[1.4vw]"
+							} text-center mt-4`}>
+							{chosen ? "Миний зар" : "Хүлээн авсан зар"}
+						</h1>
+						<Button
+							onClick={() => {
+								setChosen(!chosen);
+							}}>
+							{chosen ? "Хүлээн авсан зар" : "Миний зар"}
+						</Button>
+					</div>
+				) : (
+					<Button
+						onClick={() => {
+							setChosen(!chosen);
+						}}>
+						{chosen ? "Хүлээн авсан зар →" : "Миний зар →"}
+					</Button>
+				)}
+			</div>
 			{chosen && !loading ? (
 				<div className='overscroll-y-none  flex-col flex items-center pb-[100px]'>
 					{personalPosts?.map((el, ind) => {
