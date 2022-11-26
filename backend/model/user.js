@@ -17,16 +17,16 @@ const UserSchema = new mongoose.Schema({
   photo: {
     type: String,
     required: [true],
-    default: "no-photo.jpeg"
+    default: "no-photo.jpeg",
   },
   level: {
     type: Number,
-    required: [true, "ТҮВШНЭЭ ОРУУЛНА УУ"]
+    required: [true, "ТҮВШНЭЭ ОРУУЛНА УУ"],
   },
   averageRating: {
     type: Number,
     required: true,
-    default: 0
+    default: 0,
   },
   email: {
     type: String,
@@ -39,8 +39,8 @@ const UserSchema = new mongoose.Schema({
   },
   chatRooms: {
     type: [String],
-    required:true,
-    default:[]
+    required: true,
+    default: [],
   },
   password: {
     type: String,
@@ -48,11 +48,20 @@ const UserSchema = new mongoose.Schema({
     required: [true, "НУУЦ ҮГ ОРУУЛНА УУ"],
     select: false,
   },
+  averageRatingByGroupByGroup: {
+    type: [
+      {
+        _id: String,
+        avg:Number
+      },
+    ],
+  },
 });
 UserSchema.pre('save', async function () {
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  // const salt = await bcrypt.genSalt(10);
+  // this.password = await bcrypt.hash(this.password, salt);
 });
+
 
 UserSchema.methods.getJsonWebToken = function () {
   const token = jwt.sign(

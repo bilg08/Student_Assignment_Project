@@ -41,22 +41,41 @@ exports.createUser = async (req, res) => {
   }
 };
 exports.getUserInfo = async (req, res) => {
-  const user = await UserSchema.findById(req.user.id);
-  const averageRating = await PostSchema.aggregate([
+  let user = await UserSchema.findById(req.user.id);
+  
+  const worksByCategoriesAvg = await PostSchema.aggregate([
     { $match: { "worker.id": req.user.id } },
-    { $group: { _id: "$isDone", avgrate: { $avg: "$worker.averageRating" } } },
+    { $match: { isDone: true } },
+    { $group: { _id: "$group", avg: { $avg: "$worker.averageRating" } } },
   ]);
-  const workUserHaveDone = await PostSchema.aggregate([
-    { $match: { "worker.id": req.user.id } },
-    { $match:{"isDone":true} },
-  ]);
-  console.log(workUserHaveDone)
-  await UserSchema.findByIdAndUpdate(req.user.id, {
-    averageRating: averageRating[0].avgrate.averageRating,
-  });
-  res.status(200).json({
-    data: user,
-  });
+  function computeAverageRating(worksByCategoriesAvg) {
+    let data;
+    for (let i = 0; i < worksByCategoriesAvg.length; i++) {
+      data = + worksByCategoriesAvg[i].avg+0.1;
+    };
+   return parseInt(data / worksByCategoriesAvg.length);
+  }
+ 
+  if (worksByCategoriesAvg.length > 0) {
+    let avgRating = computeAverageRating(
+      worksByCategoriesAvg && worksByCategoriesAvg
+    );
+    user.averageRating = avgRating;
+    user.averageRatingByGroupByGroup = worksByCategoriesAvg;
+    user.save();
+    console.log(user)
+    // user = await UserSchema.findByIdAndUpdate(req.user.id, {
+    //   averageRating: avgRating,
+    // });
+    res.status(200).json({
+      data: user,
+    });
+  } else {
+   res.status(200).json({
+     data: await UserSchema.findById(req.user.id),
+   }); 
+  }
+   
 };
 exports.getUserPosts = async (req, res) => {
   try {
