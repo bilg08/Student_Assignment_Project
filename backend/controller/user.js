@@ -46,12 +46,13 @@ exports.getUserInfo = async (req, res) => {
   const worksByCategoriesAvg = await PostSchema.aggregate([
     { $match: { "worker.id": req.user.id } },
     { $match: { isDone: true } },
-    { $group: { _id: "$group", avg: { $avg: "$worker.averageRating" } } },
+    { $group: { _id: "$group", avg: { $avg: "$worker.averageRating" } ,sum:{$sum:1}} },
   ]);
-  function computeAverageRating(worksByCategoriesAvg) {
+   function computeAverageRating(worksByCategoriesAvg) {
     let data;
+  
     for (let i = 0; i < worksByCategoriesAvg.length; i++) {
-      data = + worksByCategoriesAvg[i].avg+0.1;
+      data = + worksByCategoriesAvg[i].avg
     };
    return parseInt(data / worksByCategoriesAvg.length);
   }
@@ -63,10 +64,7 @@ exports.getUserInfo = async (req, res) => {
     user.averageRating = avgRating;
     user.averageRatingByGroupByGroup = worksByCategoriesAvg;
     user.save();
-    console.log(user)
-    // user = await UserSchema.findByIdAndUpdate(req.user.id, {
-    //   averageRating: avgRating,
-    // });
+    
     res.status(200).json({
       data: user,
     });

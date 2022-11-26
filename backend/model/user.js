@@ -52,7 +52,8 @@ const UserSchema = new mongoose.Schema({
     type: [
       {
         _id: String,
-        avg:Number
+        avg: Number,
+        sum:Number
       },
     ],
   },

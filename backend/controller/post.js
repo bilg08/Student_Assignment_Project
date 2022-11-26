@@ -116,57 +116,56 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
 
 
   let post = await PostSchema.findById((req.params.id));
-  console.log(post)
-  // let postOwner = await UserSchema.findById(post.owner);
-  // let requestedPerson = await UserSchema.findById(req.user.id);
-  // let postOwnerChatRooms = postOwner.chatRooms;
-  // let requestedPersonChatRooms = requestedPerson.chatRooms;
-  // function isUserExistedInPendingRequest() {
-  //   let isExist;
-  //   post.pendingRequest.map((el) => {
-  //     if (el.id !== req.user.id) {
-  //       isExist = false;
-  //       return;
-  //     }
-  //     isExist = true;
-  //     return isExist;
-  //   });
-  // }
-  // if (isUserExistedInPendingRequest() || post.pendingRequest.length === 0) {
-  //   if (post.owner.toString() !== req.user.id) {
-  //     let chatRoomName = `chatRoom_${req.user.id}_${post.owner.toString()}`;
+  let postOwner = await UserSchema.findById(post.owner);
+  let requestedPerson = await UserSchema.findById(req.user.id);
+  let postOwnerChatRooms = postOwner.chatRooms;
+  let requestedPersonChatRooms = requestedPerson.chatRooms;
+  function isUserExistedInPendingRequest() {
+    let isExist;
+    post.pendingRequest.map((el) => {
+      if (el.id !== req.user.id) {
+        isExist = false;
+        return;
+      }
+      isExist = true;
+      return isExist;
+    });
+  }
+  if (isUserExistedInPendingRequest() || post.pendingRequest.length === 0) {
+    if (post.owner.toString() !== req.user.id) {
+      let chatRoomName = `chatRoom_${req.user.id}_${post.owner.toString()}`;
 
-  //     await mongoose.model(chatRoomName, ChatSchema);
-  //     let user = await UserSchema.findById(req.user.id);
-  //     let postPendingRequest = post.pendingRequest;
-  //     let newPendingRequest = [
-  //       ...postPendingRequest,
-  //       {
-  //         averageRating: user.averageRating,
-  //         email: user.email,
-  //         id: user._id,
-  //         chatRoomName: chatRoomName,
-  //       },
-  //     ];
-  //     await UserSchema.findByIdAndUpdate(req.user.id, {
-  //       chatRooms: [...requestedPersonChatRooms, chatRoomName],
-  //     });
-  //     await UserSchema.findByIdAndUpdate(post.owner, {
-  //       chatRooms: [...postOwnerChatRooms, chatRoomName],
-  //     });
-  //     post.pendingRequest = newPendingRequest;
-  //     post.save();
-  //     res.status(200).json({
-  //       success: true,
-  //       data: post,
-  //     });
-  //   }
-  // } else {
-  //   res.status(400).json({
-  //     success: false,
-  //     data: "ta ene zarand huselt ilgeesen baina",
-  //   });
-  // }
+      await mongoose.model(chatRoomName, ChatSchema);
+      let user = await UserSchema.findById(req.user.id);
+      let postPendingRequest = post.pendingRequest;
+      let newPendingRequest = [
+        ...postPendingRequest,
+        {
+          averageRating: user.averageRating,
+          email: user.email,
+          id: user._id,
+          chatRoomName: chatRoomName,
+        },
+      ];
+      await UserSchema.findByIdAndUpdate(req.user.id, {
+        chatRooms: [...requestedPersonChatRooms, chatRoomName],
+      });
+      await UserSchema.findByIdAndUpdate(post.owner, {
+        chatRooms: [...postOwnerChatRooms, chatRoomName],
+      });
+      post.pendingRequest = newPendingRequest;
+      post.save();
+      res.status(200).json({
+        success: true,
+        data: post,
+      });
+    }
+  } else {
+    res.status(400).json({
+      success: false,
+      data: "ta ene zarand huselt ilgeesen baina",
+    });
+  }
 });
 
 exports.getPostPhoto = asyncHandler(async (req, res, next) => {
@@ -181,7 +180,6 @@ exports.getPostPhoto = asyncHandler(async (req, res, next) => {
 
 exports.confirmWorkRequest = asyncHandler(async (req, res, next) => {
   let post = await PostSchema.findById(req.params.id);
-  console.log(post)
   if (post.owner.toString() === req.user.id) {
     if (post.worker.id === "") {
       post.pendingRequest.map(async (request) => {
