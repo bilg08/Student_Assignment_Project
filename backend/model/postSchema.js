@@ -8,7 +8,7 @@ const PostSchema = new mongoose.Schema({
   isDone: {
     type: Boolean,
     required: true,
-    default:false
+    default: false,
   },
   subject: {
     type: String,
@@ -25,18 +25,7 @@ const PostSchema = new mongoose.Schema({
     default: "no-photo.jpeg",
   },
   worker: {
-    type: {
-      id: String,
-      averageRating: Number,
-      email: String,
-      chatRoomName: String,
-    },
-    required: true,
-    default: {
-      id: "",
-      averageRating: 0,
-      email: "",
-    },
+    type: mongoose.Schema.ObjectId,
   },
   group: {
     type: String,
@@ -48,16 +37,7 @@ const PostSchema = new mongoose.Schema({
     required: true,
   },
   pendingRequest: {
-    type: [
-      {
-        id: String,
-        averageRating: Number,
-        email: String,
-        chatRoomName: String,
-      },
-    ],
-    required: true,
-    default: [],
+    type: mongoose.Schema.ObjectId,
   },
   price: {
     type: String,
