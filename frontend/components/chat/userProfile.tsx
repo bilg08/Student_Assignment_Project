@@ -6,10 +6,9 @@ import { getCookie } from "cookies-next";
 import { useIsAgainGetDatas } from "../../context";
 import { Rate } from "../rating";
 
-export const UserProfileBox = ({ request, post }) => {
+export const UserProfileBox = ({ request, post }:any) => {
 	const [isChatting, setChatting] = useState(false);
   const [isRating, setIsRating] = useState(false);
-	
   const [chatRoom, setChatRoom] = useState("");
 	const { setIsAgainGetDatas } = useIsAgainGetDatas();
 	const confirmWorkRequest = async () => {
@@ -31,7 +30,6 @@ export const UserProfileBox = ({ request, post }) => {
         authorization: getCookie("token"),
       },
 		}).then((res) => {
-			console.log(res)
 		setIsAgainGetDatas((e: boolean) => !e);
 	});
 	}

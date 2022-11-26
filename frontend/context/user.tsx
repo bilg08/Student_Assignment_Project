@@ -10,9 +10,10 @@ interface UserContextInterface {
     LastName: string;
     FirstName: string;
     School: string;
-      level: string;
+    level: string;
     email: string;
-    _id:string
+    _id: string;
+    averageRatingByGroupByGroup:Array<object>
   };
   setUser: (_val: any) => void;
 }
@@ -22,9 +23,10 @@ export const UserContext = createContext<UserContextInterface>({
     LastName: "",
     FirstName: "",
     School: "",
-        level: "",
+    level: "",
     email: "",
-    _id:""
+    _id: "",
+    averageRatingByGroupByGroup:[]
   },
   setUser: (val: any) => {},
 });
@@ -35,10 +37,10 @@ export const UserContextProvider = ({ children }: Props) => {
     LastName: "",
     FirstName: "",
     School: "",
-      level: "",
+    level: "",
     email: "",
-    _id:""
-    
+    _id: "",
+    averageRatingByGroupByGroup:[]
   });
   return (
     <UserContext.Provider

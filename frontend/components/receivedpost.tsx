@@ -1,13 +1,12 @@
 import { PostReceived } from "./ui/postReceived";
 import { PostButton } from "./ui/postButton";
 import { ProfileCard, Button, Chat } from "./index";
-import { use, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { UserProfileBox } from "./chat/userProfile";
 import { ColasipbleChatBox } from "./chat/chatBox";
 import { useWindowWidth } from "../hooks";
-import { usePostStateContext } from "../context/WhichPostContext";
 import { useIsAgainGetDatas } from "../context";
 export const ReceivedPosts = () => {
   const [personalPosts, setPersonalPosts] = useState([
@@ -15,6 +14,7 @@ export const ReceivedPosts = () => {
       subject: "",
       detail: "",
       worker: { id: "", averageRating: "", email: "" },
+      isDone:Boolean,
       pendingRequest: [{ id: "", averageRating: "", email: "" }],
     },
   ]);
@@ -42,7 +42,6 @@ export const ReceivedPosts = () => {
         );
         setPostIInterested(datas.data.data);
       } catch (error) {
-        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -58,7 +57,7 @@ export const ReceivedPosts = () => {
         });
         setPersonalPosts(datas.data.data);
       } catch (error) {
-        console.log(error);
+        (error);
       } finally {
         setLoading(false);
       }
@@ -70,7 +69,7 @@ export const ReceivedPosts = () => {
     {
       textValue: "Edit",
       style: "#C4FAF8",
-      function: () => console.log("edit"),
+      function: () => {},
     },
     {
       textValue: "Delete",
@@ -81,7 +80,6 @@ export const ReceivedPosts = () => {
         axios
           .delete(`http://localhost:8000/post/${id}`)
           .then(function (response) {
-            console.log(response);
           });
       },
     },
@@ -90,13 +88,11 @@ export const ReceivedPosts = () => {
     {
       textValue: "Submit",
       style: "#C4FAF8",
-      function: () => console.log("edit"),
     },
     {
       textValue: "Cancel",
       style: "#FFABAB",
       function: () => {
-        console.log("canceled");
       },
     },
   ];
@@ -150,30 +146,26 @@ export const ReceivedPosts = () => {
                     />
                   ))}
                 </div>
-                <div>
-                  <h1>Хийх хүсэлтүүд:</h1>
-                  {el.worker.id==""&& el.pendingRequest.map((request) => {
-                    console.log(el);
-                    return (
-                      <div className=" h-fit lg:w-[90%] md:w-[55vw] sm:w-[80%] border border-black rounded-lg flex flex-col p-2 mt-3">
-                        <UserProfileBox request={request} post={el} />
-                      </div>
-                    );
-                  })}
-                  {el.worker.id && (
-                    <>
-                      <h1>Хийх хүн</h1>
+                  {!el.isDone?<div>
+                    <h1>Хийх хүсэлтүүд:</h1>
+                    {                      el.worker.id == "" &&
+                      el.pendingRequest.map((request) => {
+                        return (
+                          <div className=" h-fit lg:w-[90%] md:w-[55vw] sm:w-[80%] border border-black rounded-lg flex flex-col p-2 mt-3">
+                            <UserProfileBox request={request} post={el} />
+                          </div>
+                        );
+                      })}
+                    { el.worker.id && (
+                      <>
+                        <h1>Хийх хүн</h1>
 
-                      <div className=" h-fit lg:w-[90%] md:w-[55vw] sm:w-[80%] border border-black rounded-lg flex flex-col p-2 mt-3">
-                        <UserProfileBox
-                          request={el.worker }
-                          post={el}
-                        />
-                      </div>
-                    </>
-                    
-                  )}
-                </div>
+                        <div className=" h-fit lg:w-[90%] md:w-[55vw] sm:w-[80%] border border-black rounded-lg flex flex-col p-2 mt-3">
+                          <UserProfileBox request={el.worker} post={el} />
+                        </div>
+                      </>
+                    )}
+                  </div>:<div>Энэ зар дууссан</div>}
               </ProfileCard>
             );
           })}
