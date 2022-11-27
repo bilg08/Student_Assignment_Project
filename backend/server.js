@@ -30,7 +30,6 @@ socketIO.on("connection", (socket) => {
     socketIO.emit(type, msg);
   });
   socket.on("disconnect", (socket) => {
-    console.log("userDisconnected");
   });
 });
 

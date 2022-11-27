@@ -59,7 +59,6 @@ export default function Home() {
 					setPagination(response.data.pagination);
 				})
 				.catch(function (response) {
-					console.log(response);
 				});
 		}
 
@@ -121,13 +120,10 @@ export default function Home() {
 			headers: { authorization: token },
 		})
 			.then(async function (response) {
-				console.log(response)
 				await setModalText("amjilttai");
 				setOpenModal(true);
 			})
 			.catch(async function (error) {
-				console.log(error);
-
 				await setModalText(error.response.data.data);
 				setOpenModal(true);
 			});
@@ -326,7 +322,6 @@ export default function Home() {
 								</p>
 								<PostButton
 									ym={() => {
-										console.log(selectedAd.ad._id)
 										requestToDoWork(selectedAd.ad._id);
 									}}
 									data={"Хийх"}

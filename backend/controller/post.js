@@ -8,6 +8,7 @@ let fs = require("fs");
 let mongoose = require("mongoose");
 let {isOwner} = require('../service/user')
 exports.getPosts = asyncHandler(async (req, res, next) => {
+  let posts;
   let {school,group,subject} = req.query;
   let limit = parseInt(req.query.limit) || 5;
   let page = parseInt(req.query.page);
@@ -20,13 +21,20 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
   let pagination = { page, total, pageCount, start, end };
   if (page < pageCount) pagination.nextPage = page + 1;
   if (page > 1) pagination.prevPage = page - 1;
-
-
-  let posts = await PostSchema.aggregate([{
-    $match:{school,group,subject}
-  }])
-  .limit(limit)
-  .skip(start - 1);
+  if (req.query.school === "" || req.query.group === "" || req.query.subject === "") {
+     posts = await PostSchema.find()
+       .limit(limit)
+       .skip(start - 1);
+  } else {
+    posts = await PostSchema.aggregate([
+      {
+        $match: { school, group, subject },
+      },
+    ])
+      
+  }
+   
+  
 
     
   
@@ -120,18 +128,13 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
   let requestedPerson = await UserSchema.findById(req.user.id);
   let postOwnerChatRooms = postOwner.chatRooms;
   let requestedPersonChatRooms = requestedPerson.chatRooms;
-  function isUserExistedInPendingRequest() {
-    let isExist;
-    post.pendingRequest.map((el) => {
-      if (el.id !== req.user.id) {
-        isExist = false;
-        return;
-      }
-      isExist = true;
-      return isExist;
-    });
-  }
-  if (isUserExistedInPendingRequest() || post.pendingRequest.length === 0) {
+
+  //huselt yvuulsan hereglegc omno ni huselt yvuulsan esehiig shalgaj baina
+  let isExistInPendingRequest = post.pendingRequest.findIndex(
+    (req1) => req1.id === req.user.id
+  ); 
+  
+  if (isExistInPendingRequest === -1 || post.pendingRequest.length === 0) {
     if (post.owner.toString() !== req.user.id) {
       let chatRoomName = `chatRoom_${req.user.id}_${post.owner.toString()}`;
 
@@ -243,11 +246,12 @@ exports.showPostToBeDone = asyncHandler(async (req, res, next) => {
       for (let j = 0; j < Posts[i].pendingRequest.length; j++) {
         if (Posts[i].pendingRequest[j].email === req.user.email) {
           data.push({
-            subject: Posts[i].subject,
-            advertisingHeader: Posts[i].advertisingHeader,
-            photo: Posts[i].photo,
-            price: Posts[i].price,
-            detail: Posts[i].detail,
+            subject: { ...Posts[i] }._doc.subject,
+            advertisingHeader: { ...Posts[i] }._doc.advertisingHeader,
+            isDone: { ...Posts[i] }._doc.isDone,
+            photo: { ...Posts[i] }._doc.photo,
+            price: { ...Posts[i] }._doc.price,
+            detail: { ...Posts[i] }._doc.detail,
             chatRoom: Posts[i].pendingRequest[j].chatRoomName,
           });
         }

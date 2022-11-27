@@ -8,23 +8,23 @@ import { UserProfileBox } from "./chat/userProfile";
 import { ColasipbleChatBox } from "./chat/chatBox";
 import { useWindowWidth } from "../hooks";
 import { useIsAgainGetDatas } from "../context";
+type postType = {
+  subject: string;
+  detail: string;
+  worker: { id: string; averageRating: string; email: string };
+  isDone: boolean;
+  chatRoom: string;
+  pendingRequest: [{ id: string; averageRating: string; email: string }];
+}[];
 export const ReceivedPosts = () => {
-  const [personalPosts, setPersonalPosts] = useState([
-    {
-      subject: "",
-      detail: "",
-      worker: { id: "", averageRating: "", email: "" },
-      isDone:Boolean,
-      pendingRequest: [{ id: "", averageRating: "", email: "" }],
-    },
-  ]);
+  const [personalPosts, setPersonalPosts] = useState<postType>([]);
 	 const [chosen, setChosen] = useState(true);
    const [isChatting, setChatting] = useState(false);
    const [chatRoom, setChatRoom] = useState("");
    const windowWidth = useWindowWidth();
   const [loading, setLoading] = useState(false);
-  const [postIInterested, setPostIInterested] = useState([
-    { chatRoom: "", subject: "", detail: "" },
+  const [postIInterested, setPostIInterested] = useState<postType>([
+    
   ]);
 	const {isAgainGetDatas} = useIsAgainGetDatas()
   useEffect(() => {
@@ -130,7 +130,7 @@ export const ReceivedPosts = () => {
         <div className="overscroll-y-none  flex-col flex items-center pb-[100px]">
           {personalPosts?.map((el, ind) => {
             return (
-              <ProfileCard key={ind}>
+              <ProfileCard disabled={el.isDone} key={ind}>
                 <PostReceived
                   name={el.subject}
                   owner={"oruuln"}
@@ -146,9 +146,10 @@ export const ReceivedPosts = () => {
                     />
                   ))}
                 </div>
-                  {!el.isDone?<div>
+                {!el.isDone ? (
+                  <div>
                     <h1>Хийх хүсэлтүүд:</h1>
-                    {                      el.worker.id == "" &&
+                    {el.worker.id == "" &&
                       el.pendingRequest.map((request) => {
                         return (
                           <div className=" h-fit lg:w-[90%] md:w-[55vw] sm:w-[80%] border border-black rounded-lg flex flex-col p-2 mt-3">
@@ -156,7 +157,7 @@ export const ReceivedPosts = () => {
                           </div>
                         );
                       })}
-                    { el.worker.id && (
+                    {el.worker.id && (
                       <>
                         <h1>Хийх хүн</h1>
 
@@ -165,44 +166,49 @@ export const ReceivedPosts = () => {
                         </div>
                       </>
                     )}
-                  </div>:<div>Энэ зар дууссан</div>}
+                  </div>
+                ) : (
+                  <div>Энэ зар дууссан</div>
+                )}
               </ProfileCard>
             );
           })}
         </div>
       ) : (
         <div className="overscroll-y-none  flex-col flex items-center pb-[100px]">
-          {postIInterested.map((el, ind) => {
+            {postIInterested.map((el, ind) => {
             return (
-              <ProfileCard key={ind}>
+              <ProfileCard disabled={el.isDone} key={ind}>
                 <PostReceived
                   name={el.subject}
                   owner={"oruuln"}
                   description={el.detail}
                 />
-                <div className="flex flex-row flex-wrap">
-                  {buttonArr?.map((el, index): any => (
-                    <PostButton
-                      key={index}
-                      data={el.textValue}
-                      prop={el.style}
-                      ym={el.function}
-                    />
-                  ))}
-                  <PostButton
-                    data={isChatting ? "Дуусгах" : "Харилцах"}
-                    prop={"#FDFD96"}
-                    ym={async () => {
-                      await setChatRoom(el.chatRoom);
-                      setChatting(!isChatting);
-                    }}
-                  />
-                </div>
-                {isChatting ? (
-                  <ColasipbleChatBox chatRoomName={chatRoom} />
-                ) : (
-                  <></>
-                )}
+                  <div style={{display:el.isDone?'none':'block'}}>
+                    <div className="flex flex-row flex-wrap">
+                      {buttonArr?.map((el, index): any => (
+                        <PostButton
+                          key={index}
+                          data={el.textValue}
+                          prop={el.style}
+                          ym={el.function}
+                        />
+                      ))}
+                      <PostButton
+                        data={isChatting ? "Дуусгах" : "Харилцах"}
+                        prop={"#FDFD96"}
+                        ym={async () => {
+                          setChatRoom(el.chatRoom);
+                          setChatting(!isChatting);
+                        }}
+                      />
+                    </div>
+                    {isChatting ? (
+                      <ColasipbleChatBox chatRoomName={chatRoom} />
+                    ) : (
+                      ''
+                    )}
+                  </div>
               </ProfileCard>
             );
           })}

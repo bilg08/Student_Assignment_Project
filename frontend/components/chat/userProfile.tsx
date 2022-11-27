@@ -10,7 +10,7 @@ export const UserProfileBox = ({ request, post }:any) => {
 	const [isChatting, setChatting] = useState(false);
   const [isRating, setIsRating] = useState(false);
   const [chatRoom, setChatRoom] = useState("");
-	const { setIsAgainGetDatas } = useIsAgainGetDatas();
+  const { setIsAgainGetDatas } = useIsAgainGetDatas();
 	const confirmWorkRequest = async () => {
     await axios({
       method: "post",

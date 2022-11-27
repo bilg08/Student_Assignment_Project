@@ -28,8 +28,10 @@ exports.login = asyncHandler(async (req, res) => {
 exports.createUser = async (req, res) => {
   try {
     const user = await UserSchema.create(req.body);
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
     const token = user.getJsonWebToken();
-
+     user.save()
     res.status(200).json({
       data: user,
       token,
@@ -42,32 +44,33 @@ exports.createUser = async (req, res) => {
 };
 exports.getUserInfo = async (req, res) => {
   let user = await UserSchema.findById(req.user.id);
-  
   const worksByCategoriesAvg = await PostSchema.aggregate([
     { $match: { "worker.id": req.user.id } },
     { $match: { isDone: true } },
     { $group: { _id: "$group", avg: { $avg: "$worker.averageRating" } ,sum:{$sum:1}} },
   ]);
-   function computeAverageRating(worksByCategoriesAvg) {
-    let data;
-  
-    for (let i = 0; i < worksByCategoriesAvg.length; i++) {
-      data = + worksByCategoriesAvg[i].avg
-    };
-   return parseInt(data / worksByCategoriesAvg.length);
-  }
+ 
+ async function computeAverageRating() {
+    let data = 0
+     const userWorkedPost = await PostSchema.aggregate([
+    { $match: { "worker.id": req.user.id } },
+    { $match: { isDone: true } },
+  ]);
+    userWorkedPost.map((el) => {
+      data += el.worker.averageRating;
+    });
+   return (parseInt(data/userWorkedPost.length))
+  }   
  
   if (worksByCategoriesAvg.length > 0) {
-    let avgRating = computeAverageRating(
-      worksByCategoriesAvg && worksByCategoriesAvg
-    );
-    user.averageRating = avgRating;
+    let avgRating = await computeAverageRating();
+    user.averageRating = avgRating
     user.averageRatingByGroupByGroup = worksByCategoriesAvg;
     user.save();
-    
     res.status(200).json({
       data: user,
     });
+
   } else {
    res.status(200).json({
      data: await UserSchema.findById(req.user.id),

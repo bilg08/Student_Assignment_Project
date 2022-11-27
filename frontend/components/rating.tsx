@@ -1,34 +1,42 @@
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import React, { ReactNode } from "react";
-import { useIsAgainGetDatas } from "../context";
+import { useIsAgainGetDatas, useModalContext } from "../context";
 export const Rate: React.FC<RateType> = ({ post }) => {
-  const [state, setState] = React.useState<number | 0>(0);
+  const [state, setState] = React.useState<any>(0);
   const { setIsAgainGetDatas } = useIsAgainGetDatas();
-    const rateWorkerPerformance = async () => {
+  const {setModalText,setOpenModal} = useModalContext()
+  const rateWorkerPerformance = async () => {
     await axios({
       method: "post",
       url: `http://localhost:8000/post/${post._id}/rateWorkerPerformance`,
-      data:{rating:state},
-        headers: {
+      data: { rating: state },
+      headers: {
         authorization: getCookie("token"),
       },
-    }).then((res) => setIsAgainGetDatas((e: boolean) => !e));
+    }).then((res) => {
+      setIsAgainGetDatas((e: boolean) => !e);
+      setOpenModal(true),
+        setModalText('amjilttai')
+
+    });
   };
   return (
-    <div className="items-center justify-center w-full flex flex-col justify-between font-medium text-center  bg-white border border-dark-purple h-[auto] rounded-full    ">
+    <div className="items-center justify-center w-full flex flex-col justify-between font-medium text-center  bg-white   h-[auto]    ">
       <div>
-        <button onClick={() => setState(state - 1)}>-</button>
+        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          {state}
+        </label>
         <input
-          value={state}
-          type="number"
+          id="medium-range"
           onChange={(e) => setState(e.target.value)}
+          type="range"
+          className="w-full h-2 mb-6 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
         />
-        <button onClick={() => setState(state + 1)}>+</button>
       </div>
       <button onClick={rateWorkerPerformance}>Батлах</button>
     </div>
   );
 };
 
-type RateType = { children?: ReactNode };
+type RateType = { children?: ReactNode, post: {_id:string}[] };

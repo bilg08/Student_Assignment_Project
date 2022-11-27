@@ -1,6 +1,4 @@
-import axios from "axios";
-import { deleteCookie, getCookie } from "cookies-next";
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 type Props = {
   children: ReactNode;
 };
@@ -12,8 +10,9 @@ interface UserContextInterface {
     School: string;
     level: string;
     email: string;
+    averageRating: number;
     _id: string;
-    averageRatingByGroupByGroup:Array<object>
+    averageRatingByGroupByGroup: { _id: string; avg: number; sum: number}[];
   };
   setUser: (_val: any) => void;
 }
@@ -26,7 +25,12 @@ export const UserContext = createContext<UserContextInterface>({
     level: "",
     email: "",
     _id: "",
-    averageRatingByGroupByGroup:[]
+    averageRating:0,
+    averageRatingByGroupByGroup: [{
+      _id: "",
+      avg: 0,
+      sum:0
+    }]
   },
   setUser: (val: any) => {},
 });
@@ -40,7 +44,14 @@ export const UserContextProvider = ({ children }: Props) => {
     level: "",
     email: "",
     _id: "",
-    averageRatingByGroupByGroup:[]
+    averageRating: 0,
+    averageRatingByGroupByGroup: [
+      {
+        _id: "",
+        avg: 0,
+        sum: 0,
+      },
+    ],
   });
   return (
     <UserContext.Provider

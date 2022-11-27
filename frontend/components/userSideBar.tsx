@@ -17,7 +17,7 @@ export const UserSideBar = () => {
 	const [createObjectURL, setCreateObjectURL] = useState<any | null>(null);
 	const [fileSelected, setFileSelected] = useState<any | null>([]);
 	const isActive = true;
-
+console.log(user)
 	const uploadFile = function (e: any) {
 		if (e.target.files && e.target.files[0]) {
 			const i = e.target.files[0];
@@ -78,6 +78,7 @@ export const UserSideBar = () => {
                   <MenuList name={user?.FirstName} spanText={"Нэр"} />
                   <MenuList name={user?.School} spanText={"Их сургууль"} />
                   <MenuList name={user?.level} spanText={"Курс"} />
+                  <MenuList name={user?.averageRating + "%"} spanText={"Дундаж үнэлгээ"} />
                 </div>
               </div>
             ) : (
