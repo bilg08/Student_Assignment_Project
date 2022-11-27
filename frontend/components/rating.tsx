@@ -1,20 +1,13 @@
-import axios from "axios";
-import { getCookie } from "cookies-next";
 import React, { ReactNode } from "react";
 import { useIsAgainGetDatas, useModalContext } from "../context";
-export const Rate: React.FC<RateType> = ({ post }) => {
+import { instance } from "../components/Layout";
+export const Rate: React.FC<RateType> = ({ post }:any) => {
   const [state, setState] = React.useState<any>(0);
   const { setIsAgainGetDatas } = useIsAgainGetDatas();
   const {setModalText,setOpenModal} = useModalContext()
   const rateWorkerPerformance = async () => {
-    await axios({
-      method: "post",
-      url: `http://localhost:8000/post/${post._id}/rateWorkerPerformance`,
-      data: { rating: state },
-      headers: {
-        authorization: getCookie("token"),
-      },
-    }).then((res) => {
+    await instance.post(`/post/${post._id}/rateWorkerPerformance`, { rating: state })
+    .then((res) => {
       setIsAgainGetDatas((e: boolean) => !e);
       setOpenModal(true),
         setModalText('amjilttai')
@@ -31,6 +24,7 @@ export const Rate: React.FC<RateType> = ({ post }) => {
           id="medium-range"
           onChange={(e) => setState(e.target.value)}
           type="range"
+          value={state}
           className="w-full h-2 mb-6 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
         />
       </div>

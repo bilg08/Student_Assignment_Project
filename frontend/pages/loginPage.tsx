@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import loginStyles from "../styles/login.module.css";
 import axios from "axios";
-import { useRouter } from "next/router";
 import {
 	useIsAgainGetDatas,
 	useIsUserLoggedContext,
@@ -9,6 +8,7 @@ import {
 } from "../context";
 import { setCookie } from "cookies-next";
 import UserProfile from "./profile";
+import { instance } from "../components/Layout";
 
 const LoginPage = () => {
 	const [isLogin, setIsLogin] = useState(true);
@@ -22,29 +22,28 @@ const LoginPage = () => {
 		setUserInput({ ...userInput, [e.target.name]: e.target.value });
 	}
 	async function login() {
-		await axios
-			.post("http://localhost:8000/users/login", userInput)
-			.then(async (response) => {
-				await setUser(response.data.data);
-				setCookie("userId", response.data.data._id);
-				await setCookie("token", response.data.token);
-				await setIsAgainGetDatas((e: any) => !e);
+		await instance
+      .post("/users/login", userInput)
+      .then(async (response) => {
+        await setUser(response.data.data);
+        setCookie("userId", response.data.data._id);
+        await setCookie("token", response.data.token);
+        await setIsAgainGetDatas((e: any) => !e);
 
-				setIsLoggedIn(true);
-			});
+        setIsLoggedIn(true);
+      });
 	}
 
 	async function signUp() {
 		try {
-			await axios
-				.post("http://localhost:8000/users/register", userInput)
-				.then(async (response) => {
-					await setUser(response.data.data);
-					await setCookie("token", response.data.token);
-					setCookie("userId", response.data.data._id);
-					await setIsAgainGetDatas((e: any) => !e);
-					setIsLoggedIn(true);
-				});
+			await instance.post("/users/register", userInput)
+        .then(async (response) => {
+          await setUser(response.data.data);
+          await setCookie("token", response.data.token);
+          setCookie("userId", response.data.data._id);
+          await setIsAgainGetDatas((e: any) => !e);
+          setIsLoggedIn(true);
+        });
 		} catch (error) {}
 	}
 	return (

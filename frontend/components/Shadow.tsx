@@ -1,9 +1,13 @@
+import { useLoaderContext } from "../context";
 import { Props } from "../types";
 
 export const Shadow = ({ children }: Props) => {
+	const { shadow } = useLoaderContext();
 	return (
-		<div className='absolute w-[100%] h-[100%] z-20 bg-grey/3 backdrop-blur-xl flex items-start justify-center overflow-none'>
-			{children}
-		</div>
-	);
+    <div
+      style={{ display: shadow ? "block" : "none" }}
+      className="absolute top-0 w-[100%] h-[100vh]  z-10 bg-grey/3 backdrop-blur-xl flex items-center justify-center overflow-none">
+      {children}
+    </div>
+  );
 };

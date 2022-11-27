@@ -5,31 +5,22 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useIsAgainGetDatas } from "../../context";
 import { Rate } from "../rating";
+import { instance } from "../../components/Layout";
 
 export const UserProfileBox = ({ request, post }:any) => {
 	const [isChatting, setChatting] = useState(false);
   const [isRating, setIsRating] = useState(false);
   const [chatRoom, setChatRoom] = useState("");
   const { setIsAgainGetDatas } = useIsAgainGetDatas();
-	const confirmWorkRequest = async () => {
-    await axios({
-      method: "post",
-      data: { workerId: request.id },
-      url: `http://localhost:8000/post/${post._id}/confirmWorkRequest`,
-      headers: {
-        authorization: getCookie("token"),
-      },
-    }).then((res) => setIsAgainGetDatas((e: boolean) => !e));
+  const confirmWorkRequest = async () => {
+    await instance.post(`/post/${post._id}/confirmWorkRequest`,{workerId:request.id})
+    .then((res) => setIsAgainGetDatas((e: boolean) => !e));
 	};
-	const cancelWorkRequest = async() => {
-		await axios({
-      method: "post",
-      data: { workerId: request.id },
-      url: `http://localhost:8000/post/${post._id}/cancelWorkRequest`,
-      headers: {
-        authorization: getCookie("token"),
-      },
-		}).then((res) => {
+  const cancelWorkRequest = async () => {
+    await instance.post(`/post/${post._id}/cancelWorkRequest`, {
+      workerId: request.id,
+    })
+		.then((res) => {
 		setIsAgainGetDatas((e: boolean) => !e);
 	});
 	}
@@ -47,10 +38,10 @@ export const UserProfileBox = ({ request, post }:any) => {
         <div className="flex flex-row">
           <PostButton
             data={"Цуцлах"}
-            ym={() => cancelWorkRequest()}
+            ym={() =>{ cancelWorkRequest();setIsAgainGetDatas((e:boolean)=>!e)}}
             prop={"red"}
           />
-          <PostButton ym={() =>setIsRating(true)} data={"Үнэлгээ өгөх"} prop={"green"} />
+          <PostButton ym={() =>setIsRating(!isRating)} data={"Үнэлгээ өгөх"} prop={"green"} />
           <PostButton 
             data={isChatting ? "Дуусгах" : "Харилцах"}
             prop={"#FDFD96"}

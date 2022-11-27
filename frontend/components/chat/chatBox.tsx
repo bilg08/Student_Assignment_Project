@@ -5,6 +5,7 @@ import { flushSync } from "react-dom";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useIsAgainGetDatas, useUserContext } from "../../context";
+import { instance } from "../../components/Layout";
 const connectChatServer = () => {
 	const socket = io("http://localhost:8000/", {
 		transports: ["websocket"],
@@ -32,7 +33,7 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
 	useEffect(() => {
 		let socket = connectChatServer();
 		socket.onAny(async (type, message) => {
-			if (message&&type===chatRoomName) {
+			if (message && type === chatRoomName) {
 				await setIsSentMessage((e) => !e);
 				scrollToLastMessage();
 			}
@@ -45,26 +46,17 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
 	useEffect(() => {
 		async function sendChat() {
 			try {
-				await axios.post(
-					`http://localhost:8000/chat/${chatRoomName}/sendMessage`,
-					{ message },
-					{
-						headers: {
-							authorization: getCookie("token"),
-						},
-					}
-				);
+				await instance.post(`/chat/${chatRoomName}/sendMessage`,{message});
 			} catch (error) {}
 		}
 		if (message !== "" && chatRoomName !== "") sendChat();
 	}, [isSentMessage]);
-
 	useEffect(() => {
 		async function getMessages() {
 			setIsAgainGetDatas((e:any)=>!e)
 			try {
-				const data = await axios.get(
-					`http://localhost:8000/chat/${chatRoomName}/getMessages`,
+				const data = await instance.get(
+					`/chat/${chatRoomName}/getMessages`,
 					{
 						headers: {
 							authorization: getCookie("token"),

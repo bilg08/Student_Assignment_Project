@@ -4,7 +4,8 @@ import { Shadow } from "../Shadow";
 import React from "react";
 import { MyImage } from "../index";
 import { getCookie } from "cookies-next";
-import { useIsAgainGetDatas } from "../../context";
+import { useIsAgainGetDatas, useLoaderContext } from "../../context";
+import { instance } from "../../components/Layout";
 export interface PostModalProps {
   cActive: any;
   setCactive: any;
@@ -20,12 +21,11 @@ export const PostModal: React.FC<PostModalProps> = ({ setCactive }) => {
   const [schoolGroup, setSchoolGroup] = useState<any>([]);
   const [subject, setSubject] = useState("");
   const [group, setGroup] = useState("");
+  const {setOpenshadow} = useLoaderContext()
   useEffect(() => {
     const getData = async () =>
-      await axios({
-        method: "get",
-        url: "http://localhost:8000/school",
-      })
+      await instance
+        .get("/school")
         .then(async function (response) {
           setSchools([]);
           response.data.data.map(
@@ -77,15 +77,7 @@ export const PostModal: React.FC<PostModalProps> = ({ setCactive }) => {
     formDatas.append("school", school);
     formDatas.append("subject", subject);
     formDatas.append("file", fileSelected);
-    await axios({
-      method: "post",
-      url: "http://localhost:8000/post",
-      data: formDatas,
-      headers: {
-        "Content-Type": "multipart/form-data",
-        authorization: getCookie("token"),
-      },
-    })
+    await instance.post("/post",formDatas)
       .then(async function (response) {
         await setCactive(false);
         setIsAgainGetDatas((e: any) => !e);
@@ -106,13 +98,12 @@ export const PostModal: React.FC<PostModalProps> = ({ setCactive }) => {
   };
 
   return (
-    <Shadow>
       <form
-        className="w-full sm:w-3/4 md:w-2/4 lg:w-auto h-auto absolute top-2/4 left-2/4 transform -translate-x-1/2 -translate-y-1/2 p-10 rounded-3xl backdrop-blur-md bg-gradient-to-r from-purple-300 to-violet-200 "
+        className="w-full sm:w-3/4 md:w-2/4 z-30 lg:w-auto h-auto absolute top-2/4 left-2/4 transform -translate-x-1/2 -translate-y-1/2 p-10 rounded-3xl backdrop-blur-md bg-gradient-to-r from-purple-300 to-violet-200 "
         onSubmit={handleSubmit}>
         <div className="flex justify-between ">
           <button
-            onClick={() => setCactive(false)}
+          onClick={() => { setCactive(false); setOpenshadow(false)}}
             type="button"
             className=" text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center "
             data-modal-toggle="authentication-modal">
@@ -249,6 +240,5 @@ export const PostModal: React.FC<PostModalProps> = ({ setCactive }) => {
           Илгээх
         </button>
       </form>
-    </Shadow>
   );
 };

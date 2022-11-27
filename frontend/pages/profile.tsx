@@ -20,14 +20,12 @@ const UserProfile = () => {
 			className='max-w-screen-xl m-auto min-h-screen flex  justify-center items-baseline relative lg:mt-12 '>
 			{windowWidth >= 950 ? <UserSideBar /> : <SeizedSideBar />}
 			<ReceivedPosts />
-			{cActive ? (
+			{ cActive&&(
 				<PostModal
 					cActive={cActive}
 					setCactive={setCactive}
 				/>
-			) : (
-				false
-			)}
+			) }
 		</div>
 	);
 };

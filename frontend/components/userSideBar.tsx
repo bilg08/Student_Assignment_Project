@@ -5,9 +5,11 @@ import {
 	useCollectionContext,
 	useUserContext,
 	useIsAgainGetDatas,
+  useLoaderContext,
 } from "../context/index";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { instance } from "../components/Layout";
 
 export const UserSideBar = () => {
 	const { user, setUser } = useUserContext();
@@ -15,9 +17,9 @@ export const UserSideBar = () => {
 	const { setIsAgainGetDatas, isAgainGetDatas } = useIsAgainGetDatas();
 	const { cActive, setCactive } = useCollectionContext();
 	const [createObjectURL, setCreateObjectURL] = useState<any | null>(null);
-	const [fileSelected, setFileSelected] = useState<any | null>([]);
+  const [fileSelected, setFileSelected] = useState<any | null>([]);
+  const {setOpenshadow} = useLoaderContext()
 	const isActive = true;
-console.log(user)
 	const uploadFile = function (e: any) {
 		if (e.target.files && e.target.files[0]) {
 			const i = e.target.files[0];
@@ -30,32 +32,23 @@ console.log(user)
 		} else {
 			setUser({ ...user, [e.target.name]: e.target.value });
 		}
-	};
+  };
+  useEffect(() => {
+    console.log(cActive)
+  },[cActive])
 	const handleSubmit = async (e: any) => {
 		e.preventDefault();
-		setEditing(false);
-		await axios({
-			method: "post",
-			data: { data: user },
-			url: "http://localhost:8000/users/updateMe",
-			headers: {
-				authorization: getCookie("token"),
-			},
-		}).then(() => setIsAgainGetDatas((e: boolean) => !e));
+    setEditing(false);
+    await instance.post("/users/updateMe",{ data: user })
+		.then(() => setIsAgainGetDatas((e: boolean) => !e));
 	};
 
 	useEffect(() => {
 		const getPersonalInfo = async () => {
 			const token = getCookie("token");
 			try {
-				const datas = await axios.get(
-					"http://localhost:8000/users/myInfo",
-
-					{
-						headers: {
-							Authorization: token,
-						},
-					}
+				const datas = await instance.get(
+					"/users/myInfo",
 				);
 				setUser(datas.data.data);
 			} catch (error) {}
@@ -215,7 +208,9 @@ console.log(user)
             />
             <MenuList2
               onClick={() => {
-                isActive ? setCactive(true) : setCactive(false);
+                setOpenshadow(true);
+                setCactive(true) 
+
               }}
               name={"Зар Нэмэх"}
               svg={

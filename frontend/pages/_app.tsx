@@ -10,10 +10,12 @@ import {
   IsUserLoggedContextProvider,
   PostStateContextProvider,
   SearchContextProvider,
+  LoaderContextProvider,
 } from "../context";
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <IsAgainGetDatasProvider>
+    <LoaderContextProvider>
+      <IsAgainGetDatasProvider>
         <SearchContextProvider>
           <ModalContextProvider>
             <UserContextProvider>
@@ -31,6 +33,7 @@ export default function App({ Component, pageProps }: AppProps) {
             </UserContextProvider>
           </ModalContextProvider>
         </SearchContextProvider>
-    </IsAgainGetDatasProvider>
+      </IsAgainGetDatasProvider>
+    </LoaderContextProvider>
   );
 }

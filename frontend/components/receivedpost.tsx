@@ -8,6 +8,7 @@ import { UserProfileBox } from "./chat/userProfile";
 import { ColasipbleChatBox } from "./chat/chatBox";
 import { useWindowWidth } from "../hooks";
 import { useIsAgainGetDatas } from "../context";
+import { instance } from "../components/Layout";
 type postType = {
   subject: string;
   detail: string;
@@ -29,42 +30,26 @@ export const ReceivedPosts = () => {
 	const {isAgainGetDatas} = useIsAgainGetDatas()
   useEffect(() => {
     const getPostIInterested = async () => {
-      const token = getCookie("token");
       try {
-        setLoading(true);
-        const datas = await axios.get(
-          "http://localhost:8000/post/postToBeDone",
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
+        const datas = await instance.get(`/post/postToBeDone`);
         setPostIInterested(datas.data.data);
       } catch (error) {
       } finally {
-        setLoading(false);
       }
     };
     const getPersonalData = async () => {
       const token = getCookie("token");
       try {
-        setLoading(true);
-        const datas = await axios.get("http://localhost:8000/users/posts", {
-          headers: {
-            Authorization: token,
-          },
-        });
+        const datas = await instance.get(`/users/posts`);
         setPersonalPosts(datas.data.data);
       } catch (error) {
-        (error);
+        error;
       } finally {
-        setLoading(false);
       }
     };
     getPostIInterested();
     getPersonalData();
-  }, []);
+  }, [isAgainGetDatas]);
   const postedButtonArr = [
     {
       textValue: "Edit",
