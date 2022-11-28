@@ -2,11 +2,12 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useEffect, useState } from "react";
 import { instance } from "../components/Layout";
+import { SomeCart } from '../components/SomeCart';
 import { useIsAgainGetDatas } from "../context";
 import { useWindowWidth } from "../hooks";
 import { ColasipbleChatBox } from "./chat/chatBox";
 import { UserProfileBox } from "./chat/userProfile";
-import { Button, ProfileCard } from "./index";
+import { Button } from "./index";
 import { PostButton } from "./ui/postButton";
 import { PostReceived } from "./ui/postReceived";
 type postType = {
@@ -43,9 +44,7 @@ export const ReceivedPosts = () => {
         const datas = await instance.get(`/users/posts`);
         setPersonalPosts(datas.data.data);
       } catch (error) {
-        error;
-      } finally {
-      }
+      } 
     };
     getPostIInterested();
     getPersonalData();
@@ -115,7 +114,7 @@ export const ReceivedPosts = () => {
         <div className="overscroll-y-none  flex-col flex items-center pb-[100px]">
           {personalPosts?.map((el, ind) => {
             return (
-              <ProfileCard disabled={el.isDone} key={ind}>
+              <SomeCart type={el.isDone===true?'done':'notDone'} key={ind}>
                 <PostReceived
                   name={el.subject}
                   owner={"oruuln"}
@@ -155,7 +154,7 @@ export const ReceivedPosts = () => {
                 ) : (
                   <div>Энэ зар дууссан</div>
                 )}
-              </ProfileCard>
+              </SomeCart>
             );
           })}
         </div>
@@ -163,38 +162,40 @@ export const ReceivedPosts = () => {
         <div className="overscroll-y-none  flex-col flex items-center pb-[100px]">
             {postIInterested.map((el, ind) => {
             return (
-              <ProfileCard disabled={el.isDone} key={ind}>
+              <SomeCart
+                type={el.isDone === true ? "done" : "notDone"}
+                key={ind}>
                 <PostReceived
                   name={el.subject}
                   owner={"oruuln"}
                   description={el.detail}
                 />
-                  <div style={{display:el.isDone?'none':'block'}}>
-                    <div className="flex flex-row flex-wrap">
-                      {buttonArr?.map((el, index): any => (
-                        <PostButton
-                          key={index}
-                          data={el.textValue}
-                          prop={el.style}
-                          ym={el.function}
-                        />
-                      ))}
+                <div style={{ display: el.isDone ? "none" : "block" }}>
+                  <div className="flex flex-row flex-wrap">
+                    {buttonArr?.map((el, index): any => (
                       <PostButton
-                        data={isChatting ? "Дуусгах" : "Харилцах"}
-                        prop={"#FDFD96"}
-                        ym={async () => {
-                          setChatRoom(el.chatRoom);
-                          setChatting(!isChatting);
-                        }}
+                        key={index}
+                        data={el.textValue}
+                        prop={el.style}
+                        ym={el.function}
                       />
-                    </div>
-                    {isChatting ? (
-                      <ColasipbleChatBox chatRoomName={chatRoom} />
-                    ) : (
-                      ''
-                    )}
+                    ))}
+                    <PostButton
+                      data={isChatting ? "Дуусгах" : "Харилцах"}
+                      prop={"#FDFD96"}
+                      ym={async () => {
+                        setChatRoom(el.chatRoom);
+                        setChatting(!isChatting);
+                      }}
+                    />
                   </div>
-              </ProfileCard>
+                  {isChatting ? (
+                    <ColasipbleChatBox chatRoomName={chatRoom} />
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </SomeCart>
             );
           })}
         </div>
