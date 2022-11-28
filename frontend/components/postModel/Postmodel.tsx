@@ -1,9 +1,6 @@
-import axios from "axios";
-import { useEffect, useRef, useState } from "react";
-import { Shadow } from "../Shadow";
+import { useEffect, useState } from "react";
 import React from "react";
 import { MyImage } from "../index";
-import { getCookie } from "cookies-next";
 import { useIsAgainGetDatas, useLoaderContext } from "../../context";
 import { instance } from "../../components/Layout";
 export interface PostModalProps {
@@ -80,8 +77,9 @@ export const PostModal: React.FC<PostModalProps> = ({ setCactive }) => {
     await instance.post("/post",formDatas)
       .then(async function (response) {
         await setCactive(false);
-        setIsAgainGetDatas((e: any) => !e);
         alert("Зар амжилттай тавигдлаа");
+        setIsAgainGetDatas((e: any) => !e);
+        setOpenshadow(false);
       })
       .catch(function (response) {
         const error = response.response.data.error.split(",");

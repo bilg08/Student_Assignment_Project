@@ -1,17 +1,11 @@
-import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { LayOut } from "../components/index";
 import {
-  ModalContextProvider,
-  SelectedAdContextProvider,
-  UserContextProvider,
-  IsAgainGetDatasProvider,
-  CollectionContextProvider,
-  IsUserLoggedContextProvider,
-  PostStateContextProvider,
-  SearchContextProvider,
-  LoaderContextProvider,
+  CollectionContextProvider, IsAgainGetDatasProvider, IsUserLoggedContextProvider, LoaderContextProvider, ModalContextProvider, PostStateContextProvider,
+  SearchContextProvider, SelectedAdContextProvider,
+  UserContextProvider
 } from "../context";
+import "../styles/globals.css";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <LoaderContextProvider>

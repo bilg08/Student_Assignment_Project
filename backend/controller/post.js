@@ -133,7 +133,6 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
   let isExistInPendingRequest = post.pendingRequest.findIndex(
     (req1) => req1.id === req.user.id
   ); 
-  
   if (isExistInPendingRequest === -1 || post.pendingRequest.length === 0) {
     if (post.owner.toString() !== req.user.id) {
       let chatRoomName = `chatRoom_${req.user.id}_${post.owner.toString()}`;

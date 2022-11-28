@@ -1,16 +1,12 @@
-import { MenuList, MenuList2, ColasipbleSidebarBox, MyImage } from "./index";
 import { deleteCookie, getCookie } from "cookies-next";
-import {
-	IsAgainGetDatas,
-	useCollectionContext,
-	useUserContext,
-	useIsAgainGetDatas,
-  useLoaderContext,
-} from "../context/index";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { instance } from "../components/Layout";
-
+import {
+  IsAgainGetDatas,
+  useCollectionContext, useIsAgainGetDatas,
+  useLoaderContext, useUserContext
+} from "../context/index";
+import { ColasipbleSidebarBox, MenuList, MenuList2, MyImage } from "./index";
 export const UserSideBar = () => {
 	const { user, setUser } = useUserContext();
 	const [editing, setEditing] = useState(false);
@@ -26,7 +22,9 @@ export const UserSideBar = () => {
 			setFileSelected(i);
 			setCreateObjectURL(URL.createObjectURL(i));
 		}
-	};
+  };
+
+
 	const handleChange = (e: any) => {
 		if (e.target.value === "") {
 		} else {

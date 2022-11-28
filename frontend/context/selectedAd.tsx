@@ -1,5 +1,5 @@
-import {useContext,createContext, useState} from 'react'
-import {SelectedAdContextType,Props,selectedAdType} from '../types/index'
+import { createContext, useContext, useState } from 'react';
+import { Props, SelectedAdContextType, selectedAdType } from '../types/index';
 export const SelectedAdContext = createContext<SelectedAdContextType>({
   selectedAd: {
     index: null,

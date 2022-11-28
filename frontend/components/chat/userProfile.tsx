@@ -1,11 +1,9 @@
-import { PostButton } from "../ui/postButton";
-import React, { useState } from "react";
-import { ColasipbleChatBox } from "./chatBox";
-import axios from "axios";
-import { getCookie } from "cookies-next";
+import { useState } from "react";
+import { instance } from "../../components/Layout";
 import { useIsAgainGetDatas } from "../../context";
 import { Rate } from "../rating";
-import { instance } from "../../components/Layout";
+import { PostButton } from "../ui/postButton";
+import { ColasipbleChatBox } from "./chatBox";
 
 export const UserProfileBox = ({ request, post }:any) => {
 	const [isChatting, setChatting] = useState(false);

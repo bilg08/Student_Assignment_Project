@@ -1,14 +1,14 @@
-import { PostReceived } from "./ui/postReceived";
-import { PostButton } from "./ui/postButton";
-import { ProfileCard, Button, Chat } from "./index";
-import {  useEffect, useState } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
-import { UserProfileBox } from "./chat/userProfile";
-import { ColasipbleChatBox } from "./chat/chatBox";
-import { useWindowWidth } from "../hooks";
-import { useIsAgainGetDatas } from "../context";
+import { useEffect, useState } from "react";
 import { instance } from "../components/Layout";
+import { useIsAgainGetDatas } from "../context";
+import { useWindowWidth } from "../hooks";
+import { ColasipbleChatBox } from "./chat/chatBox";
+import { UserProfileBox } from "./chat/userProfile";
+import { Button, ProfileCard } from "./index";
+import { PostButton } from "./ui/postButton";
+import { PostReceived } from "./ui/postReceived";
 type postType = {
   subject: string;
   detail: string;
@@ -27,7 +27,7 @@ export const ReceivedPosts = () => {
   const [postIInterested, setPostIInterested] = useState<postType>([
     
   ]);
-	const {isAgainGetDatas} = useIsAgainGetDatas()
+  const { isAgainGetDatas } = useIsAgainGetDatas();
   useEffect(() => {
     const getPostIInterested = async () => {
       try {

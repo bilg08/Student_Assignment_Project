@@ -1,11 +1,8 @@
-import React, { useState } from "react";
 import {
-	PostModal,
-	UserSideBar,
-	ReceivedPosts,
-	SeizedSideBar,
+	PostModal, ReceivedPosts,
+	SeizedSideBar, UserSideBar
 } from "../components/index";
-import { useIsUserLoggedContext, useCollectionContext } from "../context/index";
+import { useCollectionContext, useIsUserLoggedContext } from "../context/index";
 import { useWindowWidth } from "../hooks";
 import LoginPage from "./loginPage";
 const UserProfile = () => {
@@ -13,7 +10,7 @@ const UserProfile = () => {
 	const { isLoggedIn } = useIsUserLoggedContext();
 	const windowWidth = useWindowWidth();
 	if (!isLoggedIn) return <LoginPage />;
-
+    
 	return (
 		<div
 			style={{ display: "flex", flexDirection: "row" }}

@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react";
-import loginStyles from "../styles/login.module.css";
-import axios from "axios";
+import { setCookie } from "cookies-next";
+import { useState } from "react";
+import { instance } from "../components/Layout";
 import {
 	useIsAgainGetDatas,
 	useIsUserLoggedContext,
-	useUserContext,
+	useUserContext
 } from "../context";
-import { setCookie } from "cookies-next";
+import loginStyles from "../styles/login.module.css";
 import UserProfile from "./profile";
-import { instance } from "../components/Layout";
 
 const LoginPage = () => {
 	const [isLogin, setIsLogin] = useState(true);

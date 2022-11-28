@@ -2,11 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { PostButton } from "../ui/postButton";
 import { io } from "socket.io-client";
 import { flushSync } from "react-dom";
-import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useIsAgainGetDatas, useUserContext } from "../../context";
 import { instance } from "../../components/Layout";
-const connectChatServer = () => {
+export const connectChatServer = () => {
 	const socket = io("http://localhost:8000/", {
 		transports: ["websocket"],
 	});

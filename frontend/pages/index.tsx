@@ -8,8 +8,6 @@ import {
 } from "../context/index";
 import { useWindowWidth } from "../hooks/index";
 import { useModalContext } from "../context/index";
-import axios from "axios";
-import { getCookie } from "cookies-next";
 import { Pagination } from "../components/pagination";
 import {instance} from '../components/Layout'
 type adsType = {
@@ -42,32 +40,8 @@ export default function Home() {
   const { userInput, setUserInput } = useSearchContext();
   const [schools, setSchools] = useState<any>([]);
   const [schoolLessons, setSchoolLessons] = useState([]);
-	const [schoolGroup, setSchoolGroup] = useState<any>([]);
-	const { setIsOpen } = useLoaderContext()
-axios.interceptors.request.use(
-	function (response) {
-		setIsOpen(true)
-    return response;
-  },
-	function (error) {
-		setIsOpen(false);
-	  
-    return Promise.reject(error);
-  }
-	);
-		axios.interceptors.response.use(
-			function (response) {
-		console.log("irlee");
-				
-        setIsOpen(false);
-        return response;
-      },
-      function (error) {
-        setIsOpen(false);
-
-        return Promise.reject(error);
-      }
-    );
+  const [schoolGroup, setSchoolGroup] = useState<any>([]);
+  const {setOpenshadow} = useLoaderContext()
   useEffect(() => {
     async function getData() {
       await instance
@@ -124,13 +98,14 @@ axios.interceptors.request.use(
     });
   }, [userInput.group]);
   const requestToDoWork = async (id: String) => {
-	  const token = getCookie("token");
 	  await instance.post(`/post/${id}/work`)
       .then(async function (response) {
+        setOpenshadow(true);
         await setModalText("amjilttai");
         setOpenModal(true);
       })
       .catch(async function (error) {
+        setOpenshadow(true)
         await setModalText(error.response.data.data);
         setOpenModal(true);
       });

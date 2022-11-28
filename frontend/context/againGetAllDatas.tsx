@@ -1,4 +1,4 @@
-import { useContext, createContext, useState } from 'react'
+import { createContext, useContext, useState } from 'react';
 import { Props } from '../types';
 
 type isAgainGetDatasContextType = {
@@ -12,7 +12,7 @@ export const IsAgainGetDatas = createContext<isAgainGetDatasContextType>({
 });
 
 export const IsAgainGetDatasProvider = ({children}:Props) => {
-    const [isAgainGetDatas, setIsAgainGetDatas] = useState<any>()
+  const [isAgainGetDatas, setIsAgainGetDatas] = useState<any>(false);
     return(
         <IsAgainGetDatas.Provider value={{isAgainGetDatas,setIsAgainGetDatas}}>
             {children}
