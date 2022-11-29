@@ -4,6 +4,8 @@ const bcrypt = require("bcrypt");
 const asyncHandler = require("../middleware/asyncHandler");
 const MyError = require("../utils/myError");
 const jwt = require("jsonwebtoken");
+const path = require('path')
+const fs = require('fs')
 
 exports.login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -31,7 +33,7 @@ exports.createUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
     const token = user.getJsonWebToken();
-     user.save()
+    user.save()
     res.status(200).json({
       data: user,
       token,
@@ -47,21 +49,21 @@ exports.getUserInfo = async (req, res) => {
   const worksByCategoriesAvg = await PostSchema.aggregate([
     { $match: { "worker.id": req.user.id } },
     { $match: { isDone: true } },
-    { $group: { _id: "$group", avg: { $avg: "$worker.averageRating" } ,sum:{$sum:1}} },
+    { $group: { _id: "$group", avg: { $avg: "$worker.averageRating" }, sum: { $sum: 1 } } },
   ]);
- 
- async function computeAverageRating() {
+
+  async function computeAverageRating() {
     let data = 0
-     const userWorkedPost = await PostSchema.aggregate([
-    { $match: { "worker.id": req.user.id } },
-    { $match: { isDone: true } },
-  ]);
+    const userWorkedPost = await PostSchema.aggregate([
+      { $match: { "worker.id": req.user.id } },
+      { $match: { isDone: true } },
+    ]);
     userWorkedPost.map((el) => {
       data += el.worker.averageRating;
     });
-   return (parseInt(data/userWorkedPost.length))
-  }   
- 
+    return (parseInt(data / userWorkedPost.length))
+  }
+
   if (worksByCategoriesAvg.length > 0) {
     let avgRating = await computeAverageRating();
     user.averageRating = avgRating
@@ -72,11 +74,11 @@ exports.getUserInfo = async (req, res) => {
     });
 
   } else {
-   res.status(200).json({
-     data: await UserSchema.findById(req.user.id),
-   }); 
+    res.status(200).json({
+      data: await UserSchema.findById(req.user.id),
+    });
   }
-   
+
 };
 exports.getUserPosts = async (req, res) => {
   try {
@@ -96,13 +98,33 @@ exports.PostsUserHaveToDo = async (req, res) => {
 };
 
 exports.updateUser = asyncHandler(async (req, res, next) => {
-  const user = await UserSchema.findByIdAndUpdate(req.user.id, req.body.data, {
-    new: true,
-    runValidators: true,
+  let file = req.files.file;
+  file.name = `photo_${req.user.id}${path.parse(file.name).ext}`;
+  file.mv(`./images/users/${file.name}`, (err) => {
+    if (err) {
+      res.status(400).json({
+        error: "aldaa garlaa",
+      });
+    }
+  });
+
+  const user = await UserSchema.findByIdAndUpdate(req.user.id, { ...req.body, photo: file.name });
+  user.save()
+
+  res.status(200).json({
+    success: true
+  })
+});
+
+exports.getUserProfilePhoto = asyncHandler(async (req, res, next) => {
+  fs.readFile(`./images/users/photo_${req.params.id}.png`, (err, data) => {
+    if (err) {
+      res.status(400).json({
+        error: "aldaa garlaa",
+      });
+    }
+    res.end(data)
   });
 
 
-  if (!user) {
-    throw new MyError("not found", 400);
-  }
 });

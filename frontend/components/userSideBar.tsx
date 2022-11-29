@@ -1,4 +1,4 @@
-import { deleteCookie, getCookie } from "cookies-next";
+import { deleteCookie } from "cookies-next";
 import { useEffect, useState } from "react";
 import { instance } from "../components/Layout";
 import {
@@ -17,7 +17,6 @@ export const UserSideBar = () => {
 	const [createObjectURL, setCreateObjectURL] = useState<any | null>(null);
 	const [fileSelected, setFileSelected] = useState<any | null>([]);
 	const { setOpenshadow } = useLoaderContext();
-	const isActive = true;
 	const uploadFile = function (e: any) {
 		if (e.target.files && e.target.files[0]) {
 			const i = e.target.files[0];
@@ -25,27 +24,39 @@ export const UserSideBar = () => {
 			setCreateObjectURL(URL.createObjectURL(i));
 		}
 	};
-
-	const handleChange = (e: any) => {
-		if (e.target.value === "") {
+	const handleChange = async (e: any) => {
+		if (e.target.name === "photo") {
+			setUser({ ...user, [e.target.name]: e.target.files[0] });
+		} else if (e.target.value === "") {
+			return;
 		} else {
 			setUser({ ...user, [e.target.name]: e.target.value });
 		}
 	};
-	useEffect(() => {
-		console.log(cActive);
-	}, [cActive]);
+
 	const handleSubmit = async (e: any) => {
 		e.preventDefault();
 		setEditing(false);
+		let formDatas = new FormData();
+		formDatas.append("FirstName", user.FirstName);
+		formDatas.append("LastName", user.LastName);
+		formDatas.append("School", user.School);
+		formDatas.append("Level", user.level);
+		formDatas.append("file", user.photo);
 		await instance
-			.post("/users/updateMe", { data: user })
-			.then(() => setIsAgainGetDatas((e: boolean) => !e));
+			.post("/users/updateMe", formDatas, {
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			})
+			.then(() => {
+				setIsAgainGetDatas((e: boolean) => !e);
+			})
+			.catch((err) => console.log(err));
 	};
 
 	useEffect(() => {
 		const getPersonalInfo = async () => {
-			const token = getCookie("token");
 			try {
 				const datas = await instance.get("/users/myInfo");
 				setUser(datas.data.data);
@@ -64,7 +75,14 @@ export const UserSideBar = () => {
 						{!editing ? (
 							<div className='overflow-y-scroll'>
 								<li className='flex justify-center'>
-									<div className='h-64 w-64 rounded-full border-dark-purple border-2 mb-16 bg-white'></div>
+									{user ? (
+										<img
+											className='h-64 w-64 rounded-full border-dark-purple border-2 mb-16 p-0.5'
+											src={`http://localhost:8000/users/getUserProfilePhoto/${user._id}`}
+										/>
+									) : (
+										<div className='h-64 w-64 rounded-full border-dark-purple border-2 mb-16 p-0.5 bg-white'></div>
+									)}
 								</li>
 								<div className='border-2 border-dark-purple rounded-lg'>
 									<MenuList
@@ -100,9 +118,9 @@ export const UserSideBar = () => {
 										className='block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer  focus:outline-none  '
 										id='small_size'
 										type='file'
-										onChange={() => {
-											uploadFile;
-											handleChange;
+										onChange={(e) => {
+											uploadFile(e);
+											handleChange(e);
 										}}
 										name='photo'
 									/>
