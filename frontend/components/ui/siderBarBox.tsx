@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import useCollapse from "react-collapsed";
 type CardDataType = {
-	children: React.ReactNode;
+	children: any;
 	data: { _id: string; avg: number; sum: number }[];
 };
 

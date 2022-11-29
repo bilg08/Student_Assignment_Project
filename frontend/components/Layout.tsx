@@ -1,17 +1,16 @@
 import axios from "axios";
 import { getCookie } from "cookies-next";
 import React, { ReactNode } from "react";
-import { useLoaderContext } from "../context";
-import { Props } from "../types";
+import { useLoaderContext, useUserContext } from "../context";
 import { Header, Footer, Modal } from "./index";
 import { Loader } from "./Loader";
 export const instance = axios.create({
   baseURL: "http://localhost:8000/",
-  headers: { Authorization: getCookie("token") },
+  headers: { Authorization: getCookie("token"),userId:getCookie('userId') },
 });
 export const LayOut = (props: { children: ReactNode }) => {
   const { setOpenLoader, setOpenshadow } = useLoaderContext();
-
+  
   axios.interceptors.request.use(
     function (config) {
       setOpenLoader(true);
@@ -23,16 +22,13 @@ export const LayOut = (props: { children: ReactNode }) => {
     }
   );
 
-  // Add a response interceptor
   axios.interceptors.response.use(
     function (response) {
-      console.log('yvlaa')
       setOpenLoader(false);
       setOpenshadow(false);
       return response;
     },
     function (error) {
-      console.log("irlee");
       return Promise.reject(error);
     }
   );

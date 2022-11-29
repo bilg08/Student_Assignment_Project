@@ -12,6 +12,7 @@ interface UserContextInterface {
     email: string;
     averageRating: number;
     _id: string;
+    photo:any,
     averageRatingByGroupByGroup: { _id: string; avg: number; sum: number}[];
   };
   setUser: (_val: any) => void;
@@ -21,6 +22,7 @@ export const UserContext = createContext<UserContextInterface>({
   user: {
     LastName: "",
     FirstName: "",
+    photo:"",
     School: "",
     level: "",
     email: "",
@@ -44,6 +46,7 @@ export const UserContextProvider = ({ children }: Props) => {
     level: "",
     email: "",
     _id: "",
+    photo:"",
     averageRating: 0,
     averageRatingByGroupByGroup: [
       {

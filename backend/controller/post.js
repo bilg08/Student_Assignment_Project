@@ -21,10 +21,13 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
   let pagination = { page, total, pageCount, start, end };
   if (page < pageCount) pagination.nextPage = page + 1;
   if (page > 1) pagination.prevPage = page - 1;
+
+
   if (req.query.school === "" || req.query.group === "" || req.query.subject === "") {
-    posts = await PostSchema.find()
-      .limit(limit)
-      .skip(start - 1);
+
+     posts = await PostSchema.find({isDone:false})
+       .limit(limit)
+       .skip(start - 1);
   } else {
     posts = await PostSchema.aggregate([
       {
@@ -33,11 +36,6 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
     ])
 
   }
-
-
-
-
-
   res.status(200).json({
     status: false,
     data: posts,
@@ -98,14 +96,16 @@ exports.createPost = asyncHandler(async (req, res, next) => {
 });
 
 exports.deletePost = asyncHandler(async (req, res, next) => {
-  let posts = await PostSchema.findByIdAndDelete(req.params.id);
-
-  if (!posts) {
-    throw new MyError("not found", 400);
-  }
+  let posts = await PostSchema.findById(req.params.id);
+   if (!posts) {
+     throw new MyError("not found", 400);
+   }
+  if (posts.owner.toString() === req.user.id) {
+  await PostSchema.findByIdAndDelete(req.params.id)
+}
+ 
   res.status(200).json({
     success: true,
-    data: posts,
   });
 });
 

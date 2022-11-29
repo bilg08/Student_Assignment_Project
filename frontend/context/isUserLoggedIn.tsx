@@ -26,12 +26,14 @@ export const IsUserLoggedContextProvider = ({ children }: Props) => {
 
 	useEffect(() => {
 		getTokenFromLocal();
-	}, []);
+	});
 	async function getTokenFromLocal() {
 		let token;
+		let userId
 		try {
 			token = getCookie("token");
-			if (token) setIsLoggedIn(true);
+			userId = getCookie('userId')
+			if (token&&userId) setIsLoggedIn(true);
 		} catch (error) {}
 	}
 	return (

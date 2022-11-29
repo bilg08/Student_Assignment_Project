@@ -15,7 +15,6 @@ const LoginPage = () => {
 	const { isLoggedIn, setIsLoggedIn } = useIsUserLoggedContext();
 	const { setIsAgainGetDatas } = useIsAgainGetDatas();
 	const { setUser, user } = useUserContext();
-
 	if (isLoggedIn) return <UserProfile />;
 	function takeUserInput(e: any) {
 		setUserInput({ ...userInput, [e.target.name]: e.target.value });
@@ -30,6 +29,7 @@ const LoginPage = () => {
         await setIsAgainGetDatas((e: any) => !e);
 
         setIsLoggedIn(true);
+		location.reload()
       });
 	}
 
@@ -42,6 +42,8 @@ const LoginPage = () => {
           setCookie("userId", response.data.data._id);
           await setIsAgainGetDatas((e: any) => !e);
           setIsLoggedIn(true);
+		location.reload()
+
         });
 		} catch (error) {}
 	}

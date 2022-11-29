@@ -117,7 +117,7 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
 });
 
 exports.getUserProfilePhoto = asyncHandler(async (req, res, next) => {
-  fs.readFile(`./images/users/photo_${req.params.id}.png`, (err, data) => {
+  fs.readFile(`./images/users/${req.params.id}`, (err, data) => {
     if (err) {
       res.status(400).json({
         error: "aldaa garlaa",

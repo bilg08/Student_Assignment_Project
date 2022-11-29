@@ -35,7 +35,7 @@ router.route('/postToBeDone').get(checkAccessToken,showPostToBeDone)
 
 router
   .get("/:id", getPost)
-  .delete("/:id",  deletePost)
+  .delete("/:id", checkAccessToken,deletePost)
   .put("/:id", checkAccessToken, updatePost);
 
 

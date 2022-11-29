@@ -2,7 +2,7 @@ import {
 	PostModal,
 	ReceivedPosts,
 	SeizedSideBar,
-	UserSideBar,
+	UserSideBar
 } from "../components/index";
 import { useCollectionContext, useIsUserLoggedContext } from "../context/index";
 import { useWindowWidth } from "../hooks";
