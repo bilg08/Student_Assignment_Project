@@ -22,7 +22,6 @@ export const ModalContext = createContext<ModalContextType>({
 export const ModalContextProvider = ({ children }: Props) => {
   const [isOpenModal, setOpenModal] = useState(false);
   const [modalText, setModalText] = useState("");
-  useEffect(() => console.log(isOpenModal,modalText),[isOpenModal,modalText])
   return (
     <ModalContext.Provider
       value={{

@@ -33,7 +33,6 @@ export const ColasipbleSidebarBox = (props: CardDataType) => {
     setExpanded(!isExpanded);
   }
   const { children, data } = props;
-  console.log(data, "data");
   return (
     <div className="collapsible">
       <div className="header" {...getToggleProps({ onClick: handleOnClick })}>

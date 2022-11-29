@@ -31,9 +31,7 @@ export const UserSideBar = () => {
 			setUser({ ...user, [e.target.name]: e.target.value });
 		}
   };
-  useEffect(() => {
-    console.log(cActive)
-  },[cActive])
+
 	const handleSubmit = async (e: any) => {
 		e.preventDefault();
     setEditing(false);

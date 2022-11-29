@@ -57,7 +57,6 @@ export default function Home() {
 				})
 				.catch(function (response) {});
       }else{
-        console.log('nevtersen')
         await instance
 				.get(
 					`/post/?page=${page}&school=${userInput.school}&group=${userInput.group}&subject=${userInput.subject}`,
@@ -65,8 +64,6 @@ export default function Home() {
 				.then(async function (response) {
 
           const postNotIncludedUser = response.data.data.filter((post:{owner:string})=>(post.owner!==userId))
-          console.log(userId,postNotIncludedUser)
-
 					setAds(postNotIncludedUser);
 					setPagination(response.data.pagination);
 				})

@@ -25,7 +25,6 @@ export const IsUserLoggedContextProvider = ({ children }: Props) => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 	useEffect(() => {
-		console.log(isLoggedIn,'isLoggedIn')
 		getTokenFromLocal();
 	});
 	async function getTokenFromLocal() {
