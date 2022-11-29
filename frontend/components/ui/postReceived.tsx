@@ -14,7 +14,7 @@ export const PostReceived: React.FC<PostReceivedProps> = ({
 	return (
 		<div className='flex flex-row flex-wrap w-screen md:w-screen lg:w-11/12 '>
 			<div>
-				<div className='font-bold text-xl mb-2'>{name}</div>
+				<div className='font-bold text-xl mb-2 flex-wrap'>{name}</div>
 				<div className='text-m mb-2'>
 					<span className='font-bold text-base'>Зар тавьсан:</span>
 					{owner}
