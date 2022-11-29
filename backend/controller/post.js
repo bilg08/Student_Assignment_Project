@@ -6,10 +6,10 @@ let asyncHandler = require("../middleware/asyncHandler");
 let path = require("path");
 let fs = require("fs");
 let mongoose = require("mongoose");
-let {isOwner} = require('../service/user')
+let { isOwner } = require('../service/user')
 exports.getPosts = asyncHandler(async (req, res, next) => {
   let posts;
-  let {school,group,subject} = req.query;
+  let { school, group, subject } = req.query;
   let limit = parseInt(req.query.limit) || 5;
   let page = parseInt(req.query.page);
   delete req.query.page
@@ -22,22 +22,22 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
   if (page < pageCount) pagination.nextPage = page + 1;
   if (page > 1) pagination.prevPage = page - 1;
   if (req.query.school === "" || req.query.group === "" || req.query.subject === "") {
-     posts = await PostSchema.find()
-       .limit(limit)
-       .skip(start - 1);
+    posts = await PostSchema.find()
+      .limit(limit)
+      .skip(start - 1);
   } else {
     posts = await PostSchema.aggregate([
       {
         $match: { school, group, subject },
       },
     ])
-      
-  }
-   
-  
 
-    
-  
+  }
+
+
+
+
+
   res.status(200).json({
     status: false,
     data: posts,
@@ -132,7 +132,7 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
   //huselt yvuulsan hereglegc omno ni huselt yvuulsan esehiig shalgaj baina
   let isExistInPendingRequest = post.pendingRequest.findIndex(
     (req1) => req1.id === req.user.id
-  ); 
+  );
   if (isExistInPendingRequest === -1 || post.pendingRequest.length === 0) {
     if (post.owner.toString() !== req.user.id) {
       let chatRoomName = `chatRoom_${req.user.id}_${post.owner.toString()}`;
@@ -210,17 +210,17 @@ exports.cancelWorkRequest = asyncHandler(async (req, res, next) => {
   let post = await PostSchema.findById(req.params.id);
   post.worker.id = "";
   post.worker.email = "",
-  post.worker.averageRating = 0;
+    post.worker.averageRating = 0;
   post.isDone = false;
   post.save();
   res.status(200).json({
-    data:post
+    data: post
   })
 });
 
 
 exports.rateWorkerPerformance = asyncHandler(async (req, res, next) => {
-  const {rating} = req.body
+  const { rating } = req.body
   const post = await PostSchema.findById(req.params.id)
   const IsOwner = await isOwner(req.params.id, req.user.id);
   if (IsOwner) {
@@ -228,7 +228,7 @@ exports.rateWorkerPerformance = asyncHandler(async (req, res, next) => {
     post.isDone = true;
     post.save();
     res.status(200).json({
-      success:true
+      success: true
     })
   }
 });
