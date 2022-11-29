@@ -8,12 +8,13 @@ import {
 import "../styles/globals.css";
 export default function App({ Component, pageProps }: AppProps) {
   return (
+    <IsUserLoggedContextProvider>
+
     <LoaderContextProvider>
       <IsAgainGetDatasProvider>
         <SearchContextProvider>
           <ModalContextProvider>
             <UserContextProvider>
-              <IsUserLoggedContextProvider>
                 <CollectionContextProvider>
                   <SelectedAdContextProvider>
                     <LayOut>
@@ -23,11 +24,12 @@ export default function App({ Component, pageProps }: AppProps) {
                     </LayOut>
                   </SelectedAdContextProvider>
                 </CollectionContextProvider>
-              </IsUserLoggedContextProvider>
             </UserContextProvider>
           </ModalContextProvider>
         </SearchContextProvider>
       </IsAgainGetDatasProvider>
     </LoaderContextProvider>
+    </IsUserLoggedContextProvider>
+
   );
 }

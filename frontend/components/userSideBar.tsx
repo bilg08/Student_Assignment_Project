@@ -230,6 +230,7 @@ export const UserSideBar = () => {
             <MenuList2
               onClick={() => {
                 deleteCookie("token");
+                deleteCookie("userId");
                 location.reload();
               }}
               name={"Гарах"}
@@ -364,6 +365,7 @@ export const SeizedSideBar = () => {
 					<MenuList2
 						onClick={() => {
 							deleteCookie("token");
+                deleteCookie("userId");
 							location.reload();
 						}}
 						name={""}

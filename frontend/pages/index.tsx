@@ -5,11 +5,13 @@ import {
 	useIsAgainGetDatas,
 	useSearchContext,
 	useLoaderContext,
+  useIsUserLoggedContext,
 } from "../context/index";
 import { useWindowWidth } from "../hooks/index";
 import { useModalContext } from "../context/index";
 import { Pagination } from "../components/pagination";
 import { instance } from "../components/Layout";
+import { getCookie } from "cookies-next";
 type adsType = {
 	_id: string | number | readonly string[] | undefined;
 	advertisingHeader: String;
@@ -18,12 +20,12 @@ type adsType = {
 		name: String;
 		image: String | any;
 	};
+  isDone:boolean;
 	createdAt: String;
 	photo?: string;
 	price?: string;
 };
 
-// Add a response interceptor
 
 export default function Home() {
 	const { selectedAd, setSelectedAd } = useSelectedContext();
@@ -40,17 +42,37 @@ export default function Home() {
 	const [schoolLessons, setSchoolLessons] = useState([]);
 	const [schoolGroup, setSchoolGroup] = useState<any>([]);
 	const { setOpenshadow } = useLoaderContext();
+  const {isLoggedIn} = useIsUserLoggedContext()
 	useEffect(() => {
 		async function getData() {
-			await instance
+      const userId = getCookie('userId');
+      if(!isLoggedIn){
+        await instance
 				.get(
-					`/post/?page=${page}&school=${userInput.school}&group=${userInput.group}&subject=${userInput.subject}`
+					`/post/?page=${page}&school=${userInput.school}&group=${userInput.group}&subject=${userInput.subject}`,
 				)
 				.then(async function (response) {
 					setAds(response.data.data);
 					setPagination(response.data.pagination);
 				})
 				.catch(function (response) {});
+      }else{
+        console.log('nevtersen')
+        await instance
+				.get(
+					`/post/?page=${page}&school=${userInput.school}&group=${userInput.group}&subject=${userInput.subject}`,
+				)
+				.then(async function (response) {
+
+          const postNotIncludedUser = response.data.data.filter((post:{owner:string})=>(post.owner!==userId))
+          console.log(userId,postNotIncludedUser)
+
+					setAds(postNotIncludedUser);
+					setPagination(response.data.pagination);
+				})
+				.catch(function (response) {});
+      }
+			
 			await instance
 				.get("/school")
 				.then(async function (response) {
@@ -74,7 +96,7 @@ export default function Home() {
 		return () => {
 			getData();
 		};
-	}, [isAgainGetDatas, page]);
+	}, [isAgainGetDatas, page,isLoggedIn]);
 
 	useEffect(() => {
 		schools.map((school1: any) => {

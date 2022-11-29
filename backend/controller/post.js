@@ -21,8 +21,10 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
   let pagination = { page, total, pageCount, start, end };
   if (page < pageCount) pagination.nextPage = page + 1;
   if (page > 1) pagination.prevPage = page - 1;
+
+
   if (req.query.school === "" || req.query.group === "" || req.query.subject === "") {
-     posts = await PostSchema.find()
+     posts = await PostSchema.find({isDone:false})
        .limit(limit)
        .skip(start - 1);
   } else {
@@ -31,13 +33,7 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
         $match: { school, group, subject },
       },
     ])
-      
   }
-   
-  
-
-    
-  
   res.status(200).json({
     status: false,
     data: posts,
