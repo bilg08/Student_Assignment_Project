@@ -149,7 +149,7 @@ export default function Home() {
 			<div>
 				<div className='flex h-40  justify-center flex-col items-center md:flex-row m-auto max-w-screen-xl gap-5'>
 					<select
-						className='block appearance-none w-full bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
+						className='block w-full bg-white border border-dark-purple text-dark-purple py-3 px-4 pr-8 rounded-3xl leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
 						id='grid-state'
 						name='school'
 						onChange={async (e) => {
@@ -158,6 +158,7 @@ export default function Home() {
 								[e.target.name]: e.target.value,
 							});
 						}}>
+						<option value=''>Сургууль</option>
 						{schools.map((school: { name: "" }, i: number) => (
 							<option
 								value={school.name}
@@ -167,7 +168,7 @@ export default function Home() {
 						))}
 					</select>
 					<select
-						className='block appearance-none w-full bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
+						className='block w-full bg-white border border-dark-purple text-dark-purple py-3 px-4 pr-8 rounded-3xl leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
 						id='grid-state'
 						onChange={async (e) => {
 							await setUserInput({
@@ -176,12 +177,13 @@ export default function Home() {
 							});
 						}}
 						name='group'>
+						<option value=''>Бүлэг</option>
 						{schoolGroup?.map((group: string, i: string) => (
 							<option key={group + i}>{group}</option>
 						))}
 					</select>
 					<select
-						className='block appearance-none w-full bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
+						className='block w-full bg-white border border-dark-purple text-dark-purple py-3 px-4 pr-8 rounded-3xl leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
 						id='grid-state'
 						onChange={async (e) => {
 							await setUserInput({
@@ -190,26 +192,13 @@ export default function Home() {
 							});
 						}}
 						name='subject'>
+						<option value=''>Хичээл</option>
 						{schoolLessons?.map((schoolLesson: any, i: number) => {
 							return (
 								<option key={schoolLesson + i}>{schoolLesson.subject}</option>
 							);
 						})}
 					</select>
-					{/* <Input
-									placeholder='Сургууль'
-									onchange={setUserinput}
-									userInput={userinput}
-									icon={<AiOutlineSearch />}
-									name='school'
-								/> */}
-					{/* <Input
-                  placeholder="Хичээл"
-                  onchange={setUserinput}
-                  userInput={userinput}
-                  name="subject"
-                  icon={<MdLocationOn />}
-                /> */}
 					<Button onClick={handleSearch}>Хайх</Button>
 				</div>
 			</div>
