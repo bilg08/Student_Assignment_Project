@@ -8,10 +8,9 @@ import Grid from "@mui/material/Grid";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import CircularProgress from "@mui/material/CircularProgress";
 import Button from "@mui/material/Button";
 import Backdrop from "@mui/material/Backdrop";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 // import { Shadow, PostButton, Button } from "../components/index";
 import {
   useSelectedContext,
@@ -144,209 +143,221 @@ export default function Home() {
       });
   };
   const handleSearch = () => {
-    setShowModal(false)
-    setSelectedAd(null)
+    setShowModal(false);
+    setSelectedAd(null);
     setIsAgainGetDatas((e: boolean) => !e);
-
   };
   const DetailImage = (props: { imageSrc: string }) => {
     return (
       <Backdrop
-  sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 ,display:'flex',justifyContent:'center',alignItems:'center'}}
-  
-  open={closeDetailImage}
->
-
-        <Button
-          onClick={() => setCloseDetailImage(false)}
-          variant="contained"
-        >
+        sx={{
+          color: "#fff",
+          zIndex: (theme) => theme.zIndex.drawer + 20,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        open={closeDetailImage}>
+        <Button onClick={() => setCloseDetailImage(false)} variant="contained">
           X
         </Button>
-        <Grid className="w-[100%] h-[auto] justify-self-center">
+        <Grid className="w-[100%] h-[500px] flex justify-center">
           <img
             style={{
-              margin: `auto`,
               width: "80%",
-              height: "auto",
-              marginTop: "3vw",
             }}
-            src={selectedAd && 'https://images.pexels.com/photos/325946/pexels-photo-325946.jpeg?cs=srgb&dl=pexels-pixabay-325946.jpg&fm=jpg'}
+            src={
+              selectedAd &&
+              `http://localhost:8000/post/photo/${selectedAd.ad.photo}`
+            }
           />
         </Grid>
-</Backdrop>
-      
+      </Backdrop>
     );
   };
 
   return (
     <div className="w-full border-#57534e border-1">
       <div className="flex h-40  justify-center flex-col items-center md:flex-row m-auto max-w-screen-xl gap-5">
-        <FormControl fullWidth>
-          <InputLabel  id="demo-simple-select-label">Сургууль</InputLabel>
-          <Select
-            name="school"
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={userInput.school}
-            label="Сургууль"
-            onChange={async (e) => {
-              await setUserInput({
-                ...userInput,
-                [e.target.name]: e.target.value,
-              });
-            }}
-          >
-            {schools.map((school: { name: "" }, i: number) => (
-              <MenuItem  value={school.name} key={school.name + i}>
-                {school.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Бүлэг</InputLabel>
-          <Select
-
-            name="group"
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={userInput.group}
-            label="group"
-            onChange={async (e) => {
-              await setUserInput({
-                ...userInput,
-                [e.target.name]: e.target.value,
-              });
-            }}
-          >
-            {schoolGroup?.map((group: string, i: string) => (
-              <MenuItem value={group} key={group + i}>
-                {group}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Хичээл</InputLabel>
-          <Select
-
-            name="subject"
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={userInput.subject}
-            label="group"
-            onChange={async (e) => {
-              await setUserInput({
-                ...userInput,
-                [e.target.name]: e.target.value,
-              });
-            }}
-          >
-            {schoolLessons?.map((schoolLesson: any, i: number) => {
-              return (
-                <MenuItem value={schoolLesson.subject} key={schoolLesson + i}>
-                  {schoolLesson.subject}
+        <Grid
+          container
+          gap={5}
+          sx={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+          }}>
+          <Grid md={3} sm={3} item>
+            <InputLabel id="demo-simple-select-label">Сургууль</InputLabel>
+            <Select
+              sx={{ width: "100%" }}
+              name="school"
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={userInput.school}
+              label="Сургууль"
+              onChange={async (e) => {
+                await setUserInput({
+                  ...userInput,
+                  [e.target.name]: e.target.value,
+                });
+              }}>
+              {schools.map((school: { name: "" }, i: number) => (
+                <MenuItem value={school.name} key={school.name + i}>
+                  {school.name}
                 </MenuItem>
+              ))}
+            </Select>
+          </Grid>
+          <Grid md={3} sm={3} item>
+            <InputLabel id="demo-simple-select-label">Бүлэг</InputLabel>
+            <Select
+              sx={{ width: "100%" }}
+              name="group"
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={userInput.group}
+              label="group"
+              onChange={async (e) => {
+                await setUserInput({
+                  ...userInput,
+                  [e.target.name]: e.target.value,
+                });
+              }}>
+              {schoolGroup?.map((group: string, i: string) => (
+                <MenuItem value={group} key={group + i}>
+                  {group}
+                </MenuItem>
+              ))}
+            </Select>
+          </Grid>
+          <Grid md={3} sm={3} item>
+            <InputLabel id="demo-simple-select-label">Хичээл</InputLabel>
+            <Select
+              sx={{ width: "100%" }}
+              name="subject"
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={userInput.subject}
+              label="group"
+              onChange={async (e) => {
+                await setUserInput({
+                  ...userInput,
+                  [e.target.name]: e.target.value,
+                });
+              }}>
+              {schoolLessons?.map((schoolLesson: any, i: number) => {
+                return (
+                  <MenuItem value={schoolLesson.subject} key={schoolLesson + i}>
+                    {schoolLesson.subject}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </Grid>
+          <Button
+            sx={{ width: "150px", height: "40px" }}
+            onClick={handleSearch}
+            variant="outlined">
+            Хайх
+          </Button>
+        </Grid>
+      </div>
+      <DetailImage imageSrc={selectedAd && selectedAd.ad.photo} />
+      <Grid sx={{ width: "100%", background: "#faf9f8" }}>
+        <Grid
+          container
+          sx={{
+            position: "relative",
+            display: "flex",
+            justifyContent: "space-between",
+            maxWidth: "1300px",
+            margin: "auto",
+            height: "auto",
+          }}>
+          <Grid
+            item
+            sx={{
+              display: "flex",
+              width: { xs: "100%", md: "50%", xl: "50%" },
+              alignItems: { xs: "center", md: "start" },
+              flexDirection: "column",
+              gap: "20px",
+            }}>
+            {ads.map((ad, index) => {
+              return (
+                <Grid
+                  key={index}
+                  onClick={() => {
+                    setSelectedAd({ ad, index });
+                    setShowModal(true);
+                  }}
+                  className="max-w-sm bg-white border rounded-lg shadow-md">
+                  <CardMedia
+                    onClick={() => setCloseDetailImage(true)}
+                    component="img"
+                    height="140"
+                    sx={{ borderRadius: "10px" }}
+                    image={`http://localhost:8000/post/photo/${ad.photo}`}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {ad.advertisingHeader}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {ad.detail}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Button
+                      onClick={() => handleSearch()}
+                      size="small"
+                      color="primary">
+                      Дэлгэрэнгүй
+                    </Button>
+                  </CardActions>
+                </Grid>
               );
             })}
-          </Select>
-        </FormControl>
-        <Button onClick={handleSearch} variant="outlined">
-          Хайх
-        </Button>
-      </div>
-      <DetailImage imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJzMNWNPsA8KiUFY_YiEC7rub3JEDOCUXXHwJ40dp7&s"/>
-      <Grid
-        container
-        sx={{
-          position: "relative",
-          display: "flex",
-          justifyContent: "space-between",
-          maxWidth: "1350px",
-          margin: "auto",
-          minHeight: "auto",
-        }}
-      >
-        <Grid item sx={{display:'flex',flexDirection:'column',gap:'20px'}}>
-          {ads.map((ad, index) => {
-            return (
+          </Grid>
+          <Grid sx={{ width: "50%" }}>
+            {selectedAd && windowWidth > 800 && (
               <Grid
-                key={index}
-                onClick={() => {
-                  setSelectedAd({ ad, index });
-                  setShowModal(true);
-                }}
-                className="max-w-sm bg-white border rounded-lg shadow-md"
-              >
+                className="bg-white border rounded-lg shadow-md">
                 <CardMedia
-                onClick={()=> setCloseDetailImage(true)}
+                  onClick={() => setCloseDetailImage(true)}
                   component="img"
                   height="140"
                   sx={{ borderRadius: "10px" }}
-                  image={`https://images.pexels.com/photos/325946/pexels-photo-325946.jpeg?cs=srgb&dl=pexels-pixabay-325946.jpg&fm=jpg`}
+                  image={`http://localhost:8000/post/photo/${selectedAd.ad.photo}`}
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                    {ad.advertisingHeader}
+                    {selectedAd.ad.advertisingHeader}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {ad.detail}
+                    {selectedAd.ad.detail}
                   </Typography>
                 </CardContent>
-
                 <CardActions>
                   <Button
-                    onClick={() => handleSearch()}
-                    size="small"
-                    color="primary"
-                  >
-                    Дэлгэрэнгүй
+                    onClick={() => requestToDoWork(selectedAd.ad._id)}
+                    color="primary">
+                    Хийх
                   </Button>
                 </CardActions>
               </Grid>
-            );
-          })}
+            )}
+          </Grid>
         </Grid>
-        <Grid>
-          {selectedAd && windowWidth > 935 && (
-            <Grid className="max-w-lg bg-white border rounded-lg shadow-md">
-              <CardMedia
-              onClick={()=> setCloseDetailImage(true)}
-                component="img"
-                height="140"
-                sx={{ borderRadius: "10px" }}
-                image={`https://images.pexels.com/photos/325946/pexels-photo-325946.jpeg?cs=srgb&dl=pexels-pixabay-325946.jpg&fm=jpg`}
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {selectedAd.ad.advertisingHeader}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {selectedAd.ad.detail}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button
-                  onClick={() => requestToDoWork(selectedAd.ad._id)}
-                  color="primary"
-
-                >
-                  Хийх
-                </Button>
-              </CardActions>
-            </Grid>
-          )}
-        </Grid>
-        {selectedAd && showModal && windowWidth < 935 && (
+        {selectedAd && showModal && windowWidth < 800 && (
           <Backdrop
             sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            open={true}
-          >
+            open={true}>
             <Grid className="max-w-xl bg-white min-w-[330px] border  rounded-lg shadow-md">
               <CardMedia
-              onClick={()=> setCloseDetailImage(true)}
-
+                onClick={() => setCloseDetailImage(true)}
                 component="img"
                 height="140"
                 sx={{ borderRadius: "10px" }}
@@ -361,14 +372,14 @@ export default function Home() {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button
-                  onClick={() => requestToDoWork(selectedAd.ad._id)}
-                >
+                <Button onClick={() => requestToDoWork(selectedAd.ad._id)}>
                   Хийх
                 </Button>
                 <Button
-                  onClick={() =>{setSelectedAd("");setCloseDetailImage(false)}}
-                >
+                  onClick={() => {
+                    setSelectedAd("");
+                    setCloseDetailImage(false);
+                  }}>
                   Гарах
                 </Button>
               </CardActions>
@@ -376,9 +387,7 @@ export default function Home() {
           </Backdrop>
         )}
       </Grid>
-  
-
-      <Pagination1 pagination={pagination} setPage={setPage} page={page} /> 
+      <Pagination1 pagination={pagination} setPage={setPage} page={page} />
     </div>
   );
 }

@@ -172,7 +172,6 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
 
 exports.getPostPhoto = asyncHandler(async (req, res, next) => {
   let { photoname } = req.params;
-  console.log(photoname)
   fs.readFile(`./images/post/${photoname}`, (err, data) => {
     if (err) {
       console.log(err)
