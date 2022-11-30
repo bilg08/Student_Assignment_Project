@@ -59,6 +59,14 @@ const PostSchema = new mongoose.Schema({
     required: true,
     default: [],
   },
+  
+  pendingRequestTest: {
+    type: [
+      {workingPerson: mongoose.Schema.ObjectId}
+    ],
+    required: true,
+  },
+
   price: {
     type: String,
     required: [true, "Үнийг оруулна уу"],

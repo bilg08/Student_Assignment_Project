@@ -42,7 +42,7 @@ export default function Home() {
 	const [schoolLessons, setSchoolLessons] = useState([]);
 	const [schoolGroup, setSchoolGroup] = useState<any>([]);
 	const { setOpenshadow } = useLoaderContext();
-  const {isLoggedIn} = useIsUserLoggedContext()
+  const {isLoggedIn} = useIsUserLoggedContext();
 	useEffect(() => {
 		async function getData() {
       const userId = getCookie('userId');
@@ -233,7 +233,7 @@ export default function Home() {
                   className="max-w-sm bg-white border border-mid-purple rounded-lg shadow-md">
                   <img
                     className="rounded-t-lg"
-                    src={`http://localhost:8000/post/photo/${selectedAd.ad.photo}`}
+                    src={`http://localhost:8000/post/photo/${ad.photo}`}
                     alt=""
                   />
                   <div className="p-5">
@@ -260,7 +260,7 @@ export default function Home() {
                 <img
                   onClick={() => setCloseDetailImage(true)}
                   className="rounded-t-lg"
-                  src={`http://localhost:8000/post/photo/${selectedAd.ad.photo}`}
+                  src={selectedAd &&`http://localhost:8000/post/photo/${selectedAd.ad.photo}`}
                   alt=""
                 />
                 <div className="p-5">
@@ -296,7 +296,7 @@ export default function Home() {
               <img
                 onClick={() => setCloseDetailImage(true)}
                 className="rounded-t-lg"
-                src={`http://localhost:8000/post/photo/${selectedAd.ad.photo}`}
+                src={selectedAd &&`http://localhost:8000/post/photo/${selectedAd.ad.photo}`}
                 alt=""
               />
               <div className="p-5">
