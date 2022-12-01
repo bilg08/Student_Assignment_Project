@@ -165,7 +165,7 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
   } else {
     res.status(400).json({
       success: false,
-      data: "ta ene zarand huselt ilgeesen baina",
+      data: "Та энэ заранд хүсэлт илгээсэн байна.",
     });
   }
 });
