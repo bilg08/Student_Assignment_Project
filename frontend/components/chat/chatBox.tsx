@@ -16,7 +16,7 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
 	const [isSentMessage, setIsSentMessage] = useState(false);
 	const [message, setMessage] = useState("");
 	const { user } = useUserContext();
-	const {setIsAgainGetDatas} = useIsAgainGetDatas()
+	const { setIsAgainGetDatas } = useIsAgainGetDatas();
 	const [messages, setMessages] = useState([
 		{ message: "", createdAt: "", owner: { email: "" } },
 	]);
@@ -45,23 +45,20 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
 	useEffect(() => {
 		async function sendChat() {
 			try {
-				await instance.post(`/chat/${chatRoomName}/sendMessage`,{message});
+				await instance.post(`/chat/${chatRoomName}/sendMessage`, { message });
 			} catch (error) {}
 		}
 		if (message !== "" && chatRoomName !== "") sendChat();
 	}, [isSentMessage]);
 	useEffect(() => {
 		async function getMessages() {
-			setIsAgainGetDatas((e:any)=>!e)
+			setIsAgainGetDatas((e: any) => !e);
 			try {
-				const data = await instance.get(
-					`/chat/${chatRoomName}/getMessages`,
-					{
-						headers: {
-							authorization: getCookie("token"),
-						},
-					}
-				);
+				const data = await instance.get(`/chat/${chatRoomName}/getMessages`, {
+					headers: {
+						authorization: getCookie("token"),
+					},
+				});
 				flushSync(async () => {
 					setMessages(data.data.data);
 				});
@@ -70,7 +67,7 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
 		}
 		getMessages();
 	}, [chatRoomName, isSentMessage]);
-	
+
 	useEffect(() => {});
 	function scrollToLastMessage() {
 		let lastChild = listRef.current!.lastChild;
@@ -84,37 +81,37 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
 	return (
 		<div className='h-48 w-[100%] '>
 			<div
-				className='h-2/3  border border-black rounded-lg
+				className='h-2/3  border border-green-500 rounded-lg
 			 overflow-scroll 
 			  '>
 				<ul ref={listRef}>
 					{messages &&
 						messages.map((message) => {
 							return (
-								<li className={`m-1 flex justify-between w-full`}>
+								<li className={`m-1 flex justify-between w-full px-2`}>
 									{message && user.email === message.owner.email ? (
 										<>
+											<span></span>
 											<span
-												className={`border-2 px-2 relative rounded-xl ${
+												className={`border-2  px-2 relative rounded-xl ${
 													message && user.email === message.owner.email
-														? `bg-blue-500 `
-														: "bg-white "
+														? `bg-green-600 text-white border-green-400`
+														: "bg-white text-green-600 border-green-300"
 												}`}>
 												{message.message}
 											</span>{" "}
-											<span></span>
 										</>
 									) : (
 										<>
-											<span></span>
 											<span
-												className={`border-2 px-2 relative rounded-xl ${
+												className={`border-2 px-2  relative rounded-xl ${
 													message && user.email === message.owner.email
-														? `bg-blue-500 `
-														: "bg-white "
+														? `bg-green-600 text-white border-green-400 `
+														: "bg-white  text-green-600 border-green-300"
 												}`}>
 												{message.message}
 											</span>{" "}
+											<span></span>
 										</>
 									)}
 								</li>
@@ -128,7 +125,7 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
 					onChange={async (e) => {
 						await setMessage(e.target.value);
 					}}
-					className='border border-black rounded-lg w-4/6 h-8 align-center mt-2 mr-2'></input>
+					className='border border-green-500 bg-grey-100 rounded-lg w-4/6 h-8 align-center mt-2 mr-2'></input>
 				<PostButton
 					data={"Send"}
 					prop={"rgb(220, 211, 255)"}

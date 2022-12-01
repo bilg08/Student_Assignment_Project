@@ -1,6 +1,5 @@
 import { ReactNode, SyntheticEvent, useState, useEffect } from "react";
 import { useIsAgainGetDatas } from "../context";
-import { getCookie } from "cookies-next";
 import {
 	instance,
 	SomeCart,
@@ -9,7 +8,18 @@ import {
 	PostButton,
 	PostReceived,
 } from "../components/index";
-import { Box, Typography, Tabs, Tab } from "@mui/material";
+import {
+	Box,
+	Typography,
+	Tabs,
+	Tab,
+	Select,
+	MenuItem,
+	InputLabel,
+	FormControl,
+	NativeSelect,
+} from "@mui/material";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import SwipeableViews from "react-swipeable-views";
 type postType = {
 	subject: string;
@@ -21,11 +31,20 @@ type postType = {
 }[];
 export const ReceivedPosts = () => {
 	const [personalPosts, setPersonalPosts] = useState<postType>([]);
-	const [chosen, setChosen] = useState(true);
 	const [isChatting, setChatting] = useState(false);
 	const [chatRoom, setChatRoom] = useState("");
 	const [postIInterested, setPostIInterested] = useState<postType>([]);
 	const { isAgainGetDatas, setIsAgainGetDatas } = useIsAgainGetDatas();
+	const [value, setValue] = useState(0);
+	const [open, setOpen] = useState(false);
+	const [chattingReq, setChattingReq] = useState<string>("");
+	const handleChange = (event: SyntheticEvent, newValue: number) => {
+		setValue(newValue);
+	};
+
+	const handleChangeIndex = (index: number) => {
+		setValue(index);
+	};
 	useEffect(() => {
 		const getPostIInterested = async () => {
 			try {
@@ -36,7 +55,6 @@ export const ReceivedPosts = () => {
 			}
 		};
 		const getPersonalData = async () => {
-			const token = getCookie("token");
 			try {
 				const datas = await instance.get(`/users/posts`);
 				setPersonalPosts(datas.data.data);
@@ -45,15 +63,7 @@ export const ReceivedPosts = () => {
 		getPostIInterested();
 		getPersonalData();
 	}, [isAgainGetDatas]);
-	const [value, setValue] = useState(0);
 
-	const handleChange = (event: SyntheticEvent, newValue: number) => {
-		setValue(newValue);
-	};
-
-	const handleChangeIndex = (index: number) => {
-		setValue(index);
-	};
 	const postedButtonArr = [
 		{
 			textValue: "Edit",
@@ -111,6 +121,7 @@ export const ReceivedPosts = () => {
 					value={0}>
 					<div className='overscroll-y-none  flex-col flex items-center pb-[100px]'>
 						{personalPosts?.map((el, ind) => {
+							console.log(el);
 							return (
 								<SomeCart
 									type={el.isDone === true ? "done" : "notDone"}
@@ -120,7 +131,7 @@ export const ReceivedPosts = () => {
 										owner={"oruuln"}
 										description={el.detail}
 									/>
-									<div className='flex flex-row flex-wrap'>
+									{/* <div className='flex flex-row flex-wrap'>
 										{postedButtonArr?.map(
 											(button, index): any =>
 												!el.isDone && (
@@ -133,26 +144,84 @@ export const ReceivedPosts = () => {
 													/>
 												)
 										)}
-									</div>
-									{!el.isDone ? (
+									</div> */}
+									{!el.isDone && (
 										<div>
-											<h1>Хийх хүсэлтүүд:</h1>
-											{el.worker.id == "" &&
-												el.pendingRequest.map((request) => {
-													return (
-														<div className=' h-fit lg:w-[90%] md:w-[55vw] sm:w-[80%] border border-black rounded-lg flex flex-col p-2 mt-3'>
-															<UserProfileBox
-																request={request}
-																post={el}
-															/>
-														</div>
-													);
-												})}
-											{el.worker.id && (
+											<div
+												className='flex-row mt-4'
+												style={{
+													display:
+														(!el.isDone && el.worker.email) == ""
+															? "block"
+															: "none",
+												}}>
+												{/* <Box
+													sx={{
+														display: "flex",
+														justifyContent: "space-between",
+														alignItems: "center",
+														marginBottom: "2%",
+														textWeight: "bold",
+														borderTop: "1px solid green",
+														paddinTop: "10px",
+														paddingLeft: "1px",
+														paddingTop: "10px",
+														font: "Roboto",
+														fontSize: "16px",
+														fontWeight: "bold",
+														letterSpacing: "0.2px",
+													}}
+													onClick={() => setOpen(true)}>
+													Хийх хүсэлтүүд
+													<ArrowDropDownIcon />
+												</Box> */}
+												<FormControl
+													sx={{
+														borderTop: "none",
+														marginBottom: "10px",
+													}}
+													fullWidth>
+													<InputLabel
+														variant='standard'
+														htmlFor='uncontrolled-native'
+														sx={{
+															color: "green",
+															fontSize: "18px",
+															font: "Roboto",
+															marginBottom: "4px",
+														}}>
+														Хийх хүсэлтүүд
+													</InputLabel>
+													<NativeSelect
+														onChange={(e) => setChattingReq(e.target.value)}>
+														<option></option>
+														{el.worker.id == "" &&
+															el.pendingRequest.map((request) => {
+																return (
+																	<option value={request.email}>
+																		{request.email}
+																	</option>
+																);
+															})}
+													</NativeSelect>
+												</FormControl>
+												{chattingReq !== "" &&
+													el.pendingRequest.map(
+														(ele) =>
+															ele.email === chattingReq && (
+																<UserProfileBox
+																	request={ele}
+																	post={el}
+																/>
+															)
+													)}
+											</div>
+
+											{el.worker.email !== "" && !el.isDone && (
 												<>
 													<h1>Хийх хүн</h1>
 
-													<div className=' h-fit lg:w-[90%] md:w-[55vw] sm:w-[80%] border border-black rounded-lg flex flex-col p-2 mt-3'>
+													<div className=' h-fit lg:w-[90%] md:w-[55vw] sm:w-[80%] flex flex-col p-2 mt-3'>
 														<UserProfileBox
 															request={el.worker}
 															post={el}
@@ -161,8 +230,6 @@ export const ReceivedPosts = () => {
 												</>
 											)}
 										</div>
-									) : (
-										<div>Энэ зар дууссан</div>
 									)}
 								</SomeCart>
 							);

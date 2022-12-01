@@ -192,7 +192,7 @@ export const UserSideBar = () => {
 							}}>
 							<AccordionSummary>Хийсэн бие даалтын тоо</AccordionSummary>
 							<AccordionDetails>
-								{user.averageRatingByGroupByGroup.map((el) => {
+								{user?.averageRatingByGroupByGroup.map((el) => {
 									return (
 										<Typography>
 											{el._id} : {el.sum}
@@ -209,7 +209,7 @@ export const UserSideBar = () => {
 							}}>
 							<AccordionSummary>Дундаж Үнэлгээ</AccordionSummary>
 							<AccordionDetails>
-								{user.averageRatingByGroupByGroup.map((el) => {
+								{user?.averageRatingByGroupByGroup.map((el) => {
 									return (
 										<Typography>
 											{el._id} : {el.avg}
