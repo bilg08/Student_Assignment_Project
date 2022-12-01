@@ -17,7 +17,6 @@ export const UserSideBar = () => {
 	const [createObjectURL, setCreateObjectURL] = useState<any | null>(null);
 	const [fileSelected, setFileSelected] = useState<any | null>([]);
 	const { setOpenshadow } = useLoaderContext();
-	console.log(`http://localhost:8000/users/getUserProfilePhoto/${user.photo}`)
 	const uploadFile = function (e: any) {
 		if (e.target.files && e.target.files[0]) {
 			const i = e.target.files[0];

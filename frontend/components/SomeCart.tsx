@@ -34,8 +34,18 @@ const variantMap: VariantMapsType = {
 		Icon: IconNote,
 		isDone: false,
 		containerClasses:
-			"bg-green-300 dark:bg-green-300 dark:bg-opacity-20 text-primary dark:text-primary-dark text-lg",
-		textColor: "text-green-600 dark:text-green-40",
+			"bg-sky-200 dark:bg-green-300 dark:bg-opacity-20 text-primary dark:text-primary-dark text-lg",
+		textColor: "text-sky-600 dark:text-green-40",
+		overlayGradient:
+			"linear-gradient(rgba(245, 249, 248, 0), rgba(245, 249, 248, 1)",
+	},
+	note: {
+		title: "Шинэ зар",
+		Icon: IconNote,
+		isDone: false,
+		containerClasses:
+		"bg-[#f6f7f9] dark:bg-green-300 dark:bg-opacity-20 text-primary dark:text-primary-dark text-lg",
+		textColor: "text-sky-400 dark:text-green-40",
 		overlayGradient:
 			"linear-gradient(rgba(245, 249, 248, 0), rgba(245, 249, 248, 1)",
 	},

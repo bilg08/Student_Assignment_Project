@@ -11,6 +11,8 @@ import FormControl from "@mui/material/FormControl";
 import Button from "@mui/material/Button";
 import Backdrop from "@mui/material/Backdrop";
 import Select from "@mui/material/Select";
+import { Note } from "../components/SomeCart";
+import cn from "classnames";
 // import { Shadow, PostButton, Button } from "../components/index";
 import {
   useSelectedContext,
@@ -24,6 +26,7 @@ import { useModalContext } from "../context/index";
 import { Pagination1 } from "../components/pagination";
 import { instance } from "../components/Layout";
 import { getCookie } from "cookies-next";
+import { IconNavArrow } from "../components/Icon/IconNavArrow";
 type adsType = {
   _id: string | number | readonly string[] | undefined;
   advertisingHeader: String;
@@ -157,11 +160,12 @@ export default function Home() {
           justifyContent: "center",
           alignItems: "center",
         }}
-        open={closeDetailImage}>
+        open={closeDetailImage}
+      >
         <Button onClick={() => setCloseDetailImage(false)} variant="contained">
           X
         </Button>
-        <Grid className="w-[100%] h-[500px] flex justify-center">
+        <Grid className="w-[100%] h-[90%] flex justify-center">
           <img
             style={{
               width: "80%",
@@ -187,7 +191,8 @@ export default function Home() {
             height: "100%",
             display: "flex",
             alignItems: "center",
-          }}>
+          }}
+        >
           <Grid md={3} sm={3} item>
             <InputLabel id="demo-simple-select-label">Сургууль</InputLabel>
             <Select
@@ -202,7 +207,8 @@ export default function Home() {
                   ...userInput,
                   [e.target.name]: e.target.value,
                 });
-              }}>
+              }}
+            >
               {schools.map((school: { name: "" }, i: number) => (
                 <MenuItem value={school.name} key={school.name + i}>
                   {school.name}
@@ -224,7 +230,8 @@ export default function Home() {
                   ...userInput,
                   [e.target.name]: e.target.value,
                 });
-              }}>
+              }}
+            >
               {schoolGroup?.map((group: string, i: string) => (
                 <MenuItem value={group} key={group + i}>
                   {group}
@@ -246,7 +253,8 @@ export default function Home() {
                   ...userInput,
                   [e.target.name]: e.target.value,
                 });
-              }}>
+              }}
+            >
               {schoolLessons?.map((schoolLesson: any, i: number) => {
                 return (
                   <MenuItem value={schoolLesson.subject} key={schoolLesson + i}>
@@ -259,13 +267,14 @@ export default function Home() {
           <Button
             sx={{ width: "150px", height: "40px" }}
             onClick={handleSearch}
-            variant="outlined">
+            variant="outlined"
+          >
             Хайх
           </Button>
         </Grid>
       </div>
       <DetailImage imageSrc={selectedAd && selectedAd.ad.photo} />
-      <Grid sx={{ width: "100%", background: "#faf9f8" }}>
+      <Grid sx={{ width: "100%" }}>
         <Grid
           container
           sx={{
@@ -275,7 +284,8 @@ export default function Home() {
             maxWidth: "1300px",
             margin: "auto",
             height: "auto",
-          }}>
+          }}
+        >
           <Grid
             item
             sx={{
@@ -284,47 +294,46 @@ export default function Home() {
               alignItems: { xs: "center", md: "start" },
               flexDirection: "column",
               gap: "20px",
-            }}>
+            }}
+          >
             {ads.map((ad, index) => {
               return (
-                <Grid
-                  key={index}
+                <div
                   onClick={() => {
                     setSelectedAd({ ad, index });
                     setShowModal(true);
                   }}
-                  className="max-w-sm bg-white border rounded-lg shadow-md">
-                  <CardMedia
-                    onClick={() => setCloseDetailImage(true)}
-                    component="img"
-                    height="140"
-                    sx={{ borderRadius: "10px" }}
-                    image={`http://localhost:8000/post/photo/${ad.photo}`}
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
+                  className="flex flex-col bg-[#f6f7f9] h-auto bg-card dark:bg-card-dark shadow-inner justify-between rounded-lg pb-8 p-6 xl:p-8 mt-3"
+                >
+                  <div>
+                    <h3
+                      className={cn(
+                        "mb-2 text-2xl text-sky-400 font-bold flex-wrap"
+                      )}
+                    >
                       {ad.advertisingHeader}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {ad.detail}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
+                    </h3>
+                    <div className="my-4">{ad.detail}</div>
+                  </div>
+                  <div>
                     <Button
-                      onClick={() => handleSearch()}
-                      size="small"
-                      color="primary">
+                      className="bg-sky-400 text-white rounded-lg"
+                      sx={{ padding: "6px 16px" }}
+                    >
                       Дэлгэрэнгүй
+                      <IconNavArrow
+                        displayDirection="right"
+                        className="inline ml-1"
+                      />
                     </Button>
-                  </CardActions>
-                </Grid>
+                  </div>
+                </div>
               );
             })}
           </Grid>
           <Grid sx={{ width: "50%" }}>
             {selectedAd && windowWidth > 800 && (
-              <Grid
-                className="bg-white border rounded-lg shadow-md">
+              <Note>
                 <CardMedia
                   onClick={() => setCloseDetailImage(true)}
                   component="img"
@@ -333,28 +342,32 @@ export default function Home() {
                   image={`http://localhost:8000/post/photo/${selectedAd.ad.photo}`}
                 />
                 <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
+                  <Typography className="text-sky-500 font-bold" gutterBottom variant="h5" component="div">
                     {selectedAd.ad.advertisingHeader}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body2" className="text-xl font-normal" color="text.secondary">
                     {selectedAd.ad.detail}
                   </Typography>
                 </CardContent>
                 <CardActions>
                   <Button
+                    sx={{ padding: "6px 16px" }}
+                    className="bg-sky-400 text-white rounded-lg"
                     onClick={() => requestToDoWork(selectedAd.ad._id)}
-                    color="primary">
+                    color="primary"
+                  >
                     Хийх
                   </Button>
                 </CardActions>
-              </Grid>
+              </Note>
             )}
           </Grid>
         </Grid>
         {selectedAd && showModal && windowWidth < 800 && (
           <Backdrop
             sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            open={true}>
+            open={true}
+          >
             <Grid className="max-w-xl bg-white min-w-[330px] border  rounded-lg shadow-md">
               <CardMedia
                 onClick={() => setCloseDetailImage(true)}
@@ -379,7 +392,8 @@ export default function Home() {
                   onClick={() => {
                     setSelectedAd("");
                     setCloseDetailImage(false);
-                  }}>
+                  }}
+                >
                   Гарах
                 </Button>
               </CardActions>
