@@ -298,36 +298,38 @@ export default function Home() {
           >
             {ads.map((ad, index) => {
               return (
-                <div
-                  onClick={() => {
-                    setSelectedAd({ ad, index });
-                    setShowModal(true);
-                  }}
-                  className="flex flex-col bg-[#f6f7f9] h-auto bg-card dark:bg-card-dark shadow-inner justify-between rounded-lg pb-8 p-6 xl:p-8 mt-3"
-                >
-                  <div>
-                    <h3
-                      className={cn(
-                        "mb-2 text-2xl text-sky-400 font-bold flex-wrap"
-                      )}
-                    >
+                  <Grid
+                  key={index}
+                onClick={() => {
+                  setSelectedAd({ ad, index });
+                  setShowModal(true);
+                }}
+                  className="max-w-sm bg-white border rounded-lg shadow-md">
+                <CardMedia
+                  onClick={() => setCloseDetailImage(true)}
+                  component="img"
+                  height="140"
+                  sx={{ borderRadius: "10px" }}
+                  image={`http://localhost:8000/post/photo/${ad.photo}`}
+                />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
                       {ad.advertisingHeader}
-                    </h3>
-                    <div className="my-4">{ad.detail}</div>
-                  </div>
-                  <div>
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {ad.detail}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
                     <Button
-                      className="bg-sky-400 text-white rounded-lg"
-                      sx={{ padding: "6px 16px" }}
-                    >
+                      onClick={() => handleSearch()}
+                      size="small"
+                      color="primary">
                       Дэлгэрэнгүй
-                      <IconNavArrow
-                        displayDirection="right"
-                        className="inline ml-1"
-                      />
                     </Button>
-                  </div>
-                </div>
+                  </CardActions>
+                </Grid>
+            
               );
             })}
           </Grid>
@@ -345,7 +347,7 @@ export default function Home() {
                   <Typography className="text-sky-500 font-bold" gutterBottom variant="h5" component="div">
                     {selectedAd.ad.advertisingHeader}
                   </Typography>
-                  <Typography variant="body2" className="text-xl font-normal" color="text.secondary">
+                  <Typography variant="body2" className="text-xl font-bold" color="text.secondary">
                     {selectedAd.ad.detail}
                   </Typography>
                 </CardContent>
