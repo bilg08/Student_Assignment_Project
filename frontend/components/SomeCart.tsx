@@ -44,8 +44,8 @@ const variantMap: VariantMapsType = {
 		Icon: IconNote,
 		isDone: false,
 		containerClasses:
-		"bg-[#f6f7f9] dark:bg-green-300 dark:bg-opacity-20 text-primary dark:text-primary-dark text-lg",
-		textColor: "text-sky-400 dark:text-green-40",
+		"bg-indigo-200 dark:bg-green-300 dark:bg-opacity-20 text-primary dark:text-primary-dark text-lg",
+		textColor: " dark:text-green-40",
 		overlayGradient:
 			"linear-gradient(rgba(245, 249, 248, 0), rgba(245, 249, 248, 1)",
 	},
@@ -58,13 +58,13 @@ export const SomeCart: React.FC<SomeCartType> = ({ children, type }) => {
 		<div
 			className={cn(
 				"expandable-callout",
-				"pt-8 pb-4 px-5 sm:px-8 my-8 w-5/6 relative rounded-none shadow-inner -mx-5 sm:mx-auto sm:rounded-lg flex-wrap",
+				"pt-8 pb-4 px-5 sm:px-8 my-8 w-5/6 relative rounded-none shadow-inner -mx-5 rounded sm:mx-auto sm:rounded-lg flex-wrap",
 				variant.containerClasses
 			)}>
 			<h3
-				className={cn("mb-2 text-2xl font-bold flex-wrap", variant.textColor)}>
+				className={cn("mb-2 text-2xl font-bold flex-wrap ")}>
 				<variant.Icon
-					className={cn("inline mr-3 mb-1 text-lg", variant.textColor)}
+					className={cn("inline mr-3 mb-1 text-lg")}
 				/>
 				{variant.title}
 			</h3>
