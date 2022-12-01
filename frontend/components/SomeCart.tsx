@@ -34,8 +34,8 @@ const variantMap: VariantMapsType = {
 		Icon: IconNote,
 		isDone: false,
 		containerClasses:
-			"bg-sky-200 dark:bg-green-300 dark:bg-opacity-20 text-primary dark:text-primary-dark text-lg",
-		textColor: "text-sky-600 dark:text-green-40",
+			"bg-green-300 dark:bg-green-300 dark:bg-opacity-20 text-primary dark:text-primary-dark text-lg",
+		textColor: "text-green-600 dark:text-green-40",
 		overlayGradient:
 			"linear-gradient(rgba(245, 249, 248, 0), rgba(245, 249, 248, 1)",
 	},
