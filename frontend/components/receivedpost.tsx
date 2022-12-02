@@ -16,6 +16,7 @@ type postType = {
   worker: { id: string; averageRating: string; email: string };
   isDone: boolean;
   chatRoom: string;
+  _id:string,
   pendingRequest: [{ id: string; averageRating: string; email: string }];
 }[];
 export const ReceivedPosts = () => {
@@ -46,11 +47,6 @@ export const ReceivedPosts = () => {
     getPostIInterested();
     getPersonalData();
   }, [isAgainGetDatas]);
-  async function deletePost() {
-    await axios
-      .delete(`http://localhost:8000/post/${id}`)
-      .then(function (response) {});
-  }
   const postedButtonArr = [
     {
       textValue: "Edit",
