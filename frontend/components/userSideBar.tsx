@@ -78,7 +78,7 @@ export const UserSideBar = () => {
 			<aside
 				className='w-96 ml-24 h-[75vh]'
 				aria-label='Sidebar'>
-				<div className='mt-28 overflow-y-scroll py-4 px-3 bg-white rounded-lg flex-col align-center items-center h-full'>
+				<div className='overflow-y-scroll py-4 px-3 bg-white rounded-lg flex-col align-center items-center h-full'>
 					<ul className='space-y-2'>
 						{!editing ? (
 							<div className='overflow-y-scroll'>
@@ -96,7 +96,7 @@ export const UserSideBar = () => {
 										viewBox='0 0 24 24'
 										strokeWidth='1.5'
 										stroke='currentColor'
-										className='w-6 h-6'>
+										className='w-9 h-9 px-1 relative top-36 right-12 z-10 bg-white rounded-full border border-dark-purple'>
 										<path
 											strokeLinecap='round'
 											strokeLinejoin='round'

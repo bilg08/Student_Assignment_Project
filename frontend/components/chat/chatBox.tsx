@@ -5,6 +5,7 @@ import { flushSync } from "react-dom";
 import { getCookie } from "cookies-next";
 import { useIsAgainGetDatas, useUserContext } from "../../context";
 import { instance } from "../../components/Layout";
+import { Chip } from "@mui/material";
 export const connectChatServer = () => {
 	const socket = io("http://localhost:8000/", {
 		transports: ["websocket"],
@@ -88,31 +89,14 @@ export const ColasipbleChatBox = ({ chatRoomName }: any) => {
 					{messages &&
 						messages.map((message) => {
 							return (
-								<li className={`m-1 flex justify-between w-full px-2`}>
+								<li className={`m-1 flex justify-between w-full px-1`}>
 									{message && user.email === message.owner.email ? (
-										<>
-											<span></span>
-											<span
-												className={`border-2  px-2 relative rounded-xl ${
-													message && user.email === message.owner.email
-														? `bg-green-600 text-white border-green-400`
-														: "bg-white text-green-600 border-green-300"
-												}`}>
-												{message.message}
-											</span>{" "}
-										</>
+										<Chip label={message.message} />
 									) : (
-										<>
-											<span
-												className={`border-2 px-2  relative rounded-xl ${
-													message && user.email === message.owner.email
-														? `bg-green-600 text-white border-green-400 `
-														: "bg-white  text-green-600 border-green-300"
-												}`}>
-												{message.message}
-											</span>{" "}
-											<span></span>
-										</>
+										<Chip
+											variant='outlined'
+											label={message.message}
+										/>
 									)}
 								</li>
 							);
