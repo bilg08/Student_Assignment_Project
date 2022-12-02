@@ -1,4 +1,3 @@
-import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useEffect, useState } from "react";
 import { instance } from "../components/Layout";

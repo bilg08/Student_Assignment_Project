@@ -20,6 +20,7 @@ import { useModalContext } from "../context/index";
 import { Pagination1 } from "../components/pagination";
 import { instance } from "../components/Layout";
 import { getCookie } from "cookies-next";
+import { MenuItem, Select } from "@mui/material";
 type adsType = {
   _id: string | number | readonly string[] | undefined;
   advertisingHeader: String;
@@ -35,9 +36,9 @@ type adsType = {
 };
 
 export default function Home() {
+  const [ads, setAds] = useState<adsType[]>([]);
   const { selectedAd, setSelectedAd } = useSelectedContext();
   const { setModalText, setOpenModal } = useModalContext();
-  const [ads, setAds] = useState<adsType[]>([]);
   const windowWidth = useWindowWidth();
   const [showModal, setShowModal] = useState(false);
   const { isAgainGetDatas, setIsAgainGetDatas } = useIsAgainGetDatas();
@@ -73,6 +74,7 @@ export default function Home() {
             const postNotIncludedUser = response.data.data.filter(
               (post: { owner: string }) => post.owner !== userId
             );
+            setSelectedAd({ads:postNotIncludedUser[0]})
             setAds(postNotIncludedUser);
             setPagination(response.data.pagination);
           })
@@ -114,6 +116,7 @@ export default function Home() {
       }
     });
   }, [userInput.school, userInput.group]);
+
   useEffect(() => {
     schools.map((school1: any) => {
       if (school1.name === userInput.school) {
@@ -125,6 +128,7 @@ export default function Home() {
       }
     });
   }, [userInput.group]);
+
   const requestToDoWork = async (id: String) => {
     await instance
       .post(`/post/${id}/work`)
@@ -139,11 +143,13 @@ export default function Home() {
         setOpenModal(true);
       });
   };
+
   const handleSearch = () => {
     setShowModal(false);
     setSelectedAd(null);
     setIsAgainGetDatas((e: boolean) => !e);
   };
+
   const DetailImage = (props: { imageSrc: string }) => {
     return (
       <Backdrop
@@ -185,16 +191,19 @@ export default function Home() {
             height: "100%",
             display: "flex",
             alignItems: "center",
-            justifyContent: 'center',
-            flexFlow:{xs:'column',md:'row'}
+            justifyContent: "center",
+            flexFlow: { xs: "column", md: "row" },
           }}
         >
           <Grid md={3} className="w-5/6" item>
             <InputLabel className="font-bold" id="demo-simple-select-label">
               Сургууль
             </InputLabel>
-            <select
+            <Select
               className="bg-[#ebecf0] my-2 md:flex relative pl-4 pr-0.5 py-1 h-10 bg-secondary-button dark:bg-gray-80 outline-none focus:ring focus:outline-none betterhover:hover:bg-opacity-80 pointer items-center shadow-inner text-left w-full  text-gray-30 rounded-lg align-middle text-sm"
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              label="Age"
               name="school"
               value={userInput.school}
               onChange={async (e) => {
@@ -202,62 +211,62 @@ export default function Home() {
                   ...userInput,
                   [e.target.name]: e.target.value,
                 });
-                console.log(e.target.value);
               }}
             >
               {schools.map((school: { name: "" }, i: number) => (
-                <option value={school.name} key={school.name + i}>
+                <MenuItem value={school.name} key={school.name + i}>
                   {school.name}
-                </option>
+                </MenuItem>
               ))}
-            </select>
+            </Select>
           </Grid>
-          <Grid md={3}  className="w-5/6 " item>
+          <Grid md={3} className="w-5/6 " item>
             <InputLabel className="font-bold" id="demo-simple-select-label">
               Бүлэг
             </InputLabel>
-            <select
-              className="bg-[#ebecf0] my-2 md:flex relative pl-4 pr-0.5 py-1 h-10 bg-secondary-button dark:bg-gray-80 outline-none focus:ring focus:outline-none betterhover:hover:bg-opacity-80 pointer items-center shadow-inner text-left w-full text-gray-30 rounded-lg align-middle text-sm"
-              id="grid-state"
+            <Select
+              className="bg-[#ebecf0] my-2 md:flex relative pl-4 pr-0.5 py-1 h-10 bg-secondary-button dark:bg-gray-80 outline-none focus:ring focus:outline-none betterhover:hover:bg-opacity-80 pointer items-center shadow-inner text-left w-full  text-gray-30 rounded-lg align-middle text-sm"
+              name="group"
+              value={userInput.group}
               onChange={async (e) => {
                 await setUserInput({
                   ...userInput,
                   [e.target.name]: e.target.value,
                 });
               }}
-              name="group"
             >
-              <option value="">Бүлэг</option>
-              {schoolGroup?.map((group: string, i: string) => (
-                <option key={group + i}>{group}</option>
+              {schoolGroup.map((group: string, i: string) => (
+                <MenuItem value={group} key={group + i}>
+                  {group}
+                </MenuItem>
               ))}
-            </select>
+            </Select>
+          
           </Grid>
-          <Grid md={3}  className="w-5/6" item>
+          <Grid md={3} className="w-5/6" item>
             <InputLabel className="font-bold" id="demo-simple-select-label">
               Хичээл
             </InputLabel>
-            <select
-              className="bg-[#ebecf0] my-2 md:flex relative pl-4 pr-0.5 py-1 h-10 bg-secondary-button dark:bg-gray-80 outline-none focus:ring focus:outline-none betterhover:hover:bg-opacity-80 pointer items-center shadow-inner text-left w-full text-gray-30 rounded-lg align-middle text-sm"
-              id="grid-state"
+            <Select
+              className="bg-[#ebecf0] my-2 md:flex relative pl-4 pr-0.5 py-1 h-10 bg-secondary-button dark:bg-gray-80 outline-none focus:ring focus:outline-none betterhover:hover:bg-opacity-80 pointer items-center shadow-inner text-left w-full  text-gray-30 rounded-lg align-middle text-sm"
+              name="subject"
+              value={userInput.subject}
               onChange={async (e) => {
                 await setUserInput({
                   ...userInput,
                   [e.target.name]: e.target.value,
                 });
               }}
-              name="subject"
             >
-              <option value="">Хичээл</option>
-              {schoolLessons?.map((schoolLesson: any, i: number) => {
-                return (
-                  <option key={schoolLesson + i}>{schoolLesson.subject}</option>
-                );
-              })}
-            </select>
+              {schoolLessons?.map((schoolLesson: any, i: number) => (
+                <MenuItem value={schoolLesson.subject}  key={schoolLesson + i}>
+                  {schoolLesson.subject}
+                </MenuItem>
+              ))}
+            </Select>
           </Grid>
           <button
-            style={{ padding: "6px 15px",marginTop:'20px' }}
+            style={{ padding: "6px 15px", marginTop: "20px" }}
             className="bg-indigo-600 text-white rounded-lg"
             onClick={handleSearch}
             color="primary"
@@ -331,7 +340,7 @@ export default function Home() {
             })}
           </Grid>
           <Grid sx={{ width: "50%" }}>
-            {selectedAd && windowWidth > 800 && (
+            {selectedAd && windowWidth > 900 && (
               <Note>
                 <CardMedia
                   onClick={() => setCloseDetailImage(true)}
@@ -371,7 +380,7 @@ export default function Home() {
             )}
           </Grid>
         </Grid>
-        {selectedAd && showModal && windowWidth < 800 && (
+        {selectedAd && showModal && windowWidth < 900 && (
           <Backdrop
             sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
             open={true}
@@ -409,6 +418,14 @@ export default function Home() {
                   color="primary"
                 >
                   Хийх
+                </Button>
+                <Button
+                  sx={{ padding: "6px 15px" }}
+                  className="bg-indigo-600 text-white rounded-lg"
+                  onClick={() => setShowModal(false)}
+                  color="primary"
+                >
+                  Гарах
                 </Button>
               </CardActions>
             </Note>
