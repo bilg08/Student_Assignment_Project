@@ -22,6 +22,7 @@ import {
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import SwipeableViews from "react-swipeable-views";
 type postType = {
+<<<<<<< HEAD
 	subject: string;
 	detail: string;
 	worker: { id: string; averageRating: string; email: string };
@@ -41,6 +42,74 @@ export const ReceivedPosts = () => {
 	const handleChange = (event: SyntheticEvent, newValue: number) => {
 		setValue(newValue);
 	};
+=======
+  subject: string;
+  detail: string;
+  worker: { id: string; averageRating: string; email: string };
+  isDone: boolean;
+  chatRoom: string;
+  _id:string,
+  pendingRequest: [{ id: string; averageRating: string; email: string }];
+}[];
+export const ReceivedPosts = () => {
+  const [personalPosts, setPersonalPosts] = useState<postType>([]);
+  const [chosen, setChosen] = useState(true);
+  const [isChatting, setChatting] = useState(false);
+  const [chatRoom, setChatRoom] = useState("");
+  const windowWidth = useWindowWidth();
+  const [loading, setLoading] = useState(false);
+  const [postIInterested, setPostIInterested] = useState<postType>([]);
+  const { isAgainGetDatas,setIsAgainGetDatas } = useIsAgainGetDatas();
+  useEffect(() => {
+    const getPostIInterested = async () => {
+      try {
+        const datas = await instance.get(`/post/postToBeDone`);
+        setPostIInterested(datas.data.data);
+      } catch (error) {
+      } finally {
+      }
+    };
+    const getPersonalData = async () => {
+      const token = getCookie("token");
+      try {
+        const datas = await instance.get(`/users/posts`);
+        setPersonalPosts(datas.data.data);
+      } catch (error) {}
+    };
+    getPostIInterested();
+    getPersonalData();
+  }, [isAgainGetDatas]);
+  const postedButtonArr = [
+    {
+      textValue: "Edit",
+      style: "#C4FAF8",
+      function: () => {},
+    },
+    {
+      textValue: "Delete",
+      style: "#FFABAB",
+      function:async (el: React.MouseEvent<HTMLButtonElement>) => {
+        const button: HTMLButtonElement = el.currentTarget;
+        await instance
+          .delete(`/post/${button.id}`)
+          .then(function (response) {
+            setIsAgainGetDatas((e:boolean) => !e);
+          });
+      },
+    },
+  ];
+  const buttonArr = [
+    {
+      textValue: "Submit",
+      style: "#C4FAF8",
+    },
+    {
+      textValue: "Cancel",
+      style: "#FFABAB",
+      function: () => {},
+    },
+  ];
+>>>>>>> homePageMui
 
 	const handleChangeIndex = (index: number) => {
 		setValue(index);

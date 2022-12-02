@@ -8,6 +8,7 @@ import {
 import { useWindowWidth } from "../hooks";
 import axios from "axios";
 
+
 export const Header = () => {
 	const { userInput, setUserInput } = useSearchContext();
 	const [schoolLessons, setSchoolLessons] = useState([]);

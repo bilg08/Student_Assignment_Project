@@ -61,7 +61,6 @@ export const UserSideBar = () => {
 			.then(() => {
 				setIsAgainGetDatas((e: boolean) => !e);
 			})
-			.catch((err) => console.log(err));
 	};
 
 	useEffect(() => {
