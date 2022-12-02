@@ -174,7 +174,6 @@ exports.getPostPhoto = asyncHandler(async (req, res, next) => {
   let { photoname } = req.params;
   fs.readFile(`./images/post/${photoname}`, (err, data) => {
     if (err) {
-      console.log(err)
     }
     res.setHeader("content-type", "image/png");
     res.end(data);

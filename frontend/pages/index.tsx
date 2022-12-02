@@ -20,6 +20,7 @@ import { useModalContext } from "../context/index";
 import { Pagination1 } from "../components/pagination";
 import { instance } from "../components/Layout";
 import { getCookie } from "cookies-next";
+import { MenuItem, Select } from "@mui/material";
 type adsType = {
   _id: string | number | readonly string[] | undefined;
   advertisingHeader: String;
@@ -108,7 +109,6 @@ export default function Home() {
     schools.map((school1: any) => {
       if (school1.name === userInput.school) {
         school1.groupAndThatGrouplessons.map((group: any) => {
-          console.log(group);
           setSchoolGroup((prev: any) => [...prev, group.GroupName]);
         });
       }
@@ -193,7 +193,7 @@ export default function Home() {
             <InputLabel className="font-bold" id="demo-simple-select-label">
               Сургууль
             </InputLabel>
-            <select
+            <Select
               className="bg-[#ebecf0] my-2 md:flex relative pl-4 pr-0.5 py- h-10 bg-secondary-button dark:bg-gray-80 outline-none focus:ring focus:outline-none betterhover:hover:bg-opacity-80 pointer items-center shadow-inner text-left w-full  text-gray-30 rounded-lg align-middle text-sm"
               name="school"
               value={userInput.school}
@@ -204,37 +204,39 @@ export default function Home() {
                 });
               }}>
               {schools.map((school: { name: "" }, i: number) => (
-                <option value={school.name} key={school.name + i}>
+                <MenuItem value={school.name} key={school.name + i}>
                   {school.name}
-                </option>
+                </MenuItem>
               ))}
-            </select>
+            </Select>
           </Grid>
           <Grid md={3} className="w-5/6 " item>
             <InputLabel className="font-bold" id="demo-simple-select-label">
               Бүлэг
             </InputLabel>
-            <select
+            <Select
               className="bg-[#ebecf0] my-2 md:flex relative pl-4 pr-0.5 py-1 h-10 bg-secondary-button dark:bg-gray-80 outline-none focus:ring focus:outline-none betterhover:hover:bg-opacity-80 pointer items-center shadow-inner text-left w-full text-gray-30 rounded-lg align-middle text-sm"
               id="grid-state"
+              name="group"
+              value={userInput.group}
               onChange={async (e) => {
                 await setUserInput({
                   ...userInput,
                   [e.target.name]: e.target.value,
                 });
               }}
-              name="group">
-              <option value="">Бүлэг</option>
+              >
+              <MenuItem value="">Бүлэг</MenuItem>
               {schoolGroup?.map((group: string, i: string) => (
-                <option key={group + i}>{group}</option>
+                <MenuItem value={group} key={group + i}>{group}</MenuItem>
               ))}
-            </select>
+            </Select>
           </Grid>
           <Grid md={3} className="w-5/6" item>
             <InputLabel className="font-bold" id="demo-simple-select-label">
               Хичээл
             </InputLabel>
-            <select
+            <Select
               className="bg-[#ebecf0] my-2 md:flex relative pl-4 pr-0.5 py-1 h-10 bg-secondary-button dark:bg-gray-80 outline-none focus:ring focus:outline-none betterhover:hover:bg-opacity-80 pointer items-center shadow-inner text-left w-full text-gray-30 rounded-lg align-middle text-sm"
               id="grid-state"
               onChange={async (e) => {
@@ -244,13 +246,15 @@ export default function Home() {
                 });
               }}
               name="subject">
-              <option value="">Хичээл</option>
+              <MenuItem value="">Хичээл</MenuItem>
               {schoolLessons?.map((schoolLesson: any, i: number) => {
                 return (
-                  <option key={schoolLesson + i}>{schoolLesson.subject}</option>
+                  <MenuItem value={schoolLesson.subject} key={schoolLesson + i}>
+                    {schoolLesson.subject}
+                  </MenuItem>
                 );
               })}
-            </select>
+            </Select>
           </Grid>
           <button
             style={{ padding: "6px 15px", marginTop: "20px" }}
