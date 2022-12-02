@@ -9,19 +9,12 @@ import Button from "@mui/material/Button";
 import Backdrop from "@mui/material/Backdrop";
 import { Note } from "../components/SomeCart";
 import {
-<<<<<<< HEAD
-	useSelectedContext,
-	useIsAgainGetDatas,
-	useSearchContext,
-	useLoaderContext,
-	useIsUserLoggedContext,
-=======
+
   useSelectedContext,
   useIsAgainGetDatas,
   useSearchContext,
   useLoaderContext,
   useIsUserLoggedContext,
->>>>>>> homePageMui
 } from "../context/index";
 import { useWindowWidth } from "../hooks/index";
 import { useModalContext } from "../context/index";
