@@ -16,6 +16,7 @@ import {
 	useLoaderContext,
 	useUserContext,
 } from "../context/index";
+import { IconSearch } from "./Icon/IconSearch";
 
 export const UserSideBar = () => {
 	const { user, setUser } = useUserContext();
@@ -77,7 +78,7 @@ export const UserSideBar = () => {
 			<aside
 				className='w-96 ml-24 h-[75vh]'
 				aria-label='Sidebar'>
-				<div className='mt-28 overflow-y-scroll py-4 px-3 bg-white rounded-lg flex-col align-center items-center h-full border-2 border-dark-purple'>
+				<div className='mt-28 overflow-y-scroll py-4 px-3 bg-white rounded-lg flex-col align-center items-center h-full'>
 					<ul className='space-y-2'>
 						{!editing ? (
 							<div className='overflow-y-scroll'>
@@ -86,8 +87,24 @@ export const UserSideBar = () => {
 										className='h-48 w-48 rounded-full border-dark-purple border-2 mb-4 p-0.5'
 										src={`http://localhost:8000/users/getUserProfilePhoto/${user.photo}`}
 									/>
+									<svg
+										onClick={() => {
+											setEditing(!editing);
+										}}
+										xmlns='http://www.w3.org/2000/svg'
+										fill='none'
+										viewBox='0 0 24 24'
+										strokeWidth='1.5'
+										stroke='currentColor'
+										className='w-6 h-6'>
+										<path
+											strokeLinecap='round'
+											strokeLinejoin='round'
+											d='M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125'
+										/>
+									</svg>
 								</li>
-								<div className='border-2 border-dark-purple rounded-lg'>
+								<div className=' rounded-lg'>
 									<MenuList
 										name={user?.LastName}
 										spanText={"Овог"}
@@ -117,20 +134,25 @@ export const UserSideBar = () => {
 										handleSubmit(e);
 									}}>
 									<MyImage src={createObjectURL} />
-									<input
-										className='block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer  focus:outline-none  '
-										id='small_size'
-										type='file'
-										onChange={(e) => {
-											uploadFile(e);
-											handleChange(e);
-										}}
-										name='photo'
-									/>
+									<label>
+										<IconSearch />
+										<input
+											style={{ display: "none" }}
+											className='block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg cursor-pointer  focus:outline-none  '
+											id='small_size'
+											type='file'
+											onChange={(e) => {
+												uploadFile(e);
+												handleChange(e);
+											}}
+											name='photo'
+										/>
+									</label>
+
 									<label className='text-dark-purple'>Овог</label>
 									<input
 										placeholder={user.LastName}
-										className='w-full mt-2 pl-2 text-mid-purple rounded-lg border border-mid-purple mb-2 placeholder-mid-purple'
+										className='w-full mt-2 pl-2 text-mid-purple rounded-lg  mb-2 placeholder-mid-purple'
 										onChange={handleChange}
 										type='text'
 										name='LastName'
@@ -138,7 +160,7 @@ export const UserSideBar = () => {
 									<label className='text-dark-purple'>Нэр</label>
 									<input
 										placeholder={user.FirstName}
-										className='w-full mt-2 pl-2 text-mid-purple rounded-lg border border-mid-purple mb-2 placeholder-mid-purple'
+										className='w-full mt-2 pl-2 text-mid-purple rounded-lg  mb-2 placeholder-mid-purple'
 										onChange={handleChange}
 										type='text'
 										name='FirstName'
@@ -183,10 +205,10 @@ export const UserSideBar = () => {
 						)}
 					</ul>
 					<br />
-					<ul className='space-y-2 border-t border-dark-purple '>
+					<ul className='space-y-2 border-t '>
 						<Accordion
 							sx={{
-								border: "2px solid #804fb3",
+								border: "none",
 								marginTop: "7%",
 								borderRadius: "5px",
 							}}>
@@ -203,7 +225,6 @@ export const UserSideBar = () => {
 						</Accordion>
 						<Accordion
 							sx={{
-								border: "2px solid #804fb3",
 								marginTop: "7%",
 								borderRadius: "5px",
 							}}>
@@ -219,28 +240,7 @@ export const UserSideBar = () => {
 							</AccordionDetails>
 						</Accordion>
 						<div style={{ height: "0.8vw" }}></div>
-						<MenuList2
-							onClick={() => {
-								setEditing(!editing);
-							}}
-							name={"Профайл өөрчлөх"}
-							svg={
-								<svg
-									xmlns='http://www.w3.org/2000/svg'
-									fill='none'
-									viewBox='0 0 24 24'
-									strokeWidth='1.5'
-									stroke='currentColor'
-									className='w-6 h-6'>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										d='M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125'
-									/>
-								</svg>
-							}
-						/>
-						<MenuList2
+						{/* <MenuList2
 							onClick={() => {
 								setOpenshadow(true);
 								setCactive(true);
@@ -261,8 +261,8 @@ export const UserSideBar = () => {
 									/>
 								</svg>
 							}
-						/>
-						<MenuList2
+						/> */}
+						{/* <MenuList2
 							onClick={() => {
 								deleteCookie("token");
 								location.reload();
@@ -281,7 +281,7 @@ export const UserSideBar = () => {
 										clipRule='evenodd'></path>
 								</svg>
 							}
-						/>
+						/> */}
 					</ul>
 				</div>
 			</aside>

@@ -155,26 +155,6 @@ export const ReceivedPosts = () => {
 															? "block"
 															: "none",
 												}}>
-												{/* <Box
-													sx={{
-														display: "flex",
-														justifyContent: "space-between",
-														alignItems: "center",
-														marginBottom: "2%",
-														textWeight: "bold",
-														borderTop: "1px solid green",
-														paddinTop: "10px",
-														paddingLeft: "1px",
-														paddingTop: "10px",
-														font: "Roboto",
-														fontSize: "16px",
-														fontWeight: "bold",
-														letterSpacing: "0.2px",
-													}}
-													onClick={() => setOpen(true)}>
-													Хийх хүсэлтүүд
-													<ArrowDropDownIcon />
-												</Box> */}
 												<FormControl
 													sx={{
 														borderTop: "none",
