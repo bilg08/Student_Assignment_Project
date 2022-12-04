@@ -78,11 +78,8 @@ export const UserSideBar = () => {
 			<aside
 				className='w-96 ml-24 h-[75vh]'
 				aria-label='Sidebar'>
-<<<<<<< HEAD
-				<div className='overflow-y-scroll py-4 px-3 bg-white rounded-lg flex-col align-center items-center h-full'>
-=======
+
 				<div className=' overflow-y-scroll py-4 px-3 bg-white rounded-lg flex-col align-center items-center h-full'>
->>>>>>> main
 					<ul className='space-y-2'>
 						{!editing ? (
 							<div className='overflow-y-scroll'>
