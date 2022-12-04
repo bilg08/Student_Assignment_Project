@@ -5,7 +5,12 @@ export interface PostButtonProps {
 	ym?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export const PostButton: React.FC<PostButtonProps> = ({ prop,id, data, ym }) => {
+export const PostButton: React.FC<PostButtonProps> = ({
+	prop,
+	id,
+	data,
+	ym,
+}) => {
 	return (
 		<div className='pt-4 '>
 			<button
