@@ -344,6 +344,7 @@ export default function Home() {
                         {selectedAd.ad.detail}
                       </p>
                       <button
+                        onClick={() => requestToDoWork(selectedAd.ad._id)}
                         type="button"
                         style={{
                           display: "flex",
@@ -387,6 +388,7 @@ export default function Home() {
                       {selectedAd.ad.detail}
                     </p>
                     <button
+                      onClick={() => requestToDoWork(selectedAd.ad._id)}
                       type="button"
                       style={{
                         display: "flex",
