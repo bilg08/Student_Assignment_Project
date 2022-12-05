@@ -13,13 +13,10 @@ import {
 	Typography,
 	Tabs,
 	Tab,
-	Select,
-	MenuItem,
 	InputLabel,
 	FormControl,
 	NativeSelect,
 } from "@mui/material";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import SwipeableViews from "react-swipeable-views";
 type postType = {
 	subject: string;

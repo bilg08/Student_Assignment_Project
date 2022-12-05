@@ -5,6 +5,7 @@ let MyError = require("../utils/myError");
 let asyncHandler = require("../middleware/asyncHandler");
 let path = require("path");
 let fs = require("fs");
+let {getPostNotIncludedUser,getPostNotIncludedUserAndLimitandSkip,getAllPostWithLimitandSkip} = require('../service/post')
 let mongoose = require("mongoose");
 let { isOwner } = require('../service/user')
 exports.getPosts = asyncHandler(async (req, res, next) => {
@@ -12,36 +13,36 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
   let { school, group, subject } = req.query;
   let limit = parseInt(req.query.limit) || 5;
   let page = parseInt(req.query.page);
-  delete req.query.page
   let total = await PostSchema.countDocuments();
   let pageCount = Math.ceil(total / limit);
   let start = (page - 1) * limit + 1;
   let end = start + limit - 1;
+
   if (end > total) end = total;
   let pagination = { page, total, pageCount, start, end };
   if (page < pageCount) pagination.nextPage = page + 1;
   if (page > 1) pagination.prevPage = page - 1;
 
+  if (req.headers.userid) {
+    pagination.pageCount = Math.ceil(
+      (await getPostNotIncludedUser(req.headers.userid)).length / limit
+    );
 
-  if (req.query.school === "" || req.query.group === "" || req.query.subject === "") {
-
-     posts = await PostSchema.find({isDone:false})
-       .limit(limit)
-       .skip(start - 1);
+    posts = await getPostNotIncludedUserAndLimitandSkip(
+      req.headers.userid,
+      limit,
+      start
+    );
+    pagination.total = posts.length;
   } else {
-    posts = await PostSchema.aggregate([
-      {
-        $match: { school, group, subject },
-      },
-    ])
-
+    posts = await getAllPostWithLimitandSkip(limit, start);
   }
+
   res.status(200).json({
     status: false,
     data: posts,
     pagination,
   });
-
 });
 
 exports.getPost = asyncHandler(async (req, res, next) => {
