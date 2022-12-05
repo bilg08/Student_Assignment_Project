@@ -21,6 +21,8 @@ import { Pagination1 } from "../components/pagination";
 import { instance } from "../components/Layout";
 import { getCookie } from "cookies-next";
 import { MenuItem, Select } from "@mui/material";
+import { CleaningServices } from "@mui/icons-material";
+import { log } from "console";
 type adsType = {
   _id: string | number | readonly string[] | undefined;
   advertisingHeader: String;
@@ -37,7 +39,7 @@ type adsType = {
 
 export default function Home() {
   const { selectedAd, setSelectedAd } = useSelectedContext();
-  const { setModalText, setOpenModal,setType } = useModalContext();
+  const { setModalText, setOpenModal } = useModalContext();
   const [ads, setAds] = useState<adsType[]>([]);
   const windowWidth = useWindowWidth();
   const [showModal, setShowModal] = useState(false);
@@ -53,33 +55,28 @@ export default function Home() {
   const { isLoggedIn } = useIsUserLoggedContext();
 
   useEffect(() => {
-    async function getData() {
-      const userId = getCookie("userId");
+    const userId = getCookie("userId");
+    (async () => {
       if (!isLoggedIn) {
-        await instance
-          .get(
+        try {
+          const response = await instance.get(
             `/post/?page=${page}&school=${userInput.school}&group=${userInput.group}&subject=${userInput.subject}`
-          )
-          .then(async function (response) {
-            setAds(response.data.data);
-            setPagination(response.data.pagination);
-          })
-          .catch(function (response) {});
+          );
+          setAds(response.data.data);
+          setPagination(response.data.pagination);
+        } catch (error) {}
       } else {
-        await instance
-          .get(
+        try {
+          const response = await instance.get(
             `/post/?page=${page}&school=${userInput.school}&group=${userInput.group}&subject=${userInput.subject}`
-          )
-          .then(async function (response) {
-            const postNotIncludedUser = response.data.data.filter(
-              (post: { owner: string }) => post.owner !== userId
-            );
-            setAds(postNotIncludedUser);
-            setPagination(response.data.pagination);
-          })
-          .catch(function (response) {});
+          );
+          console.log(response);
+          setAds(response.data.data);
+          setPagination(response.data.pagination);
+        } catch (error) {
+          console.error(error);
+        }
       }
-
       await instance
         .get("/school")
         .then(async function (response) {
@@ -97,13 +94,8 @@ export default function Home() {
           );
         })
         .catch(function (response) {});
-    }
-
-    getData();
-    return () => {
-      getData();
-    };
-  }, [isAgainGetDatas, page, isLoggedIn]);
+    })();
+  }, [page]);
 
   useEffect(() => {
     schools.map((school1: any) => {
@@ -135,7 +127,6 @@ export default function Home() {
       })
       .catch(async function (error) {
         setOpenshadow(true);
-        setType("error");
         await setModalText(error.response.data.data);
         setOpenModal(true);
       });
@@ -155,8 +146,7 @@ export default function Home() {
           justifyContent: "center",
           alignItems: "center",
         }}
-        open={closeDetailImage}
-      >
+        open={closeDetailImage}>
         <Button onClick={() => setCloseDetailImage(false)} variant="contained">
           X
         </Button>
@@ -224,11 +214,12 @@ export default function Home() {
                   ...userInput,
                   [e.target.name]: e.target.value,
                 });
-              }}
-              >
+              }}>
               <MenuItem value="">Бүлэг</MenuItem>
               {schoolGroup?.map((group: string, i: string) => (
-                <MenuItem value={group} key={group + i}>{group}</MenuItem>
+                <MenuItem value={group} key={group + i}>
+                  {group}
+                </MenuItem>
               ))}
             </Select>
           </Grid>
@@ -362,9 +353,7 @@ export default function Home() {
           </Grid>
         </Grid>
         {selectedAd && showModal && windowWidth < 900 && (
-          <Backdrop
-            sx={{zIndex:100}}
-            open={true}>
+          <Backdrop sx={{ zIndex: 100 }} open={true}>
             <div style={{ width: "80%" }}>
               <Note>
                 <CardMedia

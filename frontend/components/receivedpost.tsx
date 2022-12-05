@@ -13,16 +13,12 @@ import {
 	Typography,
 	Tabs,
 	Tab,
-	Select,
-	MenuItem,
 	InputLabel,
 	FormControl,
 	NativeSelect,
 } from "@mui/material";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import SwipeableViews from "react-swipeable-views";
 type postType = {
-<<<<<<< HEAD
 	subject: string;
 	detail: string;
 	worker: { id: string; averageRating: string; email: string };
@@ -37,79 +33,10 @@ export const ReceivedPosts = () => {
 	const [postIInterested, setPostIInterested] = useState<postType>([]);
 	const { isAgainGetDatas, setIsAgainGetDatas } = useIsAgainGetDatas();
 	const [value, setValue] = useState(0);
-	const [open, setOpen] = useState(false);
 	const [chattingReq, setChattingReq] = useState<string>("");
 	const handleChange = (event: SyntheticEvent, newValue: number) => {
 		setValue(newValue);
 	};
-=======
-  subject: string;
-  detail: string;
-  worker: { id: string; averageRating: string; email: string };
-  isDone: boolean;
-  chatRoom: string;
-  _id:string,
-  pendingRequest: [{ id: string; averageRating: string; email: string }];
-}[];
-export const ReceivedPosts = () => {
-  const [personalPosts, setPersonalPosts] = useState<postType>([]);
-  const [chosen, setChosen] = useState(true);
-  const [isChatting, setChatting] = useState(false);
-  const [chatRoom, setChatRoom] = useState("");
-  const windowWidth = useWindowWidth();
-  const [loading, setLoading] = useState(false);
-  const [postIInterested, setPostIInterested] = useState<postType>([]);
-  const { isAgainGetDatas,setIsAgainGetDatas } = useIsAgainGetDatas();
-  useEffect(() => {
-    const getPostIInterested = async () => {
-      try {
-        const datas = await instance.get(`/post/postToBeDone`);
-        setPostIInterested(datas.data.data);
-      } catch (error) {
-      } finally {
-      }
-    };
-    const getPersonalData = async () => {
-      const token = getCookie("token");
-      try {
-        const datas = await instance.get(`/users/posts`);
-        setPersonalPosts(datas.data.data);
-      } catch (error) {}
-    };
-    getPostIInterested();
-    getPersonalData();
-  }, [isAgainGetDatas]);
-  const postedButtonArr = [
-    {
-      textValue: "Edit",
-      style: "#C4FAF8",
-      function: () => {},
-    },
-    {
-      textValue: "Delete",
-      style: "#FFABAB",
-      function:async (el: React.MouseEvent<HTMLButtonElement>) => {
-        const button: HTMLButtonElement = el.currentTarget;
-        await instance
-          .delete(`/post/${button.id}`)
-          .then(function (response) {
-            setIsAgainGetDatas((e:boolean) => !e);
-          });
-      },
-    },
-  ];
-  const buttonArr = [
-    {
-      textValue: "Submit",
-      style: "#C4FAF8",
-    },
-    {
-      textValue: "Cancel",
-      style: "#FFABAB",
-      function: () => {},
-    },
-  ];
->>>>>>> homePageMui
 
 	const handleChangeIndex = (index: number) => {
 		setValue(index);
@@ -133,23 +60,6 @@ export const ReceivedPosts = () => {
 		getPersonalData();
 	}, [isAgainGetDatas]);
 
-	const postedButtonArr = [
-		{
-			textValue: "Edit",
-			style: "#C4FAF8",
-			function: () => {},
-		},
-		{
-			textValue: "Delete",
-			style: "#FFABAB",
-			function: async (el: React.MouseEvent<HTMLButtonElement>) => {
-				const button: HTMLButtonElement = el.currentTarget;
-				await instance.delete(`/post/${button.id}`).then(function (response) {
-					setIsAgainGetDatas((e: boolean) => !e);
-				});
-			},
-		},
-	];
 	const buttonArr = [
 		{
 			textValue: "Submit",
@@ -182,7 +92,6 @@ export const ReceivedPosts = () => {
 			</Tabs>
 
 			<SwipeableViews
-				// axis={theme.direction === "rtl" ? "x-reverse" : "x"}
 				index={value}
 				onChangeIndex={handleChangeIndex}>
 				<TabPanel
@@ -190,7 +99,6 @@ export const ReceivedPosts = () => {
 					value={0}>
 					<div className='overscroll-y-none  flex-col flex items-center pb-[100px]'>
 						{personalPosts?.map((el, ind) => {
-							console.log(el);
 							return (
 								<SomeCart
 									type={el.isDone === true ? "done" : "notDone"}
@@ -200,20 +108,6 @@ export const ReceivedPosts = () => {
 										owner={"oruuln"}
 										description={el.detail}
 									/>
-									{/* <div className='flex flex-row flex-wrap'>
-										{postedButtonArr?.map(
-											(button, index): any =>
-												!el.isDone && (
-													<PostButton
-														key={index}
-														id={el._id}
-														data={button.textValue}
-														prop={button.style}
-														ym={button.function}
-													/>
-												)
-										)}
-									</div> */}
 									{!el.isDone && (
 										<div>
 											<div

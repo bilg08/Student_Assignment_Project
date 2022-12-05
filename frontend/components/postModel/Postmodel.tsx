@@ -3,6 +3,7 @@ import React from "react";
 import { MyImage } from "../index";
 import { useIsAgainGetDatas, useLoaderContext } from "../../context";
 import { instance } from "../../components/Layout";
+import { DialogContent, Dialog, DialogTitle } from "@mui/material";
 export interface PostModalProps {
 	cActive: any;
 	setCactive: any;
@@ -18,7 +19,7 @@ export const PostModal: React.FC<PostModalProps> = ({ setCactive }) => {
 	const [schoolGroup, setSchoolGroup] = useState<any>([]);
 	const [subject, setSubject] = useState("");
 	const [group, setGroup] = useState("");
-	const { setOpenshadow } = useLoaderContext();
+	const { setOpenshadow, shadow } = useLoaderContext();
 	useEffect(() => {
 		const getData = async () =>
 			await instance
@@ -97,33 +98,34 @@ export const PostModal: React.FC<PostModalProps> = ({ setCactive }) => {
 	};
 
 	return (
+		// <Dialog open={shadow}>
+		// 	<DialogTitle>
+		// 		<button
+		// 			onClick={() => {
+		// 				setCactive(false);
+		// 				setOpenshadow(false);
+		// 			}}
+		// 			type='button'
+		// 			className=' text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center '
+		// 			data-modal-toggle='authentication-modal'>
+		// 			<svg
+		// 				aria-hidden='true'
+		// 				className='w-5 h-5'
+		// 				fill='currentColor'
+		// 				viewBox='0 0 20 20'
+		// 				xmlns='http://www.w3.org/2000/svg'>
+		// 				<path
+		// 					fillRule='evenodd'
+		// 					d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
+		// 					clipRule='evenodd'></path>
+		// 			</svg>
+		// 			<span className='sr-only'>Close</span>
+		// 		</button>
+		// 	</DialogTitle>
+		// 	<DialogContent>
 		<form
 			className='w-full sm:w-3/4 md:w-2/4 z-30 lg:w-auto h-auto absolute top-2/4 left-2/4 transform -translate-x-1/2 -translate-y-1/2 p-10 rounded-3xl backdrop-blur-md bg-gradient-to-r from-purple-300 to-violet-200 '
 			onSubmit={handleSubmit}>
-			<div className='flex justify-between '>
-				<button
-					onClick={() => {
-						setCactive(false);
-						setOpenshadow(false);
-					}}
-					type='button'
-					className=' text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center '
-					data-modal-toggle='authentication-modal'>
-					<svg
-						aria-hidden='true'
-						className='w-5 h-5'
-						fill='currentColor'
-						viewBox='0 0 20 20'
-						xmlns='http://www.w3.org/2000/svg'>
-						<path
-							fillRule='evenodd'
-							d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
-							clipRule='evenodd'></path>
-					</svg>
-					<span className='sr-only'>Close</span>
-				</button>
-			</div>
-
 			<div className='flex flex-wrap -mx-3 mb-6'>
 				<div className='w-full 2 px-3 mb-6 md:mb-0'>
 					<label className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-center mt-6'>
@@ -260,5 +262,7 @@ export const PostModal: React.FC<PostModalProps> = ({ setCactive }) => {
 				Илгээх
 			</button>
 		</form>
+		// 	</DialogContent>
+		// </Dialog>
 	);
 };
