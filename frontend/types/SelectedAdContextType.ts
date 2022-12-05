@@ -10,7 +10,9 @@ export type SelectedAdContextType = {
       advertisingHeader: string,
       createdAt: string,
     detail:string,
-    price:string
+      price: string,
+      group: string,
+    subject:string
     }
   };
   setSelectedAd: (_val: any) => void;

@@ -27,17 +27,17 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
     pagination.pageCount = Math.ceil(
       (await getPostNotIncludedUser(req.headers.userid)).length / limit
     );
-
-    posts = await getPostNotIncludedUserAndLimitandSkip(
-      req.headers.userid,
-      limit,
-      start
-    );
-    pagination.total = posts.length;
-  } else {
-    posts = await getAllPostWithLimitandSkip(limit, start);
   }
 
+    posts = await PostSchema.find().populate('owner')
+  //     req.headers.userid,
+  //     limit,
+  //     start
+  //   );
+  //   pagination.total = posts.length;
+  // } else {
+  //   posts = await getAllPostWithLimitandSkip(limit, start);
+  // }
   res.status(200).json({
     status: false,
     data: posts,
@@ -173,6 +173,7 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
 
 exports.getPostPhoto = asyncHandler(async (req, res, next) => {
   let { photoname } = req.params;
+  console.log(photoname)
   fs.readFile(`./images/post/${photoname}`, (err, data) => {
     if (err) {
     }

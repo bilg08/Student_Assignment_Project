@@ -2,7 +2,9 @@ import {
 	Accordion,
 	AccordionDetails,
 	AccordionSummary,
-	Menu,
+	Dialog,
+	DialogContent,
+	DialogTitle,
 	Typography,
 } from "@mui/material";
 import { deleteCookie } from "cookies-next";
@@ -16,16 +18,14 @@ import {
 	useLoaderContext,
 	useUserContext,
 } from "../context/index";
-import { IconSearch } from "./Icon/IconSearch";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 export const UserSideBar = () => {
 	const { user, setUser } = useUserContext();
 	const [editing, setEditing] = useState(false);
 	const { setIsAgainGetDatas, isAgainGetDatas } = useIsAgainGetDatas();
-	const { cActive, setCactive } = useCollectionContext();
 	const [createObjectURL, setCreateObjectURL] = useState<any | null>(null);
 	const [fileSelected, setFileSelected] = useState<any | null>([]);
-	const { setOpenshadow } = useLoaderContext();
 	const uploadFile = function (e: any) {
 		if (e.target.files && e.target.files[0]) {
 			const i = e.target.files[0];
@@ -61,6 +61,7 @@ export const UserSideBar = () => {
 			.then(() => {
 				setIsAgainGetDatas((e: boolean) => !e);
 			})
+			.catch((err) => console.log(err));
 	};
 
 	useEffect(() => {
@@ -77,132 +78,54 @@ export const UserSideBar = () => {
 			<aside
 				className='w-96 ml-24 h-[75vh]'
 				aria-label='Sidebar'>
-
 				<div className=' overflow-y-scroll py-4 px-3 bg-white rounded-lg flex-col align-center items-center h-full'>
 					<ul className='space-y-2'>
-						{!editing ? (
-							<div className='overflow-y-scroll'>
-								<li className='flex justify-center'>
-									<img
-										className='h-48 w-48 rounded-full border-dark-purple border-2 mb-4 p-0.5'
-										src={`http://localhost:8000/users/getUserProfilePhoto/${user.photo}`}
+						<div className='overflow-y-scroll'>
+							<li className='flex justify-center'>
+								<img
+									className='h-48 w-48 rounded-full border-dark-purple border-2 mb-4 p-0.5'
+									src={`http://localhost:8000/users/getUserProfilePhoto/${user.photo}`}
+								/>
+								<svg
+									onClick={() => {
+										setEditing(!editing);
+									}}
+									xmlns='http://www.w3.org/2000/svg'
+									fill='none'
+									viewBox='0 0 24 24'
+									strokeWidth='1.5'
+									stroke='currentColor'
+									className='w-9 h-9 px-1 relative top-36 right-12 z-10 bg-white rounded-full border border-dark-purple'>
+									<path
+										strokeLinecap='round'
+										strokeLinejoin='round'
+										d='M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125'
 									/>
-									<svg
-										onClick={() => {
-											setEditing(!editing);
-										}}
-										xmlns='http://www.w3.org/2000/svg'
-										fill='none'
-										viewBox='0 0 24 24'
-										strokeWidth='1.5'
-										stroke='currentColor'
-										className='w-9 h-9 px-1 relative top-36 right-12 z-10 bg-white rounded-full border border-dark-purple'>
-										<path
-											strokeLinecap='round'
-											strokeLinejoin='round'
-											d='M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125'
-										/>
-									</svg>
-								</li>
-								<div className=' rounded-lg'>
-									<MenuList
-										name={user?.LastName}
-										spanText={"Овог"}
-									/>
-									<MenuList
-										name={user?.FirstName}
-										spanText={"Нэр"}
-									/>
-									<MenuList
-										name={user?.School}
-										spanText={"Их сургууль"}
-									/>
-									<MenuList
-										name={user?.level}
-										spanText={"Курс"}
-									/>
-									<MenuList
-										name={user?.averageRating + "%"}
-										spanText={"Дундаж үнэлгээ"}
-									/>
-								</div>
+								</svg>
+							</li>
+							<div className=' rounded-lg'>
+								<MenuList
+									name={user?.LastName}
+									spanText={"Овог"}
+								/>
+								<MenuList
+									name={user?.FirstName}
+									spanText={"Нэр"}
+								/>
+								<MenuList
+									name={user?.School}
+									spanText={"Их сургууль"}
+								/>
+								<MenuList
+									name={user?.level}
+									spanText={"Курс"}
+								/>
+								<MenuList
+									name={user?.averageRating + "%"}
+									spanText={"Дундаж үнэлгээ"}
+								/>
 							</div>
-						) : (
-							<div className='flex-column justify-center items-center w-full overflow-y-scroll'>
-								<form
-									onSubmit={(e) => {
-										handleSubmit(e);
-									}}>
-									<MyImage src={createObjectURL} />
-									<label>
-										<IconSearch />
-										<input
-											style={{ display: "none" }}
-											className='block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg cursor-pointer  focus:outline-none  '
-											id='small_size'
-											type='file'
-											onChange={(e) => {
-												uploadFile(e);
-												handleChange(e);
-											}}
-											name='photo'
-										/>
-									</label>
-
-									<label className='text-dark-purple'>Овог</label>
-									<input
-										placeholder={user.LastName}
-										className='w-full mt-2 pl-2 text-mid-purple rounded-lg  mb-2 placeholder-mid-purple'
-										onChange={handleChange}
-										type='text'
-										name='LastName'
-									/>
-									<label className='text-dark-purple'>Нэр</label>
-									<input
-										placeholder={user.FirstName}
-										className='w-full mt-2 pl-2 text-mid-purple rounded-lg  mb-2 placeholder-mid-purple'
-										onChange={handleChange}
-										type='text'
-										name='FirstName'
-									/>
-									<label className='text-dark-purple'>Сургууль</label>
-									<select
-										placeholder='Сургууль'
-										className='border border-mid-purple w-full mt-2 rounded-lg p-0.5 text-mid-purple mb-2 '
-										name='School'
-										id=''
-										onChange={handleChange}>
-										<option value=''></option>
-										<option value='NUM'>NUM</option>
-										<option value='UFE'>UFE</option>
-										<option value='MUST'>MUST</option>
-									</select>
-									<label className='text-dark-purple'>Түвшин</label>
-									<input
-										placeholder={user.level}
-										className='w-full mt-2 pl-2 text-mid-purple rounded-lg border border-mid-purple mb-2 placeholder-mid-purple'
-										onChange={handleChange}
-										type='text'
-										name='level'
-									/>
-									<div className='flex justify-between items-center mt-2'>
-										<input
-											type='submit'
-											className='w-[49%] hover:bg-light-purple hover:text-white text-dark-purple rounded-lg border border-dark-purple'
-										/>
-										<input
-											type='button'
-											value='Cancel'
-											onClick={() => {
-												location.reload();
-												setEditing(false);
-											}}
-											className='w-[49%] hover:bg-light-purple hover:text-white text-dark-purple rounded-lg border border-dark-purple'
-										/>
-									</div>
-								</form>
-							</div>
-						)}
+						</div>
 					</ul>
 					<br />
 					<ul className='space-y-2 border-t '>
@@ -240,253 +163,112 @@ export const UserSideBar = () => {
 							</AccordionDetails>
 						</Accordion>
 						<div style={{ height: "0.8vw" }}></div>
-						{/* <MenuList2
-							onClick={() => {
-								setOpenshadow(true);
-								setCactive(true);
-							}}
-							name={"Зар Нэмэх"}
-							svg={
-								<svg
-									xmlns='http://www.w3.org/2000/svg'
-									fill='none'
-									viewBox='0 0 24 24'
-									strokeWidth='1.5'
-									stroke='currentColor'
-									className='w-6 h-6'>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										d='M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z'
-									/>
-								</svg>
-							}
-						/> */}
-						{/* <MenuList2
-							onClick={() => {
-								deleteCookie("token");
-								location.reload();
-							}}
-							name={"Гарах"}
-							svg={
-								<svg
-									aria-hidden='true'
-									className='flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 '
-									fill='currentColor'
-									viewBox='0 0 20 20'
-									xmlns='http://www.w3.org/2000/svg'>
-									<path
-										fillRule='evenodd'
-										d='M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z'
-										clipRule='evenodd'></path>
-								</svg>
-							}
-						/> */}
 					</ul>
 				</div>
 			</aside>
+			<Dialog open={editing}>
+				<DialogTitle
+					sx={{
+						margin: "5px",
+						width: "100%",
+						display: "flex",
+						justifyContent: "center",
+					}}>
+					-Профайл Өөрчлөх-
+				</DialogTitle>
+				<DialogContent>
+					<div
+						className={`justify-center items-center w-full overflow-y-scroll`}>
+						<form
+							onSubmit={(e) => {
+								handleSubmit(e);
+							}}>
+							<div className='flex-column items-center'>
+								<MyImage src={createObjectURL} />
+								<label
+									style={{
+										color: "#804fb3",
+										width: "25%",
+										display: "flex",
+										justifyContent: "space-between",
+										marginBottom: "8px",
+										border: "1px solid #804fb3",
+										borderRadius: "15px",
+										padding: "4px",
+									}}>
+									<AddCircleIcon sx={{ color: "#804fb3" }} />
+									Зураг сонгох
+									<input
+										style={{ display: "none" }}
+										className='block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg cursor-pointer  focus:outline-none  '
+										id='small_size'
+										type='file'
+										onChange={(e) => {
+											uploadFile(e);
+											handleChange(e);
+										}}
+										name='photo'
+									/>
+								</label>
+							</div>
+
+							<label className='text-dark-purple'>Овог</label>
+							<input
+								placeholder={user.LastName}
+								className='w-full mt-2 pl-2 text-mid-purple rounded-lg  mb-2 placeholder-mid-purple'
+								onChange={handleChange}
+								type='text'
+								name='LastName'
+							/>
+							<label className='text-dark-purple'>Нэр</label>
+							<input
+								placeholder={user.FirstName}
+								className='w-full mt-2 pl-2 text-mid-purple rounded-lg  mb-2 placeholder-mid-purple'
+								onChange={handleChange}
+								type='text'
+								name='FirstName'
+							/>
+							<label className='text-dark-purple'>Сургууль</label>
+							<select
+								placeholder='Сургууль'
+								className='border border-mid-purple w-full mt-2 rounded-lg p-0.5 text-mid-purple mb-2 '
+								name='School'
+								id=''
+								onChange={handleChange}>
+								<option value=''></option>
+								<option value='NUM'>NUM</option>
+								<option value='UFE'>UFE</option>
+								<option value='MUST'>MUST</option>
+							</select>
+							<label className='text-dark-purple'>Түвшин</label>
+							<input
+								placeholder={user.level}
+								className='w-full mt-2 pl-2 text-mid-purple rounded-lg border border-mid-purple mb-2 placeholder-mid-purple'
+								onChange={handleChange}
+								type='text'
+								name='level'
+							/>
+							<div className='flex justify-between items-center mt-2'>
+								<input
+									type='submit'
+									className='w-[49%] hover:bg-light-purple hover:text-white text-dark-purple rounded-lg border border-dark-purple'
+								/>
+								<input
+									type='button'
+									value='Cancel'
+									onClick={() => {
+										location.reload();
+										setEditing(false);
+									}}
+									className='w-[49%] hover:bg-light-purple hover:text-white text-dark-purple rounded-lg border border-dark-purple'
+								/>
+							</div>
+						</form>
+					</div>
+				</DialogContent>
+			</Dialog>
 		</>
 	);
-	// =======
-	//     <>
-	//       <aside className="w-96 ml-24 h-[75vh]" aria-label="Sidebar">
-	//         <div className=" overflow-y-scroll py-4 px-3 bg-white rounded-lg flex-col align-center items-center h-full border-2 border-dark-purple">
-	//           <ul className="space-y-2">
-	//             {!editing ? (
-	//               <div className="overflow-y-scroll">
-	//                 <li className="flex justify-center">
-	//                   <div className="h-64 w-64 rounded-full border-dark-purple border-2 mb-16 bg-white"></div>
-	//                 </li>
-	//                 <div className="border-2 border-dark-purple rounded-lg">
-	//                   <MenuList name={user?.LastName} spanText={"Овог"} />
-	//                   <MenuList name={user?.FirstName} spanText={"Нэр"} />
-	//                   <MenuList name={user?.School} spanText={"Их сургууль"} />
-	//                   <MenuList name={user?.level} spanText={"Курс"} />
-	//                   <MenuList name={user?.averageRating + "%"} spanText={"Дундаж үнэлгээ"} />
-	//                 </div>
-	//               </div>
-	//             ) : (
-	//               <div className="flex-column justify-center items-center w-full overflow-y-scroll">
-	//                 <form
-	//                   onSubmit={(e) => {
-	//                     handleSubmit(e);
-	//                   }}>
-	//                   <MyImage src={createObjectURL} />
-	//                   <input
-	//                     className="block mb-5 w-full text-xs text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer  focus:outline-none  "
-	//                     id="small_size"
-	//                     type="file"
-	//                     onChange={() => {
-	//                       uploadFile;
-	//                       handleChange;
-	//                     }}
-	//                     name="photo"
-	//                   />
-	//                   <label className="text-dark-purple">Овог</label>
-	//                   <input
-	//                     className="w-full mt-2 pl-2 text-mid-purple rounded-lg border border-mid-purple mb-2"
-	//                     onChange={handleChange}
-	//                     type="text"
-	//                     name="LastName"
-	//                   />
-	//                   <label className="text-dark-purple">Нэр</label>
-	//                   <input
-	//                     className="w-full mt-2 pl-2 text-mid-purple rounded-lg border border-mid-purple mb-2"
-	//                     onChange={handleChange}
-	//                     type="text"
-	//                     name="FirstName"
-	//                   />
-	//                   <label className="text-dark-purple">Сургууль</label>
-	//                   <select
-	//                     placeholder="Сургууль"
-	//                     className="border border-mid-purple w-full mt-2 rounded-lg p-0.5 text-mid-purple mb-2"
-	//                     name="School"
-	//                     id=""
-	//                     onChange={handleChange}>
-	//                     <option value=""></option>
-	//                     <option value="NUM">NUM</option>
-	//                     <option value="UFE">UFE</option>
-	//                     <option value="MUST">MUST</option>
-	//                   </select>
-	//                   <label className="text-dark-purple">Түвшин</label>
-	//                   <input
-	//                     className="w-full mt-2 pl-2 text-mid-purple rounded-lg border border-mid-purple mb-2"
-	//                     onChange={handleChange}
-	//                     type="text"
-	//                     name="level"
-	//                   />
-	//                   <div className="flex justify-between items-center mt-2">
-	//                     <input
-	//                       type="submit"
-	//                       className="w-[49%] hover:bg-light-purple hover:text-white text-dark-purple rounded-lg border border-dark-purple"
-	//                     />
-	//                     <input
-	//                       type="button"
-	//                       value="Cancel"
-	//                       onClick={() => setEditing(false)}
-	//                       className="w-[49%] hover:bg-light-purple hover:text-white text-dark-purple rounded-lg border border-dark-purple"
-	//                     />
-	//                   </div>
-	//                 </form>
-	//               </div>
-	//             )}
-	//           </ul>
-	//           <br />
-	//           <ul className="space-y-2 border-t border-dark-purple ">
-	//             <ColasipbleSidebarBox data={user.averageRatingByGroupByGroup}>
-	//               <MenuList2
-	//                 onClick={() => {}}
-	//                 name={"Хийсэн бие даалтын тоо"}
-	//                 svg={
-	//                   <svg
-	//                     xmlns="http://www.w3.org/2000/svg"
-	//                     fill="none"
-	//                     viewBox="0 0 24 24"
-	//                     strokeWidth="1.5"
-	//                     stroke="currentColor"
-	//                     className="w-6 h-6">
-	//                     <path
-	//                       strokeLinecap="round"
-	//                       strokeLinejoin="round"
-	//                       d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"
-	//                     />
-	//                   </svg>
-	//                 }
-	//               />
-	//             </ColasipbleSidebarBox>
-	//             <ColasipbleSidebarBox data={user.averageRatingByGroupByGroup}>
-	//               <MenuList2
-	//                 onClick={() => {}}
-	//                 name={"Бие даалтын дундаж үнэлгээ"}
-	//                 svg={
-	//                   <svg
-	//                     xmlns="http://www.w3.org/2000/svg"
-	//                     fill="none"
-	//                     viewBox="0 0 24 24"
-	//                     strokeWidth="1.5"
-	//                     stroke="currentColor"
-	//                     className="w-6 h-6">
-	//                     <path
-	//                       strokeLinecap="round"
-	//                       strokeLinejoin="round"
-	//                       d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z"
-	//                     />
-	//                   </svg>
-	//                 }
-	//               />
-	//             </ColasipbleSidebarBox>
-	//             <div style={{ height: "0.8vw" }}></div>
-	//             <MenuList2
-	//               onClick={() => {
-	//                 setEditing(!editing);
-	//               }}
-	//               name={"Профайл өөрчлөх"}
-	//               svg={
-	//                 <svg
-	//                   xmlns="http://www.w3.org/2000/svg"
-	//                   fill="none"
-	//                   viewBox="0 0 24 24"
-	//                   strokeWidth="1.5"
-	//                   stroke="currentColor"
-	//                   className="w-6 h-6">
-	//                   <path
-	//                     strokeLinecap="round"
-	//                     strokeLinejoin="round"
-	//                     d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
-	//                   />
-	//                 </svg>
-	//               }
-	//             />
-	//             <MenuList2
-	//               onClick={() => {
-	//                 setOpenshadow(true);
-	//                 setCactive(true)
-
-	//               }}
-	//               name={"Зар Нэмэх"}
-	//               svg={
-	//                 <svg
-	//                   xmlns="http://www.w3.org/2000/svg"
-	//                   fill="none"
-	//                   viewBox="0 0 24 24"
-	//                   strokeWidth="1.5"
-	//                   stroke="currentColor"
-	//                   className="w-6 h-6">
-	//                   <path
-	//                     strokeLinecap="round"
-	//                     strokeLinejoin="round"
-	//                     d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-	//                   />
-	//                 </svg>
-	//               }
-	//             />
-	//             <MenuList2
-	//               onClick={() => {
-	//                 deleteCookie("token");
-	//                 deleteCookie("userId");
-	//                 location.reload();
-	//               }}
-	//               name={"Гарах"}
-	//               svg={
-	//                 <svg
-	//                   aria-hidden="true"
-	//                   className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 "
-	//                   fill="currentColor"
-	//                   viewBox="0 0 20 20"
-	//                   xmlns="http://www.w3.org/2000/svg">
-	//                   <path
-	//                     fillRule="evenodd"
-	//                     d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
-	//                     clipRule="evenodd"></path>
-	//                 </svg>
-	//               }
-	//             />
-	//           </ul>
-	//         </div>
-	//       </aside>
-	//     </>
-	//   );
-	// >>>>>>> average
 };
 export const SeizedSideBar = () => {
 	const { cActive, setCactive } = useCollectionContext();
