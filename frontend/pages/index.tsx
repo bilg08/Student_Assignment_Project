@@ -68,13 +68,12 @@ export default function Home() {
           );
           setAds(response.data.data);
           setPagination(response.data.pagination);
-        } catch (error) {}
+        } catch (error) { }
       } else {
         try {
           const response = await instance.get(
             `/post/?page=${page}&school=${userInput.school}&group=${userInput.group}&subject=${userInput.subject}`
           );
-          console.log(response);
           setAds(response.data.data);
           setPagination(response.data.pagination);
         } catch (error) {
@@ -97,9 +96,11 @@ export default function Home() {
             }
           );
         })
-        .catch(function (response) {});
+        .catch(function (response) { });
     })();
   }, [page]);
+
+
 
   useEffect(() => {
     schools.map((school1: any) => {
