@@ -12,7 +12,9 @@ export const SelectedAdContext = createContext<SelectedAdContextType>({
       price:"",
       advertisingHeader:"",
       createdAt: "",
-      detail:""
+      detail: "",
+      subject: "",
+      group:''
     },
   },
   setSelectedAd: (_val: any) => {},

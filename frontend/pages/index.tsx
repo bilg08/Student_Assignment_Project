@@ -8,6 +8,9 @@ import InputLabel from "@mui/material/InputLabel";
 import Button from "@mui/material/Button";
 import Backdrop from "@mui/material/Backdrop";
 import { Note } from "../components/SomeCart";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import WorkIcon from "@mui/icons-material/Work";
+
 import {
   useSelectedContext,
   useIsAgainGetDatas,
@@ -23,13 +26,16 @@ import { getCookie } from "cookies-next";
 import { MenuItem, Select } from "@mui/material";
 import { CleaningServices } from "@mui/icons-material";
 import { log } from "console";
+import { IconArrow } from "../components/Icon/IconArrow";
 type adsType = {
   _id: string | number | readonly string[] | undefined;
   advertisingHeader: String;
-  detail: String;
+  detail: string;
   owner: {
-    name: String;
-    image: String | any;
+    FirstName: string;
+    LastName: string;
+    photo: string;
+    _id: string;
   };
   isDone: boolean;
   createdAt: String;
@@ -62,6 +68,7 @@ export default function Home() {
           const response = await instance.get(
             `/post/?page=${page}&school=${userInput.school}&group=${userInput.group}&subject=${userInput.subject}`
           );
+          console.log(response)
           setAds(response.data.data);
           setPagination(response.data.pagination);
         } catch (error) {}
@@ -146,8 +153,7 @@ export default function Home() {
           justifyContent: "center",
           alignItems: "center",
         }}
-        open={closeDetailImage}
-      >
+        open={closeDetailImage}>
         <Button onClick={() => setCloseDetailImage(false)} variant="contained">
           X
         </Button>
@@ -170,6 +176,7 @@ export default function Home() {
     <div className="w-full border-#57534e border-1">
       <Grid className="flex h-auto  justify-center flex-col items-center md:flex-row m-auto max-w-screen-xl gap-5">
         <Grid
+          className="max-w-screen-xl flex justify-between"
           container
           gap={5}
           sx={{
@@ -179,8 +186,7 @@ export default function Home() {
             alignItems: "center",
             justifyContent: "center",
             flexFlow: { xs: "column", sm: "row" },
-          }}
-        >
+          }}>
           <Grid md={3} className="w-5/6" item>
             <InputLabel className="font-bold" id="demo-simple-select-label">
               Сургууль
@@ -194,8 +200,7 @@ export default function Home() {
                   ...userInput,
                   [e.target.name]: e.target.value,
                 });
-              }}
-            >
+              }}>
               {schools.map((school: { name: "" }, i: number) => (
                 <MenuItem value={school.name} key={school.name + i}>
                   {school.name}
@@ -217,8 +222,7 @@ export default function Home() {
                   ...userInput,
                   [e.target.name]: e.target.value,
                 });
-              }}
-            >
+              }}>
               <MenuItem value="">Бүлэг</MenuItem>
               {schoolGroup?.map((group: string, i: string) => (
                 <MenuItem value={group} key={group + i}>
@@ -240,8 +244,7 @@ export default function Home() {
                   [e.target.name]: e.target.value,
                 });
               }}
-              name="subject"
-            >
+              name="subject">
               <MenuItem value="">Хичээл</MenuItem>
               {schoolLessons?.map((schoolLesson: any, i: number) => {
                 return (
@@ -256,8 +259,7 @@ export default function Home() {
             style={{ padding: "6px 15px", marginTop: "20px" }}
             className="bg-indigo-600 text-white rounded-lg"
             onClick={handleSearch}
-            color="primary"
-          >
+            color="primary">
             Хайх
           </button>
         </Grid>
@@ -271,10 +273,9 @@ export default function Home() {
             display: "flex",
             justifyContent: "space-between",
             maxWidth: "1300px",
-            margin: "auto",
             height: "auto",
-          }}
-        >
+            margin: "auto",
+          }}>
           <Grid
             item
             sx={{
@@ -283,94 +284,123 @@ export default function Home() {
               alignItems: { xs: "center", md: "start" },
               flexDirection: "column",
               gap: "20px",
-            }}
-          >
+            }}>
             {ads.map((ad, index) => {
+              console.log({ ad });
               return (
                 <Grid
                   key={index}
                   onClick={() => {
                     setSelectedAd({ ad, index });
                     setShowModal(true);
-                  }}
-                  className=" bg-indigo-100 pt-8 pb-4 px-5 shadow-indigo-300/50 shadow-xl sm:px-8 my-8 w-5/6 relative rounded-none shadow-inner -mx-5 sm:mx-auto sm:rounded-lg flex-wrap"
-                >
-                  <CardContent>
-                    <Typography
-                      gutterBottom
-                      className="font-bold"
-                      variant="h5"
-                      component="div"
-                    >
-                      {ad.advertisingHeader}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      className="font-bold"
-                      color="text.secondary"
-                    >
+                  }}>
+                  <div className="px-5 py-4 bg-white dark:bg-gray-800 shadow rounded-lg max-w-lg">
+                    <div className="flex mb-4">
+                      <img
+                        className="w-12 h-12 rounded-full"
+                        src={`http://localhost:8000/users/getUserProfilePhoto/${ad.owner.photo}`}
+                      />
+                      <div className="ml-2 mt-0.5">
+                        <span className="block font-medium text-base leading-snug text-black dark:text-gray-100">
+                          {ad.owner.FirstName}
+                        </span>
+                        <span className="block text-sm text-gray-500 dark:text-gray-400 font-light leading-snug">
+                          16 December at 08:25
+                        </span>
+                      </div>
+                    </div>
+                    <p className="text-gray-800 dark:text-gray-100 leading-snug md:leading-normal">
                       {ad.detail}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      onClick={() => handleSearch()}
-                      size="small"
-                      style={{ padding: "6px 16px" }}
-                      className="bg-sky-500 text-white"
-                    >
-                      Дэлгэрэнгүй
-                    </Button>
-                  </CardActions>
+                    </p>
+                    <div className="flex justify-between items-center mt-5"></div>
+                  </div>
                 </Grid>
               );
             })}
           </Grid>
           <Grid sx={{ width: "50%" }}>
-            {selectedAd && windowWidth > 900 && (
-              <Note>
-                <CardMedia
-                  onClick={() => setCloseDetailImage(true)}
-                  component="img"
-                  height="140"
-                  sx={{ borderRadius: "10px" }}
-                  image={`http://localhost:8000/post/photo/${selectedAd.ad.photo}`}
-                />
-                <CardContent>
-                  <Typography
-                    className="text-indigo-500 font-bold"
-                    gutterBottom
-                    variant="h5"
-                    component="div"
-                  >
-                    {selectedAd.ad.advertisingHeader}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    className="text-xl font-bold"
-                    color="text.secondary"
-                  >
-                    {selectedAd.ad.detail}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    sx={{ padding: "6px 15px" }}
-                    className="bg-indigo-600 text-white rounded-lg"
-                    onClick={() => requestToDoWork(selectedAd.ad._id)}
-                    color="primary"
-                  >
-                    Хийх
-                  </Button>
-                </CardActions>
-              </Note>
+            {selectedAd && windowWidth > 950 && (
+              <div className="container mx-auto my-5">
+                <div className="relative rounded-lg flex flex-col items-center md:shadow-xl  mx-2">
+                  <div className="z-0 order-1 relative w-full rounded h-80 ">
+                    <img
+                      src={`https://images.unsplash.com/photo-1525302220185-c387a117886e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80`}
+                      style={{ objectFit: "fill" }}
+                      className="rounded-xl absolute inset-0 w-full h-full bg-white bg-opacity-30 bg-white bg-bottom"
+                    />
+                    <div className="absolute inset-0 h-full p-6 pb-6 flex flex-col-reverse justify-start items-start bg-gradient-to-b from-transparent via-transparent to-gray-900">
+                      <h3 className="w-full font-bold text-2xl text-white leading-tight mb-2">
+                        {selectedAd.ad.group}
+                      </h3>
+                      <h4 className="w-full text-xl text-gray-100 leading-tight">
+                        {selectedAd.ad.subject}
+                      </h4>
+                    </div>
+                  </div>
+
+                  <div className="z-10 order-2 md:order-1 rounded-lg w-full h-full flex items-center -mt-6 md:mt-0">
+                    <div className="p-8  md:pr-18 md:pl-14 md:py-12 mx-2 md:mx-0 h-full bg-white rounded-lg  md:rounded-lg shadow-xl md:shadow-none">
+                      <p className="text-gray-600 text-justify">
+                        {selectedAd.ad.detail}
+                      </p>
+                      <button
+                        type="button"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "10px",
+                        }}
+                        className="px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                        Хийх
+                        <IconArrow displayDirection="right" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             )}
           </Grid>
         </Grid>
-        {selectedAd && showModal && windowWidth < 900 && (
+        {selectedAd && showModal && windowWidth < 950 && (
           <Backdrop sx={{ zIndex: 100 }} open={true}>
-            <div style={{ width: "80%" }}>
-              <Note>
+            <div className="container mx-auto my-5">
+              <div className="relative rounded-lg flex flex-col items-center md:shadow-xl  mx-2">
+                <div className="bg-white order-1 relative w-full rounded h-80 ">
+                  <img
+                    src={`https://images.unsplash.com/photo-1525302220185-c387a117886e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80`}
+                    style={{ objectFit: "fill" }}
+                    className="rounded-xl absolute inset-0 w-full h-full bg-white bg-opacity-30 bg-white bg-bottom"
+                  />
+                  <div className="absolute inset-0 h-full p-6 pb-6 flex flex-col-reverse justify-start items-start bg-gradient-to-b from-transparent via-transparent to-gray-900">
+                    <h3 className="w-full font-bold text-2xl text-white leading-tight mb-2">
+                      {selectedAd.ad.group}
+                    </h3>
+                    <h4 className="w-full text-xl text-gray-100 leading-tight">
+                      {selectedAd.ad.subject}
+                    </h4>
+                  </div>
+                </div>
+
+                <div className="z-10 order-2 md:order-1 rounded-lg w-full h-full flex items-center -mt-6 md:mt-0">
+                  <div className="p-8  md:pr-18 md:pl-14 md:py-12 mx-2 md:mx-0 h-full bg-white rounded-lg  md:rounded-lg shadow-xl md:shadow-none">
+                    <p className="text-gray-600 text-justify">
+                      {selectedAd.ad.detail}
+                    </p>
+                    <button
+                      type="button"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                      }}
+                      className="px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                      Хийх
+                      <IconArrow displayDirection="right" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+              {/* <Note>
                 <CardMedia
                   onClick={() => setCloseDetailImage(true)}
                   component="img"
@@ -383,15 +413,13 @@ export default function Home() {
                     className="text-indigo-500 font-bold"
                     gutterBottom
                     variant="h5"
-                    component="div"
-                  >
+                    component="div">
                     {selectedAd.ad.advertisingHeader}
                   </Typography>
                   <Typography
                     variant="body2"
                     className="text-xl font-bold"
-                    color="text.secondary"
-                  >
+                    color="text.secondary">
                     {selectedAd.ad.detail}
                   </Typography>
                 </CardContent>
@@ -400,20 +428,18 @@ export default function Home() {
                     sx={{ padding: "6px 15px" }}
                     className="bg-indigo-600 text-white rounded-lg"
                     onClick={() => requestToDoWork(selectedAd.ad._id)}
-                    color="primary"
-                  >
+                    color="primary">
                     Хийх
                   </Button>
                   <Button
                     sx={{ padding: "6px 15px" }}
                     className="bg-indigo-600 text-white rounded-lg"
                     onClick={() => setShowModal(false)}
-                    color="primary"
-                  >
+                    color="primary">
                     Гарах
                   </Button>
                 </CardActions>
-              </Note>
+              </Note> */}
             </div>
           </Backdrop>
         )}
