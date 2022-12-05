@@ -165,7 +165,7 @@ exports.addToWorkers = asyncHandler(async (req, res, next) => {
   } else {
     res.status(400).json({
       success: false,
-      data: "ta ene zarand huselt ilgeesen baina",
+      data: "Та энэ заранд хүсэлт илгээсэн байна.",
     });
   }
 });
@@ -174,7 +174,6 @@ exports.getPostPhoto = asyncHandler(async (req, res, next) => {
   let { photoname } = req.params;
   fs.readFile(`./images/post/${photoname}`, (err, data) => {
     if (err) {
-      console.log(err)
     }
     res.setHeader("content-type", "image/png");
     res.end(data);

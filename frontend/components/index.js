@@ -16,9 +16,10 @@ export * from './ui/postButton';
 export * from './ui/siderBarBox';
 export * from './ui/myImage';
 export * from './profileCard';
-export * from './chat';
 export * from './modal';
 export * from './rating'
-
+export * from './SomeCart'
+export * from './chat/chatBox'
+export * from './chat/userProfile'
 
 

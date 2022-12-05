@@ -36,9 +36,9 @@ type adsType = {
 };
 
 export default function Home() {
-  const [ads, setAds] = useState<adsType[]>([]);
   const { selectedAd, setSelectedAd } = useSelectedContext();
-  const { setModalText, setOpenModal } = useModalContext();
+  const { setModalText, setOpenModal,setType } = useModalContext();
+  const [ads, setAds] = useState<adsType[]>([]);
   const windowWidth = useWindowWidth();
   const [showModal, setShowModal] = useState(false);
   const { isAgainGetDatas, setIsAgainGetDatas } = useIsAgainGetDatas();
@@ -74,7 +74,6 @@ export default function Home() {
             const postNotIncludedUser = response.data.data.filter(
               (post: { owner: string }) => post.owner !== userId
             );
-            setSelectedAd({ads:postNotIncludedUser[0]})
             setAds(postNotIncludedUser);
             setPagination(response.data.pagination);
           })
@@ -110,13 +109,11 @@ export default function Home() {
     schools.map((school1: any) => {
       if (school1.name === userInput.school) {
         school1.groupAndThatGrouplessons.map((group: any) => {
-          console.log(group);
           setSchoolGroup((prev: any) => [...prev, group.GroupName]);
         });
       }
     });
   }, [userInput.school, userInput.group]);
-
   useEffect(() => {
     schools.map((school1: any) => {
       if (school1.name === userInput.school) {
@@ -128,7 +125,6 @@ export default function Home() {
       }
     });
   }, [userInput.group]);
-
   const requestToDoWork = async (id: String) => {
     await instance
       .post(`/post/${id}/work`)
@@ -139,17 +135,16 @@ export default function Home() {
       })
       .catch(async function (error) {
         setOpenshadow(true);
+        setType("error");
         await setModalText(error.response.data.data);
         setOpenModal(true);
       });
   };
-
   const handleSearch = () => {
     setShowModal(false);
     setSelectedAd(null);
     setIsAgainGetDatas((e: boolean) => !e);
   };
-
   const DetailImage = (props: { imageSrc: string }) => {
     return (
       <Backdrop
@@ -192,18 +187,14 @@ export default function Home() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            flexFlow: { xs: "column", md: "row" },
-          }}
-        >
+            flexFlow: { xs: "column", sm: "row" },
+          }}>
           <Grid md={3} className="w-5/6" item>
             <InputLabel className="font-bold" id="demo-simple-select-label">
               Сургууль
             </InputLabel>
             <Select
-              className="bg-[#ebecf0] my-2 md:flex relative pl-4 pr-0.5 py-1 h-10 bg-secondary-button dark:bg-gray-80 outline-none focus:ring focus:outline-none betterhover:hover:bg-opacity-80 pointer items-center shadow-inner text-left w-full  text-gray-30 rounded-lg align-middle text-sm"
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              label="Age"
+              className="bg-[#ebecf0] my-2 md:flex relative pl-4 pr-0.5 py- h-10 bg-secondary-button dark:bg-gray-80 outline-none focus:ring focus:outline-none betterhover:hover:bg-opacity-80 pointer items-center shadow-inner text-left w-full  text-gray-30 rounded-lg align-middle text-sm"
               name="school"
               value={userInput.school}
               onChange={async (e) => {
@@ -211,8 +202,7 @@ export default function Home() {
                   ...userInput,
                   [e.target.name]: e.target.value,
                 });
-              }}
-            >
+              }}>
               {schools.map((school: { name: "" }, i: number) => (
                 <MenuItem value={school.name} key={school.name + i}>
                   {school.name}
@@ -225,7 +215,8 @@ export default function Home() {
               Бүлэг
             </InputLabel>
             <Select
-              className="bg-[#ebecf0] my-2 md:flex relative pl-4 pr-0.5 py-1 h-10 bg-secondary-button dark:bg-gray-80 outline-none focus:ring focus:outline-none betterhover:hover:bg-opacity-80 pointer items-center shadow-inner text-left w-full  text-gray-30 rounded-lg align-middle text-sm"
+              className="bg-[#ebecf0] my-2 md:flex relative pl-4 pr-0.5 py-1 h-10 bg-secondary-button dark:bg-gray-80 outline-none focus:ring focus:outline-none betterhover:hover:bg-opacity-80 pointer items-center shadow-inner text-left w-full text-gray-30 rounded-lg align-middle text-sm"
+              id="grid-state"
               name="group"
               value={userInput.group}
               onChange={async (e) => {
@@ -234,43 +225,42 @@ export default function Home() {
                   [e.target.name]: e.target.value,
                 });
               }}
-            >
-              {schoolGroup.map((group: string, i: string) => (
-                <MenuItem value={group} key={group + i}>
-                  {group}
-                </MenuItem>
+              >
+              <MenuItem value="">Бүлэг</MenuItem>
+              {schoolGroup?.map((group: string, i: string) => (
+                <MenuItem value={group} key={group + i}>{group}</MenuItem>
               ))}
             </Select>
-          
           </Grid>
           <Grid md={3} className="w-5/6" item>
             <InputLabel className="font-bold" id="demo-simple-select-label">
               Хичээл
             </InputLabel>
             <Select
-              className="bg-[#ebecf0] my-2 md:flex relative pl-4 pr-0.5 py-1 h-10 bg-secondary-button dark:bg-gray-80 outline-none focus:ring focus:outline-none betterhover:hover:bg-opacity-80 pointer items-center shadow-inner text-left w-full  text-gray-30 rounded-lg align-middle text-sm"
-              name="subject"
-              value={userInput.subject}
+              className="bg-[#ebecf0] my-2 md:flex relative pl-4 pr-0.5 py-1 h-10 bg-secondary-button dark:bg-gray-80 outline-none focus:ring focus:outline-none betterhover:hover:bg-opacity-80 pointer items-center shadow-inner text-left w-full text-gray-30 rounded-lg align-middle text-sm"
+              id="grid-state"
               onChange={async (e) => {
                 await setUserInput({
                   ...userInput,
                   [e.target.name]: e.target.value,
                 });
               }}
-            >
-              {schoolLessons?.map((schoolLesson: any, i: number) => (
-                <MenuItem value={schoolLesson.subject}  key={schoolLesson + i}>
-                  {schoolLesson.subject}
-                </MenuItem>
-              ))}
+              name="subject">
+              <MenuItem value="">Хичээл</MenuItem>
+              {schoolLessons?.map((schoolLesson: any, i: number) => {
+                return (
+                  <MenuItem value={schoolLesson.subject} key={schoolLesson + i}>
+                    {schoolLesson.subject}
+                  </MenuItem>
+                );
+              })}
             </Select>
           </Grid>
           <button
             style={{ padding: "6px 15px", marginTop: "20px" }}
             className="bg-indigo-600 text-white rounded-lg"
             onClick={handleSearch}
-            color="primary"
-          >
+            color="primary">
             Хайх
           </button>
         </Grid>
@@ -286,8 +276,7 @@ export default function Home() {
             maxWidth: "1300px",
             margin: "auto",
             height: "auto",
-          }}
-        >
+          }}>
           <Grid
             item
             sx={{
@@ -296,8 +285,7 @@ export default function Home() {
               alignItems: { xs: "center", md: "start" },
               flexDirection: "column",
               gap: "20px",
-            }}
-          >
+            }}>
             {ads.map((ad, index) => {
               return (
                 <Grid
@@ -306,22 +294,19 @@ export default function Home() {
                     setSelectedAd({ ad, index });
                     setShowModal(true);
                   }}
-                  className=" bg-indigo-100 pt-8 pb-4 px-5 shadow-indigo-300/50 shadow-xl sm:px-8 my-8 w-5/6 relative rounded-none shadow-inner -mx-5 sm:mx-auto sm:rounded-lg flex-wrap"
-                >
+                  className=" bg-indigo-100 pt-8 pb-4 px-5 shadow-indigo-300/50 shadow-xl sm:px-8 my-8 w-5/6 relative rounded-none shadow-inner -mx-5 sm:mx-auto sm:rounded-lg flex-wrap">
                   <CardContent>
                     <Typography
                       gutterBottom
                       className="font-bold"
                       variant="h5"
-                      component="div"
-                    >
+                      component="div">
                       {ad.advertisingHeader}
                     </Typography>
                     <Typography
                       variant="body2"
                       className="font-bold"
-                      color="text.secondary"
-                    >
+                      color="text.secondary">
                       {ad.detail}
                     </Typography>
                   </CardContent>
@@ -330,8 +315,7 @@ export default function Home() {
                       onClick={() => handleSearch()}
                       size="small"
                       style={{ padding: "6px 16px" }}
-                      className="bg-sky-500 text-white"
-                    >
+                      className="bg-sky-500 text-white">
                       Дэлгэрэнгүй
                     </Button>
                   </CardActions>
@@ -354,15 +338,13 @@ export default function Home() {
                     className="text-indigo-500 font-bold"
                     gutterBottom
                     variant="h5"
-                    component="div"
-                  >
+                    component="div">
                     {selectedAd.ad.advertisingHeader}
                   </Typography>
                   <Typography
                     variant="body2"
                     className="text-xl font-bold"
-                    color="text.secondary"
-                  >
+                    color="text.secondary">
                     {selectedAd.ad.detail}
                   </Typography>
                 </CardContent>
@@ -371,8 +353,7 @@ export default function Home() {
                     sx={{ padding: "6px 15px" }}
                     className="bg-indigo-600 text-white rounded-lg"
                     onClick={() => requestToDoWork(selectedAd.ad._id)}
-                    color="primary"
-                  >
+                    color="primary">
                     Хийх
                   </Button>
                 </CardActions>
@@ -382,53 +363,50 @@ export default function Home() {
         </Grid>
         {selectedAd && showModal && windowWidth < 900 && (
           <Backdrop
-            sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            open={true}
-          >
-            <Note>
-              <CardMedia
-                onClick={() => setCloseDetailImage(true)}
-                component="img"
-                height="140"
-                sx={{ borderRadius: "10px" }}
-                image={`http://localhost:8000/post/photo/${selectedAd.ad.photo}`}
-              />
-              <CardContent>
-                <Typography
-                  className="text-indigo-500 font-bold"
-                  gutterBottom
-                  variant="h5"
-                  component="div"
-                >
-                  {selectedAd.ad.advertisingHeader}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  className="text-xl font-bold"
-                  color="text.secondary"
-                >
-                  {selectedAd.ad.detail}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button
-                  sx={{ padding: "6px 15px" }}
-                  className="bg-indigo-600 text-white rounded-lg"
-                  onClick={() => requestToDoWork(selectedAd.ad._id)}
-                  color="primary"
-                >
-                  Хийх
-                </Button>
-                <Button
-                  sx={{ padding: "6px 15px" }}
-                  className="bg-indigo-600 text-white rounded-lg"
-                  onClick={() => setShowModal(false)}
-                  color="primary"
-                >
-                  Гарах
-                </Button>
-              </CardActions>
-            </Note>
+            sx={{zIndex:100}}
+            open={true}>
+            <div style={{ width: "80%" }}>
+              <Note>
+                <CardMedia
+                  onClick={() => setCloseDetailImage(true)}
+                  component="img"
+                  height="140"
+                  sx={{ borderRadius: "10px" }}
+                  image={`http://localhost:8000/post/photo/${selectedAd.ad.photo}`}
+                />
+                <CardContent>
+                  <Typography
+                    className="text-indigo-500 font-bold"
+                    gutterBottom
+                    variant="h5"
+                    component="div">
+                    {selectedAd.ad.advertisingHeader}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    className="text-xl font-bold"
+                    color="text.secondary">
+                    {selectedAd.ad.detail}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button
+                    sx={{ padding: "6px 15px" }}
+                    className="bg-indigo-600 text-white rounded-lg"
+                    onClick={() => requestToDoWork(selectedAd.ad._id)}
+                    color="primary">
+                    Хийх
+                  </Button>
+                  <Button
+                    sx={{ padding: "6px 15px" }}
+                    className="bg-indigo-600 text-white rounded-lg"
+                    onClick={() => setShowModal(false)}
+                    color="primary">
+                    Гарах
+                  </Button>
+                </CardActions>
+              </Note>
+            </div>
           </Backdrop>
         )}
       </Grid>
