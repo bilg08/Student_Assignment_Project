@@ -1,6 +1,6 @@
 const PostSchema = require("../model/postSchema");
 exports.getPostNotIncludedUser = async (id) => {
-  return await PostSchema.find({ owner: { $ne: id } });
+  return await PostSchema.find({ owner: { $ne: id } }).populate('owner');
 };
 exports.getPostNotIncludedUserLength = async () => {
   return await PostSchema.find({ owner: { $ne: id } }).length;
@@ -8,13 +8,13 @@ exports.getPostNotIncludedUserLength = async () => {
 exports.getPostNotIncludedUserAndLimitandSkip = async (id, limit, start) => {
   return await PostSchema.find({ owner: { $ne: id } })
     .limit(limit)
-    .skip(start - 1);
+    .skip(start - 1).populate('owner');
 };
 
 exports.getAllPostWithLimitandSkip = async (limit, start) => {
   return await PostSchema.find()
     .limit(limit)
-    .skip(start - 1);
+    .skip(start - 1).populate('owner');
 };
 exports.moveImageToImagesFolder = async (path) => {
   try {
@@ -31,6 +31,5 @@ exports.moveImageToImagesFolder = async (path) => {
       });
     });
   } catch (error) {
-    console.log(error);
   }
 };

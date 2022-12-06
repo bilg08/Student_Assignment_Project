@@ -4,7 +4,7 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 export const Pagination1 = (props: PaginationType) => {
 	const { pagination, setPage, page } = props;
-	
+	console.log(pagination)
 	const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
 		setPage(value);
 	  };

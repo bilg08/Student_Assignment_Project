@@ -117,7 +117,6 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
 });
 
 exports.getUserProfilePhoto = asyncHandler(async (req, res, next) => {
-  console.log(req.params)
   fs.readFile(`./images/users/${req.params.id}`, (err, data) => {
     if (err) {
       res.status(400).json({
