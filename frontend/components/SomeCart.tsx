@@ -24,8 +24,8 @@ const variantMap: VariantMapsType = {
 		title: "Дууссан",
 		isDone: true,
 		Icon: IconWarning,
-		containerClasses: "bg-red-300 dark:bg-red-60 dark:bg-opacity-20",
-		textColor: "text-red-500 dark:text-red-40",
+		containerClasses: "bg-red-500 bg-opacity-30",
+		textColor: "text-red-500 text-red-40",
 		overlayGradient:
 			"linear-gradient(rgba(249, 247, 243, 0), rgba(249, 247, 243, 1)",
 	},
@@ -34,8 +34,8 @@ const variantMap: VariantMapsType = {
 		Icon: IconNote,
 		isDone: false,
 		containerClasses:
-			"bg-green-300 dark:bg-green-300 dark:bg-opacity-20 text-primary dark:text-primary-dark text-lg",
-		textColor: "text-green-600 dark:text-green-40",
+			"bg-green-300 bg-green-300 bg-opacity-20 text-primary text-primary-dark text-lg",
+		textColor: "text-green-600 text-green-40",
 		overlayGradient:
 			"linear-gradient(rgba(245, 249, 248, 0), rgba(245, 249, 248, 1)",
 	},
@@ -44,7 +44,7 @@ const variantMap: VariantMapsType = {
 		Icon: IconNote,
 		isDone: false,
 		containerClasses:
-		"bg-indigo-200 dark:bg-green-300 dark:bg-opacity-20 text-primary dark:text-primary-dark text-lg",
+			"bg-indigo-200 bg-green-300 bg-opacity-20 text-primary text-primary-dark text-lg",
 		textColor: " dark:text-green-40",
 		overlayGradient:
 			"linear-gradient(rgba(245, 249, 248, 0), rgba(245, 249, 248, 1)",
@@ -61,11 +61,8 @@ export const SomeCart: React.FC<SomeCartType> = ({ children, type }) => {
 				"pt-8 pb-4 px-5 sm:px-8 my-8 w-5/6 relative rounded-none shadow-inner -mx-5 rounded sm:mx-auto sm:rounded-lg flex-wrap",
 				variant.containerClasses
 			)}>
-			<h3
-				className={cn("mb-2 text-2xl font-bold flex-wrap ")}>
-				<variant.Icon
-					className={cn("inline mr-3 mb-1 text-lg")}
-				/>
+			<h3 className={cn("mb-2 text-2xl font-bold flex-wrap ")}>
+				<variant.Icon className={cn("inline mr-3 mb-1 text-lg")} />
 				{variant.title}
 			</h3>
 			<div className='relative'>
