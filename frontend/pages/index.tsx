@@ -53,7 +53,7 @@ export default function Home() {
   const [schoolGroup, setSchoolGroup] = useState<any>([]);
   const { setOpenshadow } = useLoaderContext();
   const { isLoggedIn } = useIsUserLoggedContext();
-  const [readMore,setReadMore] = useState(false)
+  const [readMore,setReadMore] = useState(true)
   useEffect(() => {
     const userId = getCookie("userId");
     (async () => {
