@@ -11,11 +11,9 @@ import {
   useLoaderContext,
   useIsUserLoggedContext,
 } from "../context/index";
-import { useWindowWidth } from "../hooks/index";
 import { useModalContext } from "../context/index";
 import { Pagination1 } from "../components/pagination";
 import { instance } from "../components/Layout";
-import { getCookie } from "cookies-next";
 import { MenuItem, Select } from "@mui/material";
 import { IconArrow } from "../components/Icon/IconArrow";
 type adsType = {
@@ -378,6 +376,5 @@ function PostCart({ad}:{ad:any}) {
   </div>
   )
 }
-
 
 
