@@ -11,10 +11,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-
-
     "@material-ui/core": "^4.12.4",
-
     "@mui/icons-material": "^5.10.16",
     "@mui/material": "^5.10.16",
     "@types/node": "18.11.9",
@@ -30,11 +27,13 @@
     "react-collapsed": "^3.5.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.6.0",
+    "react-show-more-text": "^1.6.2",
     "react-swipeable-views": "^0.14.0",
     "socket.io-client": "^4.5.3",
     "typescript": "4.8.4"
   },
   "devDependencies": {
+    "@types/react-show-more-text": "^1.4.2",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.18",
     "tailwindcss": "^3.2.1"
