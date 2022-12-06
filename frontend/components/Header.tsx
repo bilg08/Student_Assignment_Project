@@ -98,6 +98,7 @@ export const Header = () => {
 								className='z-10 text-gray-800  hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2  focus:outline-none '>
 								Нэвтрэх/Бүртгүүлэх
 							</div>
+
 							<img
 								onClick={(e) => {
 									console.log(anchorEl);
@@ -108,7 +109,11 @@ export const Header = () => {
 								}}
 								style={{ display: isLoggedIn ? "block" : "none" }}
 								className='h-12 w-12 rounded-full border-dark-purple border-2 mb-4'
-								src={`http://localhost:8000/users/getUserProfilePhoto/${user.photo}`}
+								src={
+									user.photo === "no-photo.png"
+										? "https://cdn.pixabay.com/photo/2016/03/31/19/56/avatar-1295396__340.png"
+										: `http://localhost:8000/users/getUserProfilePhoto/${user.photo}`
+								}
 							/>
 							<Popover
 								anchorEl={anchorEl}

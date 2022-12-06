@@ -83,9 +83,18 @@ export const UserSideBar = () => {
 					<ul className='space-y-2'>
 						<div className='overflow-y-scroll'>
 							<li className='flex justify-center'>
-								<img
+								{/* <img
 									className='h-48 w-48 rounded-full border-dark-purple border-2 mb-4 p-0.5'
 									src={`http://localhost:8000/users/getUserProfilePhoto/${user.photo}`}
+								/> */}
+								<img
+									alt=''
+									className='h-48 w-48 rounded-full border-dark-purple border-2 mb-4 p-0.5'
+									src={
+										user.photo === "no-photo.png"
+											? "https://cdn.pixabay.com/photo/2016/03/31/19/56/avatar-1295396__340.png"
+											: `http://localhost:8000/users/getUserProfilePhoto/${user.photo}`
+									}
 								/>
 								<svg
 									onClick={() => {

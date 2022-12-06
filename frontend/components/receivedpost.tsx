@@ -28,7 +28,6 @@ type postType = {
 }[];
 export const ReceivedPosts = () => {
 	const [personalPosts, setPersonalPosts] = useState<postType>([]);
-	const [isChatting, setChatting] = useState(false);
 	const [chatRoom, setChatRoom] = useState("");
 	const [postIInterested, setPostIInterested] = useState<postType>([]);
 	const { isAgainGetDatas, setIsAgainGetDatas } = useIsAgainGetDatas();
@@ -173,32 +172,12 @@ export const ReceivedPosts = () => {
 					<div className='overscroll-y-none  flex-col flex items-center pb-[100px]'>
 						{postIInterested.map((el, ind) => {
 							return (
-								<SomeCart
-									type={el.isDone === true ? "done" : "notDone"}
-									key={ind}>
-									<PostReceived
-										name={el.subject}
-										owner={"oruuln"}
-										description={el.detail}
-									/>
-									<div style={{ display: el.isDone ? "none" : "block" }}>
-										<div className='flex flex-row flex-wrap'>
-											<PostButton
-												data={isChatting ? "Дуусгах" : "Харилцах"}
-												prop={"#FDFD96"}
-												ym={async () => {
-													setChatRoom(el.chatRoom);
-													setChatting(!isChatting);
-												}}
-											/>
-										</div>
-										{isChatting ? (
-											<ColasipbleChatBox chatRoomName={chatRoom} />
-										) : (
-											""
-										)}
-									</div>
-								</SomeCart>
+								<ChatBox
+									setChatRoom={setChatRoom}
+									chatRoom={chatRoom}
+									el={el}
+									ind={ind}
+								/>
 							);
 						})}
 					</div>
@@ -207,6 +186,43 @@ export const ReceivedPosts = () => {
 		</div>
 	);
 };
+function ChatBox({
+	el,
+	ind,
+	setChatRoom,
+	chatRoom,
+}: {
+	el: any;
+	ind: number;
+	setChatRoom: any;
+	chatRoom: any;
+}) {
+	const [isChatting, setChatting] = useState(false);
+	return (
+		<SomeCart
+			type={el.isDone === true ? "done" : "notDone"}
+			key={ind}>
+			<PostReceived
+				name={el.subject}
+				owner={"oruuln"}
+				description={el.detail}
+			/>
+			<div style={{ display: el.isDone ? "none" : "block" }}>
+				<div className='flex flex-row flex-wrap'>
+					<PostButton
+						data={isChatting ? "Дуусгах" : "Харилцах"}
+						prop={"#FDFD96"}
+						ym={async () => {
+							setChatRoom(el.chatRoom);
+							setChatting(!isChatting);
+						}}
+					/>
+				</div>
+				{isChatting ? <ColasipbleChatBox chatRoomName={chatRoom} /> : ""}
+			</div>
+		</SomeCart>
+	);
+}
 interface TabPanelProps {
 	children?: ReactNode;
 	dir?: string;
