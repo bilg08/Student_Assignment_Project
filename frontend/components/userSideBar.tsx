@@ -65,15 +65,7 @@ export const UserSideBar = () => {
 			.catch((err) => console.log(err));
 	};
 
-	useEffect(() => {
-		const getPersonalInfo = async () => {
-			try {
-				const datas = await instance.get("/users/myInfo");
-				setUser(datas.data.data);
-			} catch (error) {}
-		};
-		getPersonalInfo();
-	}, [IsAgainGetDatas]);
+	
 	return (
 		<>
 			<aside

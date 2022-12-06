@@ -24,8 +24,8 @@ const variantMap: VariantMapsType = {
 		title: "Дууссан",
 		isDone: true,
 		Icon: IconWarning,
-		containerClasses: "bg-red-500 bg-opacity-30",
-		textColor: "text-red-500 text-red-40",
+		containerClasses: "bg-red-500 w-full bg-opacity-30",
+		textColor: "text-red-500  text-red-40",
 		overlayGradient:
 			"linear-gradient(rgba(249, 247, 243, 0), rgba(249, 247, 243, 1)",
 	},
@@ -44,7 +44,7 @@ const variantMap: VariantMapsType = {
 		Icon: IconNote,
 		isDone: false,
 		containerClasses:
-			"bg-indigo-200 bg-green-300 bg-opacity-20 text-primary text-primary-dark text-lg",
+			"bg-indigo-200  bg-green-300 bg-opacity-20 text-primary text-primary-dark text-lg",
 		textColor: " dark:text-green-40",
 		overlayGradient:
 			"linear-gradient(rgba(245, 249, 248, 0), rgba(245, 249, 248, 1)",

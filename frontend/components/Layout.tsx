@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getCookie } from "cookies-next";
-import React, { ReactNode } from "react";
-import { useLoaderContext, useUserContext } from "../context";
+import React, { ReactNode, useEffect } from "react";
+import { useIsAgainGetDatas, useLoaderContext, useUserContext } from "../context";
 import { Header, Footer, Modal } from "./index";
 import { Loader } from "./Loader";
 export const instance = axios.create({
@@ -10,7 +10,17 @@ export const instance = axios.create({
 });
 export const LayOut = (props: { children: ReactNode }) => {
   const { setOpenLoader, setOpenshadow } = useLoaderContext();
-  
+  const { isAgainGetDatas,setIsAgainGetDatas } = useIsAgainGetDatas();
+  const {setUser} = useUserContext()
+  useEffect(() => {
+    const getPersonalInfo = async () => {
+      try {
+        const datas = await instance.get("/users/myInfo");
+        setUser(datas.data.data);
+      } catch (error) {}
+    };
+    getPersonalInfo();
+  }, [isAgainGetDatas]);
   axios.interceptors.request.use(
     function (config) {
       setOpenLoader(true);
@@ -24,6 +34,7 @@ export const LayOut = (props: { children: ReactNode }) => {
 
   axios.interceptors.response.use(
     function (response) {
+      setIsAgainGetDatas((e: any) => !e);
       setOpenLoader(false);
       setOpenshadow(false);
       return response;
@@ -33,7 +44,7 @@ export const LayOut = (props: { children: ReactNode }) => {
     }
   );
   return (
-    <div className="h-[100vh] w-full">
+    <div className="h-[100vh] w-[100vw]">
       <Modal />
       <Header />
       {props.children}

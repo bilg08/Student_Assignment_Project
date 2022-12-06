@@ -16,6 +16,7 @@ import { Pagination1 } from "../components/pagination";
 import { instance } from "../components/Layout";
 import { MenuItem, Select } from "@mui/material";
 import { IconArrow } from "../components/Icon/IconArrow";
+import { TroubleshootOutlined } from "@mui/icons-material";
 type adsType = {
   _id: string | number | readonly string[] | undefined;
   advertisingHeader: String;
@@ -161,16 +162,17 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full border-#57534e border-1">
-      <Grid className="flex h-auto  justify-center flex-col items-center md:flex-row m-auto max-w-screen-xl gap-5">
+    <div className="w-full  border-#57534e border-1">
+      <Grid className="flex h-auto w-full m-auto justify-center flex-col items-center md:flex-row  max-w-screen-xl gap-5">
     
         <Grid
           className="max-w-screen-xl flex justify-between"
           container
           sx={{
-            width: {sm:'95%',md:'95%',lg:'100%'},
+            width: {sm:'100%',xs:'100%',md:'95%',lg:'100%'},
             height: 'auto',
             display: "flex",
+            margin:'auto',
             alignItems: "center",
             gap:{sm:'20px'},
             flexFlow: { xs: "column", sm: "row", },
@@ -268,16 +270,15 @@ export default function Home() {
             height: "auto",
             margin: "auto",
             gap:'15px',
-            flexWrap:'wrap',
-            marginTop:'20px',
+            flexWrap: 'wrap',
             justifyContent:{md:'center',lg:'space-between',sm:'center',xs:'center'}
-
           }}
         >
          
             {ads.map((ad, index) => {
               return (
                 <Grid
+                  sx={{width:'auto'}}
                   key={index}
                   onClick={() => {
                     setSelectedAd({ ad, index });
@@ -299,7 +300,7 @@ export default function Home() {
 
 
 function PostCart({ad}:{ad:any}) {
-  const [readMore,setReadMore] = useState(true)
+  const [readMore,setReadMore] = useState(false)
   const { setOpenshadow } = useLoaderContext();
   const { setModalText, setOpenModal } = useModalContext();
 
@@ -318,51 +319,68 @@ function PostCart({ad}:{ad:any}) {
       });
   };
   return (
-    <div className="px-5 py-4 bg-white min-w-[512px] shadow-2xl rounded-lg max-w-lg">
-                   
-    <div className="flex mb-4">
-      <img
-        className="w-12 h-12 rounded-full"
-        src={`http://localhost:8000/users/getUserProfilePhoto/${ad.owner.photo}`}
-      />
-      <div className="ml-2 mt-0.5">
-        <span className="block font-medium text-base leading-snug text-black ">
-          {ad.owner.FirstName}
-        </span>
-        <span className="block text-sm text-gray-500 dark:text-gray-400 font-light leading-snug">
-          16 December at 08:25
-        </span>
+    <div className="px-5 py-4 bg-white w-[400px] shadow-2xl rounded-lg max-w-lg">
+      <div className="flex mb-4">
+        <img
+          className="w-12 h-12 rounded-full"
+          src={`http://localhost:8000/users/getUserProfilePhoto/${ad.owner.photo}`}
+        />
+        <div className="ml-2 mt-0.5">
+          <span className="block font-medium text-base leading-snug text-black ">
+            {ad.owner.FirstName}
+          </span>
+          <span className="block text-sm text-gray-500 dark:text-gray-400 font-light leading-snug">
+            16 December at 08:25
+          </span>
+        </div>
       </div>
-    </div>
-    <div className="text-gray-800 0 flex justify-between  leading-snug md:leading-normal">
-      <a
-        className={cn(
-          "inline text-code  border-b-[1px]  border-b-blue-500  text-secondary dark:text-secondary-dark px-1 rounded-md no-underline"
+      <div className="text-gray-800 0 flex gap-[10px] leading-snug md:leading-normal">
+        <a
+          className={cn(
+            "inline text-code bg-blue-100  text-secondary dark:text-secondary-dark px-1 rounded-md no-underline"
+          )}>
+          {ad.school}
+        </a>
+
+        <a
+          className={cn(
+            "inline text-code bg-blue-100  text-secondary dark:text-secondary-dark px-1 rounded-md no-underline"
+          )}>
+          {ad.subject}
+        </a>
+      </div>
+      <p
+        className={` text-gray-800 overflow-hidden transition-all    leading-snug md:leading-normal`}>
+        {ad.detail.length > 50 ? (
+          <>
+            {!readMore ? (
+              <>
+                <p>{ad.detail.slice(0, 50)}</p>
+                <a
+                  onClick={() => setReadMore(true)}
+                  className="underline text-blue-500">
+                  Цааш нь унших
+                </a>
+              </>
+            ) : (
+              <>
+                <p>{ad.detail}</p>
+                <a
+                  onClick={() => setReadMore(false)}
+                  className="underline text-blue-500">
+                  Хураах
+                </a>
+              </>
+            )}
+          </>
+        ) : (
+          <p>{ad.detail}</p>
         )}
-      >
-        {ad.school}
-      </a>
-      <a
-        className={cn(
-          "inline text-code  border-b-[1px]  border-b-blue-500 text-secondary dark:text-secondary-dark px-1 rounded-md no-underline"
-        )}
-      >
-        {ad.group}
-      </a>{" "}
-      <a
-        className={cn(
-          "inline text-code  border-b-[1px]  border-b-blue-500  text-secondary dark:text-secondary-dark px-1 rounded-md no-underline"
-        )}
-      >
-        {ad.subject}
-      </a>
-    </div>
-    <p className={` text-gray-800 overflow-hidden transition-all    leading-snug md:leading-normal`}>
-    {readMore?ad.detail.slice(0,50):ad.detail} {readMore?<a  onClick={() =>setReadMore(!readMore)} className="underline text-blue-500" >цааш нь унших</a>:<a onClick={() =>setReadMore(!readMore)} className="underline text-blue-500" >хураах</a>} 
-    </p>
-    <div className="flex justify-between items-center mt-5"></div>
-    <button
-    onClick={() =>requestToDoWork(ad._id)}
+        {/* {readMore?ad.detail.slice(0,50):ad.detail} {readMore?<a  onClick={() =>setReadMore(!readMore)} className="underline text-blue-500" >цааш нь унших</a>:<a onClick={() =>setReadMore(!readMore)} className="underline text-blue-500" >хураах</a>}  */}
+      </p>
+      <div className="flex justify-between items-center mt-5"></div>
+      <button
+        onClick={() => requestToDoWork(ad._id)}
         type="button"
         style={{
           display: "flex",
@@ -373,8 +391,8 @@ function PostCart({ad}:{ad:any}) {
         Хийх
         <IconArrow displayDirection="right" />
       </button>
-  </div>
-  )
+    </div>
+  );
 }
 
 
