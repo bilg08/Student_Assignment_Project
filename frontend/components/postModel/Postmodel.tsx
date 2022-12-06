@@ -3,7 +3,7 @@ import React from "react";
 import { MyImage } from "../index";
 import { useIsAgainGetDatas, useLoaderContext } from "../../context";
 import { instance } from "../../components/Layout";
-import { DialogContent, Dialog, DialogTitle } from "@mui/material";
+import ClearIcon from "@mui/icons-material/Clear";
 export interface PostModalProps {
 	cActive: any;
 	setCactive: any;
@@ -98,41 +98,23 @@ export const PostModal: React.FC<PostModalProps> = ({ setCactive }) => {
 	};
 
 	return (
-		// <Dialog open={shadow}>
-		// 	<DialogTitle>
-		// 		<button
-		// 			onClick={() => {
-		// 				setCactive(false);
-		// 				setOpenshadow(false);
-		// 			}}
-		// 			type='button'
-		// 			className=' text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center '
-		// 			data-modal-toggle='authentication-modal'>
-		// 			<svg
-		// 				aria-hidden='true'
-		// 				className='w-5 h-5'
-		// 				fill='currentColor'
-		// 				viewBox='0 0 20 20'
-		// 				xmlns='http://www.w3.org/2000/svg'>
-		// 				<path
-		// 					fillRule='evenodd'
-		// 					d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
-		// 					clipRule='evenodd'></path>
-		// 			</svg>
-		// 			<span className='sr-only'>Close</span>
-		// 		</button>
-		// 	</DialogTitle>
-		// 	<DialogContent>
 		<form
-			className='w-full sm:w-3/4 md:w-2/4 z-30 lg:w-auto h-auto absolute top-2/4 left-2/4 transform -translate-x-1/2 -translate-y-1/2 p-10 rounded-3xl backdrop-blur-md bg-gradient-to-r from-purple-300 to-violet-200 '
+			className='w-full overflow-y-scroll border-2 border-dark-purple sm:w-3/4 md:w-2/4 z-30 lg:w-auto h-[80vh] absolute top-2/4  left-2/4 transform -translate-x-1/2 -translate-y-1/2 p-10 rounded-lg backdrop-blur-md bg-white  '
 			onSubmit={handleSubmit}>
+			<ClearIcon
+				sx={{ position: "absolute", right: "23px", marginBottom: "4px" }}
+				onClick={() => {
+					setCactive(false);
+					setOpenshadow(false);
+				}}
+			/>
 			<div className='flex flex-wrap -mx-3 mb-6'>
 				<div className='w-full 2 px-3 mb-6 md:mb-0'>
 					<label className='block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 text-center mt-6'>
 						Зарын нэр
 					</label>
 					<input
-						className='block w-full bg-white text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white'
+						className='block w-full bg-white text-gray-700 border border-dark-purple rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white'
 						id='grid-first-name'
 						type='text'
 						placeholder='Title'
@@ -145,7 +127,7 @@ export const PostModal: React.FC<PostModalProps> = ({ setCactive }) => {
 						Дэлгэрэнгүй
 					</label>
 					<input
-						className='appearance-none block w-full h-auto bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3  focus:outline-none focus:bg-white '
+						className='appearance-none block w-full h-auto bg-white text-gray-700 border border-dark-purple rounded py-3 px-4 mb-3  focus:outline-none focus:bg-white '
 						type='text'
 						placeholder='...'
 						name='second'></input>
@@ -157,7 +139,7 @@ export const PostModal: React.FC<PostModalProps> = ({ setCactive }) => {
 				</label>
 				<div className='relative'>
 					<select
-						className='block appearance-none w-full bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
+						className='block appearance-none w-full bg-white border border-dark-purple text-gray-700 py-3 px-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
 						id='grid-state'
 						name='fourth'
 						onChange={async (e) => {
@@ -188,7 +170,7 @@ export const PostModal: React.FC<PostModalProps> = ({ setCactive }) => {
 						Төлбөр
 					</label>
 					<input
-						className='appearance-none block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
+						className='appearance-none block w-full bg-white text-gray-700 border border-dark-purple rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
 						type='text'
 						placeholder='deal'
 						name='third'></input>
@@ -199,13 +181,13 @@ export const PostModal: React.FC<PostModalProps> = ({ setCactive }) => {
 					</label>
 					<div className='relative'>
 						<select
-							className='block appearance-none w-full bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
+							className='block appearance-none w-full bg-white border border-dark-purple text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
 							id='grid-state'
 							onChange={(e) => setGroup(e.target.value)}
 							name='fourth'>
 							<option></option>
 							{schoolGroup?.map((group: string) => (
-								<option>{group}</option>
+								<option key={group}>{group}</option>
 							))}
 						</select>
 						<div className='pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700'>
@@ -222,7 +204,7 @@ export const PostModal: React.FC<PostModalProps> = ({ setCactive }) => {
 					</label>
 					<div className='relative'>
 						<select
-							className='block appearance-none w-full bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
+							className='block appearance-none w-full bg-white border border-dark-purple text-gray-700 py-3 px-4 pr-8 mb-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
 							id='grid-state'
 							onChange={(e) => {
 								setSubject(e.target.value);
@@ -258,11 +240,12 @@ export const PostModal: React.FC<PostModalProps> = ({ setCactive }) => {
 
 			<button
 				type='submit'
-				className='w-auto h-[20px] text-gray-500 '>
+				className='w-full h-fit text-white bg-dark-purple border border-dark-purple rounded-md p-2 '>
 				Илгээх
 			</button>
 		</form>
 		// 	</DialogContent>
 		// </Dialog>
+		//bg-gradient-to-r from-purple-300 to-violet-200
 	);
 };

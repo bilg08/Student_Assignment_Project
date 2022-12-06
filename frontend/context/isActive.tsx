@@ -1,32 +1,31 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 
 type Props = {
-  children: ReactNode;
+	children: ReactNode;
 };
 
 interface CollectionContextInterface {
-  cActive: any;
-  setCactive: (_val: any) => void;
+	cActive: any;
+	setCactive: (_val: any) => void;
 }
 
 export const CollectionContext = createContext<CollectionContextInterface>({
-  cActive: true,
-  setCactive: (val: any) => {},
+	cActive: true,
+	setCactive: (val: any) => {},
 });
 
 export const CollectionContextProvider = ({ children }: Props) => {
-  // Button false or true
-  const [cActive, setCactive] = useState(false);
-  return (
-    <CollectionContext.Provider
-      value={{
-        cActive,
-        setCactive,
-      }}
-    >
-      {children}
-    </CollectionContext.Provider>
-  );
+	// Button false or true
+	const [cActive, setCactive] = useState(false);
+	return (
+		<CollectionContext.Provider
+			value={{
+				cActive,
+				setCactive,
+			}}>
+			{children}
+		</CollectionContext.Provider>
+	);
 };
 
 export const useCollectionContext = () => useContext(CollectionContext);
