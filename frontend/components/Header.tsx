@@ -139,7 +139,7 @@ export const Header = () => {
 								</Typography>
 							</Popover>
 						</div>
-						{width >= 950 && (
+						{width >= 950 && isLoggedIn && (
 							<div
 								className='flex items-center order-2'
 								onClick={() => {
