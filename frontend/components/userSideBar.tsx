@@ -16,6 +16,7 @@ import {
 	useCollectionContext,
 	useIsAgainGetDatas,
 	useLoaderContext,
+	useSidebarContext,
 	useUserContext,
 } from "../context/index";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -76,7 +77,7 @@ export const UserSideBar = () => {
 	return (
 		<>
 			<aside
-				className='w-96 ml-24 h-[75vh]'
+				className='w-96 h-[75vh]'
 				aria-label='Sidebar'>
 				<div className=' overflow-y-scroll py-4 px-3 bg-white rounded-lg flex-col align-center items-center h-full'>
 					<ul className='space-y-2'>
@@ -139,7 +140,7 @@ export const UserSideBar = () => {
 							<AccordionDetails>
 								{user?.averageRatingByGroupByGroup.map((el) => {
 									return (
-										<Typography>
+										<Typography key={el._id}>
 											{el._id} : {el.sum}
 										</Typography>
 									);
@@ -155,7 +156,7 @@ export const UserSideBar = () => {
 							<AccordionDetails>
 								{user?.averageRatingByGroupByGroup.map((el) => {
 									return (
-										<Typography>
+										<Typography key={el._id}>
 											{el._id} : {el.avg}
 										</Typography>
 									);
@@ -188,15 +189,16 @@ export const UserSideBar = () => {
 								<label
 									style={{
 										color: "#804fb3",
-										width: "25%",
+										width: "100%",
 										display: "flex",
-										justifyContent: "space-between",
 										marginBottom: "8px",
 										border: "1px solid #804fb3",
 										borderRadius: "15px",
 										padding: "4px",
 									}}>
-									<AddCircleIcon sx={{ color: "#804fb3" }} />
+									<AddCircleIcon
+										sx={{ color: "#804fb3", marginRight: "5px" }}
+									/>
 									Зураг сонгох
 									<input
 										style={{ display: "none" }}
@@ -251,7 +253,7 @@ export const UserSideBar = () => {
 							<div className='flex justify-between items-center mt-2'>
 								<input
 									type='submit'
-									className='w-[49%] hover:bg-light-purple hover:text-white text-dark-purple rounded-lg border border-dark-purple'
+									className='w-[49%] hover:bg-white hover:text-dark-purple text-white bg-dark-purple rounded-lg border border-dark-purple'
 								/>
 								<input
 									type='button'
@@ -260,7 +262,7 @@ export const UserSideBar = () => {
 										location.reload();
 										setEditing(false);
 									}}
-									className='w-[49%] hover:bg-light-purple hover:text-white text-dark-purple rounded-lg border border-dark-purple'
+									className='w-[49%] hover:bg-white hover:text-dark-purple text-white bg-dark-purple rounded-lg border border-dark-purple'
 								/>
 							</div>
 						</form>
@@ -273,6 +275,7 @@ export const UserSideBar = () => {
 export const SeizedSideBar = () => {
 	const { cActive, setCactive } = useCollectionContext();
 	const isActive = true;
+	const { setBigsidebar, bigsidebar } = useSidebarContext();
 	return (
 		<section
 			id='bottom-navigation'
@@ -282,7 +285,7 @@ export const SeizedSideBar = () => {
 				className='flex justify-center pl-4'>
 				<ul className='flex items-center h-fit'>
 					<MenuList2
-						onClick={() => {}}
+						onClick={() => setBigsidebar(!bigsidebar)}
 						name={""}
 						svg={
 							<svg
@@ -300,7 +303,7 @@ export const SeizedSideBar = () => {
 							</svg>
 						}
 					/>
-					<MenuList2
+					{/* <MenuList2
 						onClick={() => {}}
 						name={""}
 						svg={
@@ -318,8 +321,8 @@ export const SeizedSideBar = () => {
 								/>
 							</svg>
 						}
-					/>
-					<MenuList2
+					/> */}
+					{/* <MenuList2
 						onClick={() => {}}
 						name={""}
 						svg={
@@ -337,8 +340,8 @@ export const SeizedSideBar = () => {
 								/>
 							</svg>
 						}
-					/>
-					<MenuList2
+					/> */}
+					{/* <MenuList2
 						onClick={() => {}}
 						name={""}
 						svg={
@@ -356,7 +359,7 @@ export const SeizedSideBar = () => {
 								/>
 							</svg>
 						}
-					/>
+					/> */}
 					<MenuList2
 						onClick={() => {
 							isActive ? setCactive(true) : setCactive(false);
