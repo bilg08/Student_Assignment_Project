@@ -9,7 +9,7 @@ export const Pagination1 = (props: PaginationType) => {
 	};
 
 	return (
-		<Stack className='flex items-center justify-center border-t border-gray-200 bg-white px-4 py-3 sm:px-6 absolute bottom-10 w-full'>
+		<Stack className='flex items-center justify-center border-t border-gray-200 bg-white px-4 py-3 sm:px-6 fixed bottom-10 w-full'>
 			<Pagination
 				onChange={handleChange}
 				page={page}

@@ -73,7 +73,7 @@ export const ReceivedPosts = () => {
 					{...a11yProps(0)}
 				/>
 				<Tab
-					label='Хийх зар'
+					label='Туслах зар'
 					{...a11yProps(1)}
 				/>
 			</Tabs>

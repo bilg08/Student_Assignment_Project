@@ -36,7 +36,11 @@ export const UserProfileBox = ({ request, post }: any) => {
 				<div>
 					Дундаж үнэлгээ: {request.averageRating && request.averageRating}
 				</div>
-				{isChatting ? <ColasipbleChatBox chatRoomName={chatRoom} /> : <div></div>}
+				{isChatting ? (
+					<ColasipbleChatBox chatRoomName={chatRoom} />
+				) : (
+					<div></div>
+				)}
 				<div className='flex flex-row'>
 					<PostButton
 						data={"Цуцлах"}
@@ -44,16 +48,16 @@ export const UserProfileBox = ({ request, post }: any) => {
 							cancelWorkRequest();
 							setIsAgainGetDatas((e: boolean) => !e);
 						}}
-						prop={"red"}
+						prop={"#C23A22"}
 					/>
 					<PostButton
 						ym={() => setIsRating(!isRating)}
 						data={"Үнэлгээ өгөх"}
-						prop={"green"}
+						prop={"#027324"}
 					/>
 					<PostButton
 						data={isChatting ? "Дуусгах" : "Харилцах"}
-						prop={"#FDFD96"}
+						prop={"#804fb3"}
 						ym={async () => {
 							await setChatRoom(request.chatRoomName);
 							setChatting(!isChatting);
@@ -73,16 +77,20 @@ export const UserProfileBox = ({ request, post }: any) => {
 				<div>
 					Дундаж үнэлгээ: {request.averageRating && request.averageRating}
 				</div>
-				{isChatting ? <ColasipbleChatBox chatRoomName={chatRoom} /> : <div></div>}
+				{isChatting ? (
+					<ColasipbleChatBox chatRoomName={chatRoom} />
+				) : (
+					<div></div>
+				)}
 				<div className='flex flex-row'>
 					<PostButton
 						data={"Батлах"}
 						ym={() => confirmWorkRequest()}
-						prop={"rgb(191, 252, 198)"}
+						prop={"#027324"}
 					/>
 					<PostButton
 						data={isChatting ? "Дуусгах" : "Харилцах"}
-						prop={"#FDFD96"}
+						prop={"#804fb3"}
 						ym={async () => {
 							await setChatRoom(request.chatRoomName);
 							setChatting(!isChatting);
