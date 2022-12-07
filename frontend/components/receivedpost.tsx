@@ -148,7 +148,7 @@ export const ReceivedPosts = () => {
 											</div>
 
 											{el.worker.email !== "" && !el.isDone && (
-												<>
+												<div>
 													<h1>Хийх хүн</h1>
 
 													<div className=' h-fit lg:w-[90%] md:w-[55vw] sm:w-[80%] flex flex-col p-2 mt-3'>
@@ -157,7 +157,7 @@ export const ReceivedPosts = () => {
 															post={el}
 														/>
 													</div>
-												</>
+												</div>
 											)}
 										</div>
 									)}

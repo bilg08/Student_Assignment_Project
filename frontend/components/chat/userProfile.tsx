@@ -36,7 +36,7 @@ export const UserProfileBox = ({ request, post }: any) => {
 				<div>
 					Дундаж үнэлгээ: {request.averageRating && request.averageRating}
 				</div>
-				{isChatting ? <ColasipbleChatBox chatRoomName={chatRoom} /> : <></>}
+				{isChatting ? <ColasipbleChatBox chatRoomName={chatRoom} /> : <div></div>}
 				<div className='flex flex-row'>
 					<PostButton
 						data={"Цуцлах"}
@@ -73,7 +73,7 @@ export const UserProfileBox = ({ request, post }: any) => {
 				<div>
 					Дундаж үнэлгээ: {request.averageRating && request.averageRating}
 				</div>
-				{isChatting ? <ColasipbleChatBox chatRoomName={chatRoom} /> : <></>}
+				{isChatting ? <ColasipbleChatBox chatRoomName={chatRoom} /> : <div></div>}
 				<div className='flex flex-row'>
 					<PostButton
 						data={"Батлах"}

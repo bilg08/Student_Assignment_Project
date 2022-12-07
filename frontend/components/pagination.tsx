@@ -1,10 +1,9 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
-import * as React from 'react';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import * as React from 'react';
+import { Dispatch, SetStateAction } from "react";
 export const Pagination1 = (props: PaginationType) => {
 	const { pagination, setPage, page } = props;
-	console.log(pagination)
 	const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
 		setPage(value);
 	  };

@@ -1,4 +1,3 @@
-import { Button } from "../index";
 
 export interface PostReceivedProps {
 	name: any;
@@ -28,10 +27,3 @@ export const PostReceived: React.FC<PostReceivedProps> = ({
 	);
 };
 
-{
-	/* <img
-				                    className='w-full'
-				                    src='/img/card-top.jpg'
-				                    alt='Sunset in the mountains'
-			                    /> */
-}

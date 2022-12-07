@@ -109,7 +109,7 @@ export const Header = () => {
                 style={{ display: isLoggedIn ? "block" : "none" }}
                 className="h-12 w-12 rounded-full border-dark-purple border-2 mb-4"
                 src={
-                  user.photo === "no-photo.png"
+                  (isLoggedIn&&user.photo) === "no-photo.png"
                     ? "https://cdn.pixabay.com/photo/2016/03/31/19/56/avatar-1295396__340.png"
                     : `http://localhost:8000/users/getUserProfilePhoto/${user.photo}`
                 }

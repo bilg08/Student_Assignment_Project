@@ -1,11 +1,8 @@
 import axios from "axios";
 import {
-	ReactElement,
-	JSXElementConstructor,
-	ReactFragment,
-	ReactPortal,
-	Key,
-	MouseEventHandler,
+	JSXElementConstructor, Key,
+	MouseEventHandler, ReactElement, ReactFragment,
+	ReactPortal
 } from "react";
 import { UserProfileBox } from "../chat/userProfile";
 import { ProfileCard } from "../profileCard";

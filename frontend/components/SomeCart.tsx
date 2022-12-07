@@ -1,6 +1,6 @@
-import { useRef } from "react";
-import * as React from "react";
 import cn from "classnames";
+import * as React from "react";
+import { useRef } from "react";
 import { IconNote } from "./Icon/IconNote";
 import { IconWarning } from "./Icon/IconWarning";
 interface SomeCartType {

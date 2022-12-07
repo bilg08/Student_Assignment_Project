@@ -23,6 +23,7 @@ export const LayOut = (props: { children: ReactNode }) => {
   }, [isAgainGetDatas]);
   axios.interceptors.request.use(
     function (config) {
+
       setOpenLoader(true);
       setOpenshadow(true);
       return config;

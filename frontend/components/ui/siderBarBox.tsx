@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import useCollapse from "react-collapsed";
 type CardDataType = {
 	children: any;
@@ -45,7 +45,7 @@ export const ColasipbleSidebarBox = (props: CardDataType) => {
 						{children}
 					</div>
 				) : (
-					<>
+					<div>
 						<div
 							style={{ marginTop: "25px" }}
 							className='  mt-0 border border-dark-purple rounded-lg '>
@@ -66,7 +66,7 @@ export const ColasipbleSidebarBox = (props: CardDataType) => {
 								)
 							)}
 						</div>
-					</>
+					</div>
 				)}
 			</div>
 			<div {...getCollapseProps()}></div>

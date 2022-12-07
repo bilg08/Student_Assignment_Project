@@ -1,5 +1,4 @@
-import styles from "./Input.module.css";
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 type InputComponentsPropsType = {
 	placeholder: String | any;
 	icon: React.ReactElement;

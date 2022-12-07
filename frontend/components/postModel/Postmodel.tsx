@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
-import React from "react";
-import { MyImage } from "../index";
-import { useIsAgainGetDatas, useLoaderContext } from "../../context";
-import { instance } from "../../components/Layout";
 import ClearIcon from "@mui/icons-material/Clear";
+import React, { useEffect, useState } from "react";
+import { instance } from "../../components/Layout";
+import { useIsAgainGetDatas, useLoaderContext } from "../../context";
+import { MyImage } from "../index";
 export interface PostModalProps {
 	cActive: any;
 	setCactive: any;

@@ -18,25 +18,39 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
   let start = (page - 1) * limit + 1;
   let end = start + limit - 1;
 
+
   if (end > total) end = total;
   let pagination = { page, total, pageCount, start, end };
   if (page < pageCount) pagination.nextPage = page + 1;
   if (page > 1) pagination.prevPage = page - 1;
 
+
+if(school!==""&&subject!==""&&group!==""){
   if (req.headers.userid) {
     pagination.pageCount = Math.ceil(
       (await getPostNotIncludedUser(req.headers.userid)).length / limit
     );
 
-    posts = await getPostNotIncludedUserAndLimitandSkip(
-      req.headers.userid,
-      limit,
-      start
-    );
+    posts = await PostSchema.find({ owner: { $ne: req.headers.userid },isDone:false,subject:subject,school:school,group:group })
+    .limit(limit)
+    .skip(start - 1).populate('owner');
+
     pagination.total = posts.length;
   } else {
-    posts = await getAllPostWithLimitandSkip(limit, start);
+    console.log('kkk2')
+    posts = await PostSchema.find({isDone:false,subject:subject,school:school,group:group})
+    .limit(limit)
+    .skip(start - 1).populate('owner');
   }
+}else{
+  posts = await PostSchema.find({isDone:false})
+  .limit(limit)
+  .skip(start - 1).populate('owner');
+}
+
+
+
+  
   res.status(200).json({
     status: false,
     data: posts,

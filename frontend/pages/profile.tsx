@@ -2,12 +2,12 @@ import {
 	PostModal,
 	ReceivedPosts,
 	SeizedSideBar,
-	UserSideBar,
+	UserSideBar
 } from "../components/index";
 import {
 	useCollectionContext,
 	useIsUserLoggedContext,
-	useSidebarContext,
+	useSidebarContext
 } from "../context/index";
 import { useWindowWidth } from "../hooks";
 import LoginPage from "./loginPage";

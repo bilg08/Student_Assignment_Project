@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
-import { PostButton } from "../ui/postButton";
-import { io } from "socket.io-client";
-import { flushSync } from "react-dom";
-import { getCookie } from "cookies-next";
-import { useIsAgainGetDatas, useUserContext } from "../../context";
-import { instance } from "../../components/Layout";
-import { Chip } from "@mui/material";
 import ImageIcon from "@mui/icons-material/Image";
-import SendIcon from "@mui/icons-material/Send";
+import { Chip } from "@mui/material";
+import { getCookie } from "cookies-next";
+import { useEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
+import { io } from "socket.io-client";
+import { instance } from "../../components/Layout";
+import { useIsAgainGetDatas, useUserContext } from "../../context";
+import { PostButton } from "../ui/postButton";
 export const connectChatServer = () => {
 	const socket = io("http://localhost:8000/", {
 		transports: ["websocket"],
@@ -110,7 +109,7 @@ function handleUploadFile(e:any) {
               return (
                 <li className={`m-1 flex justify-between w-full px-1`}>
                   {message && user.email === message.owner.email ? (
-                    <>
+                    <div>
                       <span></span>
                       <div>
                         <Chip label={message.message} />
@@ -123,9 +122,9 @@ function handleUploadFile(e:any) {
                           ""
                         )}
                       </div>
-                    </>
+                    </div>
                   ) : (
-                    <>
+                    <div>
                       <div>
                         <Chip variant="outlined" label={message.message} />
                         {message.photo ? (
@@ -138,7 +137,7 @@ function handleUploadFile(e:any) {
                         )}
                       </div>
                       <span></span>
-                    </>
+                    </div>
                   )}
                 </li>
               );

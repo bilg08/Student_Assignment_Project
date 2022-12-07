@@ -1,22 +1,16 @@
-import { useEffect, useState } from "react";
+import { MenuItem, Select } from "@mui/material";
+import Backdrop from "@mui/material/Backdrop";
+import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import InputLabel from "@mui/material/InputLabel";
-import Button from "@mui/material/Button";
-import Backdrop from "@mui/material/Backdrop";
 import cn from "classnames";
-import {
-  useSelectedContext,
-  useIsAgainGetDatas,
-  useSearchContext,
-  useLoaderContext,
-  useIsUserLoggedContext,
-} from "../context/index";
-import { useModalContext } from "../context/index";
-import { Pagination1 } from "../components/pagination";
-import { instance } from "../components/Layout";
-import { MenuItem, Select } from "@mui/material";
+import { useEffect, useState } from "react";
 import { IconArrow } from "../components/Icon/IconArrow";
-import { TroubleshootOutlined } from "@mui/icons-material";
+import { instance } from "../components/Layout";
+import { Pagination1 } from "../components/pagination";
+import {
+  useIsAgainGetDatas, useIsUserLoggedContext, useLoaderContext, useModalContext, useSearchContext, useSelectedContext
+} from "../context/index";
 type adsType = {
   _id: string | number | readonly string[] | undefined;
   advertisingHeader: String;
@@ -69,7 +63,6 @@ export default function Home() {
           setAds(response.data.data);
           setPagination(response.data.pagination);
         } catch (error) {
-          console.error(error);
         }
       }
       await instance
@@ -88,9 +81,8 @@ export default function Home() {
             }
           );
         })
-        .catch(function (response) {});
     })();
-  }, [page]);
+  }, [page,isAgainGetDatas]);
 
   useEffect(() => {
     schools.map((school1: any) => {
@@ -112,20 +104,7 @@ export default function Home() {
       }
     });
   }, [userInput.group]);
-  async function requestToDoWork  (id: String)  {
-    await instance
-      .post(`/post/${id}/work`)
-      .then(async function (response) {
-        setOpenshadow(true);
-        await setModalText("amjilttai");
-        setOpenModal(true);
-      })
-      .catch(async function (error) {
-        setOpenshadow(true);
-        await setModalText(error.response.data.data);
-        setOpenModal(true);
-      });
-  };
+
   const handleSearch = () => {
     setShowModal(false);
     setSelectedAd(null);
@@ -237,7 +216,7 @@ export default function Home() {
                   [e.target.name]: e.target.value,
                 });
               }}
-              name="subject"
+              name={`subject`}
             >
               <MenuItem value="">Хичээл</MenuItem>
               {schoolLessons?.map((schoolLesson: any, i: number) => {
@@ -260,7 +239,7 @@ export default function Home() {
         </Grid>
       </Grid>
       <DetailImage imageSrc={selectedAd && selectedAd.ad.photo} />
-      <Grid sx={{ width: "100%" }}>
+      <Grid sx={{ width: "100%",height:'80vh' }}>
         <Grid
           container
           sx={{
@@ -271,7 +250,6 @@ export default function Home() {
             margin: "auto",
             gap:'15px',
             flexWrap: 'wrap',
-            justifyContent:{md:'center',lg:'space-between',sm:'center',xs:'center'}
           }}
         >
          
@@ -352,31 +330,30 @@ function PostCart({ad}:{ad:any}) {
       <p
         className={` text-gray-800 overflow-hidden transition-all    leading-snug md:leading-normal`}>
         {ad.detail.length > 50 ? (
-          <>
+          <div>
             {!readMore ? (
-              <>
+              <div>
                 <p>{ad.detail.slice(0, 50)}</p>
                 <a
                   onClick={() => setReadMore(true)}
                   className="underline text-blue-500">
                   Цааш нь унших
                 </a>
-              </>
+              </div>
             ) : (
-              <>
+              <div>
                 <p>{ad.detail}</p>
                 <a
                   onClick={() => setReadMore(false)}
                   className="underline text-blue-500">
                   Хураах
                 </a>
-              </>
+              </div>
             )}
-          </>
+          </div>
         ) : (
           <p>{ad.detail}</p>
         )}
-        {/* {readMore?ad.detail.slice(0,50):ad.detail} {readMore?<a  onClick={() =>setReadMore(!readMore)} className="underline text-blue-500" >цааш нь унших</a>:<a onClick={() =>setReadMore(!readMore)} className="underline text-blue-500" >хураах</a>}  */}
       </p>
       <div className="flex justify-between items-center mt-5"></div>
       <button

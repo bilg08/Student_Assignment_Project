@@ -1,16 +1,10 @@
-import { useLoaderContext, useModalContext } from "../context";
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-import { IconWarning } from "./Icon/IconWarning";
+import cn from 'classnames';
+import * as React from 'react';
+import { useLoaderContext, useModalContext } from "../context";
 import { IconNote } from "./Icon/IconNote";
-import cn from 'classnames'
-import { IconClose } from "./Icon/IconClose";
+import { IconWarning } from "./Icon/IconWarning";
 
 interface SomeCartType {
   children: React.ReactNode;

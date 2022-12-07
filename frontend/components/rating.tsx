@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
-import { useIsAgainGetDatas, useModalContext } from "../context";
 import { instance } from "../components/Layout";
+import { useIsAgainGetDatas, useModalContext } from "../context";
 export const Rate: React.FC<RateType> = ({ post }:any) => {
   const [state, setState] = React.useState<any>(0);
   const { setIsAgainGetDatas } = useIsAgainGetDatas();
