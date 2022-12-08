@@ -5,9 +5,13 @@ let MyError = require("../utils/myError");
 let asyncHandler = require("../middleware/asyncHandler");
 let path = require("path");
 let fs = require("fs");
-let {getPostNotIncludedUser,getPostNotIncludedUserAndLimitandSkip,getAllPostWithLimitandSkip} = require('../service/post')
+let {
+  getPostNotIncludedUser,
+  getPostNotIncludedUserAndLimitandSkip,
+  getAllPostWithLimitandSkip,
+} = require("../service/post");
 let mongoose = require("mongoose");
-let { isOwner } = require('../service/user')
+let { isOwner } = require("../service/user");
 exports.getPosts = asyncHandler(async (req, res, next) => {
   let posts;
   let { school, group, subject } = req.query;
@@ -18,39 +22,61 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
   let start = (page - 1) * limit + 1;
   let end = start + limit - 1;
 
-
   if (end > total) end = total;
   let pagination = { page, total, pageCount, start, end };
   if (page < pageCount) pagination.nextPage = page + 1;
   if (page > 1) pagination.prevPage = page - 1;
+  if (school !== "" && subject !== "" && group !== "") {
 
+    if (req.headers.userid !== "") {
+      console.log(req.headers.userid !== "");
+      pagination.pageCount = Math.ceil(
+        (await getPostNotIncludedUser(req.headers.userid)).length / limit
+      );
 
-if(school!==""&&subject!==""&&group!==""){
-  if (req.headers.userid) {
-    pagination.pageCount = Math.ceil(
-      (await getPostNotIncludedUser(req.headers.userid)).length / limit
-    );
+      posts = await PostSchema.find({
+        owner: { $ne: req.headers.userid },
+        isDone: false,
+        subject: subject,
+        school: school,
+        group: group,
+      })
+        .limit(limit)
+        .skip(start - 1)
+        .populate("owner");
 
-    posts = await PostSchema.find({ owner: { $ne: req.headers.userid },isDone:false,subject:subject,school:school,group:group })
-    .limit(limit)
-    .skip(start - 1).populate('owner');
-
-    pagination.total = posts.length;
+      pagination.total = posts.length;
+    } else {
+      console.log("kkk2");
+      posts = await PostSchema.find({
+        isDone: false,
+        subject: subject,
+        school: school,
+        group: group,
+      })
+        .limit(limit)
+        .skip(start - 1)
+        .populate("owner");
+    }
   } else {
-    console.log('kkk2')
-    posts = await PostSchema.find({isDone:false,subject:subject,school:school,group:group})
-    .limit(limit)
-    .skip(start - 1).populate('owner');
+    if (req.headers.userid !== "") {
+       posts = await PostSchema.find({
+         owner: { $ne: req.headers.userid },
+         isDone: false,
+       })
+         .limit(limit)
+         .skip(start - 1)
+         .populate("owner");
+      pagination.total = posts.length;
+    } else {
+    posts = await PostSchema.find({ isDone: false })
+      .limit(limit)
+      .skip(start - 1)
+      .populate("owner");   
+    }
+   
   }
-}else{
-  posts = await PostSchema.find({isDone:false})
-  .limit(limit)
-  .skip(start - 1).populate('owner');
-}
 
-
-
-  
   res.status(200).json({
     status: false,
     data: posts,
@@ -111,13 +137,13 @@ exports.createPost = asyncHandler(async (req, res, next) => {
 
 exports.deletePost = asyncHandler(async (req, res, next) => {
   let posts = await PostSchema.findById(req.params.id);
-   if (!posts) {
-     throw new MyError("not found", 400);
-   }
+  if (!posts) {
+    throw new MyError("not found", 400);
+  }
   if (posts.owner.toString() === req.user.id) {
-  await PostSchema.findByIdAndDelete(req.params.id)
-}
- 
+    await PostSchema.findByIdAndDelete(req.params.id);
+  }
+
   res.status(200).json({
     success: true,
   });
@@ -135,9 +161,7 @@ exports.updatePost = asyncHandler(async (req, res, next) => {
 });
 
 exports.addToWorkers = asyncHandler(async (req, res, next) => {
-
-
-  let post = await PostSchema.findById((req.params.id));
+  let post = await PostSchema.findById(req.params.id);
   let postOwner = await UserSchema.findById(post.owner);
   let requestedPerson = await UserSchema.findById(req.user.id);
   let postOwnerChatRooms = postOwner.chatRooms;
@@ -204,7 +228,7 @@ exports.confirmWorkRequest = asyncHandler(async (req, res, next) => {
           post.worker.averageRating = worker.averageRating;
           post.worker.id = worker.id;
           post.worker.email = worker.email;
-          post.worker.chatRoomName = request.chatRoomName
+          post.worker.chatRoomName = request.chatRoomName;
           post.save();
           res.status(200).json({
             success: true,
@@ -223,33 +247,27 @@ exports.confirmWorkRequest = asyncHandler(async (req, res, next) => {
 exports.cancelWorkRequest = asyncHandler(async (req, res, next) => {
   let post = await PostSchema.findById(req.params.id);
   post.worker.id = "";
-  post.worker.email = "",
-    post.worker.averageRating = 0;
+  (post.worker.email = ""), (post.worker.averageRating = 0);
   post.isDone = false;
   post.save();
   res.status(200).json({
-    data: post
-  })
+    data: post,
+  });
 });
 
-
 exports.rateWorkerPerformance = asyncHandler(async (req, res, next) => {
-  const { rating } = req.body
-  const post = await PostSchema.findById(req.params.id)
+  const { rating } = req.body;
+  const post = await PostSchema.findById(req.params.id);
   const IsOwner = await isOwner(req.params.id, req.user.id);
   if (IsOwner) {
     post.worker.averageRating = rating;
     post.isDone = true;
     post.save();
     res.status(200).json({
-      success: true
-    })
+      success: true,
+    });
   }
 });
-
-
-
-
 
 exports.showPostToBeDone = asyncHandler(async (req, res, next) => {
   let Posts = await PostSchema.find();

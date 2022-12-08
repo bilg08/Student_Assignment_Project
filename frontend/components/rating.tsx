@@ -1,3 +1,4 @@
+import { Slider } from "@mui/material";
 import React, { ReactNode } from "react";
 import { instance } from "../components/Layout";
 import { useIsAgainGetDatas, useModalContext } from "../context";
@@ -15,19 +16,14 @@ export const Rate: React.FC<RateType> = ({ post }:any) => {
     });
   };
   return (
-    <div className="items-center justify-center w-full flex flex-col justify-between font-medium text-center  bg-white   h-[auto]    ">
-      <div>
-        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-          {state}
-        </label>
-        <input
-          id="medium-range"
-          onChange={(e) => setState(e.target.value)}
-          type="range"
-          value={state}
-          className="w-full h-2 mb-6 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-        />
-      </div>
+    <div className="items-center justify-center w-full flex flex-col justify-between font-medium text-center   h-[auto]    ">
+      <Slider
+        defaultValue={state}
+        onChange={(e:any) => setState(e.target.value)}
+        aria-label="Default"
+        valueLabelDisplay="auto"
+      />
+     
       <button onClick={rateWorkerPerformance}>Батлах</button>
     </div>
   );
